@@ -11,7 +11,7 @@
 
 **6. Schlussfolgerungen für Git-Anfänger**
 
-## 1. Git: Programminformationen und Vorteile bei der Nutzung
+## 1. Git: Programminformationen und Vorteile bei der Nutzung 
 
 **Git** ist ein verteiltes Versionskontrollsystem, das ursprünglich von *Linus Torvalds* im Jahr 2005 für die Entwicklung des Linux-Kernels entworfen wurde. Es dient dazu, Änderungen an Dateien – insbesondere an Quellcode – effizient zu verfolgen, frühere Zustände wiederherzustellen und die Zusammenarbeit in Softwareprojekten zu erleichtern.
 
