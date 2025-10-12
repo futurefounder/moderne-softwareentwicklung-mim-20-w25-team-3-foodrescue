@@ -126,6 +126,34 @@ Dies integriert die Änderungen von `feature-branch` in den aktuellen Branch.
 git log
 ```
 Zeigt eine Liste der letzten Commits mit Details wie Autor, Datum und Commit-Nachricht.
+
+### 12. `git remote`
+**Rolle**: Zeigt alle Remote-Verbindungen an oder erlaubt das Hinzufügen/Entfernen von Remotes.
+
+**Beispiel**:
+```bash
+git remote add origin https://github.com/username/repository.git
+```
+Dies fügt ein Remote-Repository namens `origin` hinzu.
+
+### 13. `git reset`
+**Rolle**: Kann verwendet werden, um Commits zurückzusetzen oder die Staging-Area und Arbeitsverzeichnis zu ändern.
+
+**Beispiel**:
+```bash
+git reset --hard HEAD~1
+```
+Dies setzt das Repository auf den Zustand des vorherigen Commits zurück und verwirft alle Änderungen.
+
+### 14. `git diff`
+**Rolle**: Vergleicht Änderungen in Dateien oder zwischen Commits, um Unterschiede anzuzeigen.
+
+**Beispiel**:
+```bash
+git diff
+```
+Zeigt die Unterschiede zwischen dem aktuellen Arbeitsverzeichnis und der Staging-Area.
+
 ## 3. Branches und ihre Nutzung und Umgang mit Merge-Konflikten
 
 ## 4. Git mit IntelliJ/PyCharm benutzen: Local Repository und Remote Repository
