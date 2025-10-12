@@ -79,6 +79,53 @@ git push origin main
 Dies überträgt die Commits auf den `main`-Branch des Remote-Repositories.
 
 
+### 7. `git pull`
+**Rolle**: Holt und integriert Änderungen von einem Remote-Repository in das lokale Repository.
+
+**Beispiel**:
+```bash
+git pull origin main
+```
+Dies zieht die Änderungen vom `main`-Branch des Remote-Repositories und integriert sie lokal.
+
+
+### 8. `git branch`
+**Rolle**: Listet alle lokalen Branches auf, erstellt oder löscht Branches.
+
+**Beispiel**:
+```bash
+git branch feature-branch
+```
+Dies erstellt einen neuen Branch namens `feature-branch`.
+
+
+### 9. `git checkout`
+**Rolle**: Wechselt zwischen Branches oder setzt den Zustand von Dateien zurück.
+
+**Beispiel**:
+```bash
+git checkout feature-branch
+```
+Dies wechselt zum Branch `feature-branch`.
+
+
+### 10. `git merge`
+**Rolle**: Integriert Änderungen von einem Branch in einen anderen.
+
+**Beispiel**:
+```bash
+git merge feature-branch
+```
+Dies integriert die Änderungen von `feature-branch` in den aktuellen Branch.
+
+### 11. `git log`
+**Rolle**: Dient zur Anzeige der Commit-Historie, die nacheinander vorgenommen wurden.
+
+**Beispiel**:
+```bash
+git log
+```
+Zeigt eine Liste der letzten Commits mit Details wie Autor, Datum und Commit-Nachricht.
 ## 3. Branches und ihre Nutzung und Umgang mit Merge-Konflikten
 
 ## 4. Git mit IntelliJ/PyCharm benutzen: Local Repository und Remote Repository
