@@ -11,7 +11,7 @@
 
 **6. Schlussfolgerungen für Git-Anfänger**
 
-## 1. Git: Programminformationen und Vorteile bei der Nutzung 
+## 1. Git: Programminformationen und Vorteile bei der Nutzung
 
 **Git** ist ein verteiltes Versionskontrollsystem, das ursprünglich von *Linus Torvalds* im Jahr 2005 für die Entwicklung des Linux-Kernels entworfen wurde. Es dient dazu, Änderungen an Dateien – insbesondere an Quellcode – effizient zu verfolgen, frühere Zustände wiederherzustellen und die Zusammenarbeit in Softwareprojekten zu erleichtern.
 
@@ -181,6 +181,145 @@ Zeigt die Unterschiede zwischen dem aktuellen Arbeitsverzeichnis und der Staging
 
 ## 3. Branches und ihre Nutzung und Umgang mit Merge-Konflikten
 
+### Was sind Branches?
+
+Ein **Branch** (Zweig) in Git ist eine unabhängige Entwicklungslinie innerhalb eines Repositories.  
+Branches ermöglichen es, **parallel an verschiedenen Features, Bugfixes oder Experimenten** zu arbeiten, ohne den Hauptcode (z. B. den `main`- oder `master`-Branch) zu beeinträchtigen.
+
+### Vorteile von Branches
+- Unabhängige Entwicklung neuer Funktionen
+- Sicheres Testen ohne Risiko für den Hauptzweig
+- Einfaches Zusammenführen (Merge) nach Abschluss der Arbeit
+- Verbesserte Zusammenarbeit im Team
+
+### Branches erstellen und verwalten
+
+#### Neuen Branch erstellen
+```bash
+git branch feature-login
+```
+
+#### In den Branch wechseln
+```bash
+git checkout feature-login
+```
+
+#### Alle Branches anzeigen
+```bash
+git branch
+```
+
+#### Branch löschen
+```bash
+git branch -d feature-login
+```
+
+#### Branch umbenennen
+```bash
+git branch -m alter-name neuer-name
+```
+
+---
+
+### Arbeiten mit Branches
+
+Typischer Workflow:
+
+1. Neuen Branch erstellen (z. B. für ein neues Feature)
+2. Änderungen vornehmen und committen
+3. Branch in das Hauptprojekt integrieren (per Merge oder Rebase)
+4. Branch löschen, wenn er nicht mehr benötigt wird
+
+Beispiel:
+```bash
+git switch -c feature-neues-ui
+# Code ändern, committen
+git add .
+git commit -m "Neues UI erstellt"
+# Zurück zu main
+git switch main
+# Merge
+git merge feature-neues-ui
+```
+
+---
+
+### Merge-Konflikte verstehen und lösen
+
+#### Was ist ein Merge-Konflikt?
+
+Ein **Merge-Konflikt** entsteht, wenn Git zwei Änderungen an derselben Datei und an derselben Stelle nicht automatisch zusammenführen kann.
+
+Beispiel:
+- Entwickler A ändert Zeile 10 in `main`
+- Entwickler B ändert dieselbe Zeile in `feature-branch`
+- Beim Merge kann Git nicht entscheiden, welche Version „richtig“ ist
+
+---
+
+#### Merge-Konflikt erkennen
+
+Beim Versuch zu mergen:
+```bash
+git merge feature-branch
+```
+
+Git meldet:
+```
+CONFLICT (content): Merge conflict in datei.txt
+```
+
+Die betroffene Datei enthält Konfliktmarker:
+
+```plaintext
+Version aus aktuellem Branch
+```
+
+---
+
+#### Merge-Konflikt lösen
+
+1. Datei öffnen
+2. Konfliktstellen manuell bearbeiten
+    - Entscheiden, welche Version behalten oder kombinieren
+3. Konfliktmarker (`<<<<<<<`, `=======`, `>>>>>>>`) entfernen
+4. Änderungen als gelöst markieren:
+   ```bash
+   git add datei.txt
+   ```
+5. Merge abschließen:
+   ```bash
+   git commit
+   ```
+
+---
+
+### Tipps zum Vermeiden von Konflikten
+
+- Regelmäßig **pullen** (z. B. `git pull origin main`), um Änderungen frühzeitig zu integrieren
+- Kleine, häufige Commits statt großer auf einmal
+- Kommunikation im Team über geänderte Dateien
+- **Rebase** statt Merge für lineare Historien (wenn sinnvoll):
+  ```bash
+  git rebase main
+  ```
+
+---
+
+### Fazit
+
+Branches sind das Herzstück von Git-Workflows und ermöglichen parallele, saubere Entwicklung.  
+Merge-Konflikte sind ein natürlicher Teil dieser Arbeit – mit etwas Sorgfalt und Routine lassen sie sich jedoch leicht erkennen und lösen.
+
+
+
+## 4. Git mit IntelliJ/PyCharm benutzen: Local Repository und Remote Repository
+
+## 5. Nützliche Git-Tools und Plattformen
+
+## 6. Wichtige Erkenntnisse für Git-Anfänger
+
+=======
 ## 4. Git mit IntelliJ/PyCharm benutzen: Local Repository und Remote Repository
 
 Nachdem die grundlegenden Git-Befehle und der Umgang mit Branches erklärt wurden, wird in diesem Abschnitt die Nutzung von Git in Verbindung mit den Entwicklungsumgebungen IntelliJ und PyCharm behandelt.
@@ -328,6 +467,7 @@ Git ist ein wesentlicher Bestandteil moderner Softwareentwicklung, der es ermög
 | Git Repository auf GitHub anlegen, Team einladen, .gitignore erstellen, Readme Struktur | Jesse      |
 | Was ist Git und warum sollte es verwendet werden?                                       | Thomas     |
 | Grundlegende Git-Befehle (z. B. git init, git add, git commit, git push)                |            |
-| Branches und ihre Nutzung, Umgang mit Merge-Konflikten                                  |            |
+| Branches und ihre Nutzung, Umgang mit Merge-Konflikten                                  | Thomas     |
+| Nützliche Git-Tools und Plattformen (z. B. GitHub)                                      |            |
 | Git mit IntelliJ/PyCharm benutzen: Local Repository und Remote Repository               | Jesse      |
 | Nützliche Git-Tools und Plattformen (z. B. GitHub)                                      | Stephan    |
