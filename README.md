@@ -312,14 +312,6 @@ Branches sind das Herzstück von Git-Workflows und ermöglichen parallele, saube
 Merge-Konflikte sind ein natürlicher Teil dieser Arbeit – mit etwas Sorgfalt und Routine lassen sie sich jedoch leicht erkennen und lösen.
 
 
-
-## 4. Git mit IntelliJ/PyCharm benutzen: Local Repository und Remote Repository
-
-## 5. Nützliche Git-Tools und Plattformen
-
-## 6. Wichtige Erkenntnisse für Git-Anfänger
-
-=======
 ## 4. Git mit IntelliJ/PyCharm benutzen: Local Repository und Remote Repository
 
 Nachdem die grundlegenden Git-Befehle und der Umgang mit Branches erklärt wurden, wird in diesem Abschnitt die Nutzung von Git in Verbindung mit den Entwicklungsumgebungen IntelliJ und PyCharm behandelt.
@@ -466,8 +458,8 @@ Git ist ein wesentlicher Bestandteil moderner Softwareentwicklung, der es ermög
 |-----------------------------------------------------------------------------------------|------------|
 | Git Repository auf GitHub anlegen, Team einladen, .gitignore erstellen, Readme Struktur | Jesse      |
 | Was ist Git und warum sollte es verwendet werden?                                       | Thomas     |
-| Grundlegende Git-Befehle (z. B. git init, git add, git commit, git push)                |            |
+| Grundlegende Git-Befehle (z. B. git init, git add, git commit, git push)                | Maria      |
 | Branches und ihre Nutzung, Umgang mit Merge-Konflikten                                  | Thomas     |
-| Nützliche Git-Tools und Plattformen (z. B. GitHub)                                      |            |
 | Git mit IntelliJ/PyCharm benutzen: Local Repository und Remote Repository               | Jesse      |
 | Nützliche Git-Tools und Plattformen (z. B. GitHub)                                      | Stephan    |
+| Wichtige Erkenntnisse für Git-Anfänger                                                  |            |
