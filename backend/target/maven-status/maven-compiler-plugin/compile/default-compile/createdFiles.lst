@@ -1,0 +1,3 @@
+com\example\foodrescue\api\HealthController.class
+com\example\foodrescue\core\RescueService.class
+com\example\foodrescue\FoodRescueApplication.class
