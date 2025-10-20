@@ -1,6 +1,87 @@
 ## Exclude IntelliJ settings folder
 .idea/
+*.iml
+*.iws
+*.ipr
 
 ## Exclude macOS system files
 .DS_Store
-.doc#
+
+## Maven
+backend/target/
+**/target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+## Spring Boot
+backend/HELP.md
+backend/.springBeans
+backend/spring-boot-*.log
+
+## Java
+*.class
+*.log
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+hs_err_pid*
+replay_pid*
+
+## Frontend (Node.js)
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.env.local
+frontend/.env.*.local
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/pnpm-debug.log*
+frontend/.pnpm-store
+
+## IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+## IDE - Eclipse
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+## Logs
+logs/
+*.log
+log/
+
+## Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+.cache/
+
+## OS Windows
+Thumbs.db
