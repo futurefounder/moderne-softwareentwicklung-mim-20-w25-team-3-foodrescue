@@ -11,6 +11,8 @@
 
 **6. Schlussfolgerungen für Git-Anfänger**
 
+**7. CI/CD Pipeline**
+
 ## 1. Git: Programminformationen und Vorteile bei der Nutzung
 
 **Git** ist ein verteiltes Versionskontrollsystem, das ursprünglich von *Linus Torvalds* im Jahr 2005 für die Entwicklung des Linux-Kernels entworfen wurde. Es dient dazu, Änderungen an Dateien – insbesondere an Quellcode – effizient zu verfolgen, frühere Zustände wiederherzustellen und die Zusammenarbeit in Softwareprojekten zu erleichtern.
@@ -452,14 +454,105 @@ Mit den richtigen Werkzeugen und Plattformen können Entwickler ihre Arbeitsabl�
 Für Anfänger mag Git zunächst überwältigend erscheinen, doch mit der Zeit wird es einfacher und intuitiver. 
 Git ist ein wesentlicher Bestandteil moderner Softwareentwicklung, der es ermöglicht, effektiver im Team zu arbeiten und den Überblick über den Codeverlauf zu behalten.
 
-## Aufgabenverteilung
+## 7. CI/CD Pipeline
 
-| Aufgaben                                                                                | Bearbeiter |
-|-----------------------------------------------------------------------------------------|------------|
-| Git Repository auf GitHub anlegen, Team einladen, .gitignore erstellen, Readme Struktur | Jesse      |
-| Was ist Git und warum sollte es verwendet werden?                                       | Thomas     |
-| Grundlegende Git-Befehle (z. B. git init, git add, git commit, git push)                | Maria      |
-| Branches und ihre Nutzung, Umgang mit Merge-Konflikten                                  | Thomas     |
-| Git mit IntelliJ/PyCharm benutzen: Local Repository und Remote Repository               | Jesse      |
-| Nützliche Git-Tools und Plattformen (z. B. GitHub)                                      | Stephan    |
-| Wichtige Erkenntnisse für Git-Anfänger                                                  |            |
+In diesem Abschnitt erläutern wir das Grundgerüst unserer CI/CD-Pipeline für das **FoodRescue-Projekt**, dabei beleuchten wir den Aufbau, die Konfiguration und welche Tests konkret ausgeführt werden.
+
+### Projekt-Übersicht
+- **Backend**: Spring Boot 3.3.4 mit Java 21
+- **Build-Tool**: Maven
+- **Package**: JAR-Artefakt (`foodrescue-0.0.1-SNAPSHOT.jar`)
+- **Projektstruktur**: `backend/` enthält die Spring Boot Anwendung
+
+### Konfigurierte Maven-Plugins
+Das Projekt nutzt mehrere Plugins für Qualitätssicherung:
+
+1. **Spring Boot Maven Plugin** - Erstellt ausführbare JAR-Dateien
+2. **Spotless** (Version 2.45.0) - Automatische Code-Formatierung mit Google Java Format
+3. **JaCoCo** (Version 0.8.13) - Code-Coverage-Analyse während der Testausführung
+4. **Maven Surefire** (Version 3.2.5) - Test-Ausführung mit Mockito-Unterstützung
+
+### Unsere Test-Suiten
+
+Das FoodRescue-Backend verfügt über drei verschiedene Test-Kategorien:
+
+#### 1. **ContextLoadsTest** - Integration/Smoke Test
+```java
+@SpringBootTest
+class ContextLoadsTest {
+  @Test void contextLoads() {}
+}
+```
+- **Zweck**: Stellt sicher, dass der Spring Application Context erfolgreich startet
+- **Testtyp**: Integrationstest
+
+#### 2. **HealthControllerTest** - Controller/API Test
+```java
+@WebMvcTest(controllers = HealthController.class)
+class HealthControllerTest {
+  @Test
+  void healthEndpointReturnsOk() throws Exception {
+    // Testet GET /api/health Endpoint
+  }
+}
+```
+- **Zweck**: Testet den Health-Endpoint des REST-Controllers
+- **Testtyp**: Controller-Test (mit MockMvc)
+- **Technologie**: Verwendet `@WebMvcTest` für Web-Layer-Tests
+- **Mocking**: RescueService wird gemockt mit Mockito
+- **Validierung**: HTTP-Status 200 und Response-Content "OK"
+
+#### 3. **RescueServiceTest** - Unit Test
+```java
+class RescueServiceTest {
+  @Test
+  void filtersNonPerishables() {
+    var input = List.of("frische Milch", "Konserven", "Pasta", "frische Beeren");
+    var result = service.filterNonPerishables(input);
+    assertThat(result).containsExactlyInAnyOrder("Konserven", "Pasta");
+  }
+}
+```
+- **Zweck**: Testet die Kern-Business-Logik der `RescueService`-Klasse
+- **Testtyp**: Unit Test (ohne Spring-Kontext)
+
+### CI/CD Pipeline-Ablauf/Stufen
+
+#### 1. **Trigger**
+   - Der Trigger wird automatisch ausgelöst bei Push/Pull Request auf `main` oder `develop` Branches
+   - Kann auch manuell über GitHub Actions ausgelöst werden
+
+#### 2. **Checkout**
+   - Repository wird ausgecheckt
+   - Alle Quellcode-Dateien werden bereitgestellt
+
+#### 3. **Setup**
+   - Java 21 JDK wird installiert
+   - Maven Dependencies werden aus dem Cache geladen (falls vorhanden)
+
+#### 4. **Build & Tests**
+   - Maven-Build mit allen Plugins wird ausgeführt:
+     ```bash
+     mvn -B clean verify
+     ```
+   - **Ausgeführte Tests**:
+     - Unit-Tests: `RescueServiceTest` (schnelle Logik-Tests)
+     - Controller-Tests: `HealthControllerTest` (API-Layer-Tests mit MockMvc)
+     - Integrationstests: `ContextLoadsTest` (Spring-Kontext-Validierung)
+   
+   - **Code-Formatierung**: Spotless überprüft Google Java Format-Konformität
+   - **Coverage-Report**: JaCoCo generiert Coverage-Bericht in `target/site/jacoco/`
+
+#### 5. **Code-Qualität**
+   - **JaCoCo Coverage**: Misst Testabdeckung des Codes
+     - Report verfügbar unter: `backend/target/site/jacoco/index.html`
+   - **Spotless**: Validiert Code-Formatierung
+     - Bei Fehlern: `mvn spotless:apply` zum Beheben
+
+#### 6. **Package & Artefakte**
+   - Erzeugung des ausführbaren JARs: `foodrescue-0.0.1-SNAPSHOT.jar`
+   - Artefakt-Location: `backend/target/`
+
+#### 7. **Zukünftige Deployment Gedanken** 
+   - Automatisches Deployment in Test-/Staging-Umgebung
+   - Produktion-Deployment nach manueller Freigabe
