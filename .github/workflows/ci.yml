@@ -74,7 +74,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: frontend-bundle
-          path: frontend_out
+          path: frontend/frontend_out        # <— vorher: frontend_out
           if-no-files-found: error
 
   publish:
@@ -100,8 +100,20 @@ jobs:
 
       - name: Prepare Frontend output
         run: |
+          set -e
           mkdir -p _site
-          cp -r _site_tmp_frontend/frontend_out/. _site/
+
+          # Artefakt kann je nach Upload so oder so aussehen:
+          if   [ -d "_site_tmp_frontend/frontend/frontend_out" ]; then SRC="_site_tmp_frontend/frontend/frontend_out"
+          elif [ -d "_site_tmp_frontend/frontend_out" ];         then SRC="_site_tmp_frontend/frontend_out"
+          else
+            echo "ERROR: Could not locate frontend output (frontend_out) in downloaded artifact" >&2
+            find _site_tmp_frontend -maxdepth 3 -type d -print || true
+            exit 1
+          fi
+
+          echo "Using SRC=$SRC"
+          cp -r "$SRC/." _site/
           # SPA-Fallback
           if [ -f "_site/index.html" ]; then cp _site/index.html _site/404.html; fi
           ls -la _site || true
