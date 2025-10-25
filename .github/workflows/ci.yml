@@ -1,4 +1,4 @@
-name: CI
+name: CI + Pages
 
 on:
   push:
@@ -13,15 +13,17 @@ jobs:
         working-directory: backend
     steps:
       - uses: actions/checkout@v4
-      - name: Set up JDK
+
+      - name: Set up Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '21'
           cache: maven
-      - name: Build + Lint + Test + Coverage
-        run: |
-          mvn -B -q spotless:check test jacoco:report
+
+      - name: Build, Test & Coverage
+        run: mvn -B -q spotless:check test jacoco:report
+
       - name: Upload JaCoCo report
         uses: actions/upload-artifact@v4
         with:
@@ -29,20 +31,109 @@ jobs:
           path: backend/target/site/jacoco
 
   frontend:
-    name: Lint (Frontend)
+    name: Lint & Build (Frontend)
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: frontend
     steps:
       - uses: actions/checkout@v4
-      - name: Use Node
+
+      - name: Set up Node
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: frontend/package.json
-      - name: Install
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install deps
         run: npm ci
+
       - name: Lint
         run: npm run lint
+
+      # Falls ihr keinen "build"-Schritt braucht (reines statisches HTML/JS),
+      # wird einfach der Ordner 1:1 veröffentlicht. Wenn es ein Build gibt,
+      # erwartet der Job ein Output-Verzeichnis "dist".
+      - name: Build (optional)
+        run: |
+          if npm run | grep -q "^  build"; then
+            npm run build
+          else
+            echo "No build script found; using raw frontend/ as static site."
+          fi
+
+      - name: Upload Frontend artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-bundle
+          # Bevorzugt dist/, sonst gesamte frontend/
+          path: |
+            frontend/dist
+            !frontend/node_modules
+            frontend/
+          if-no-files-found: warn
+
+  publish:
+    name: Publish GitHub Pages (Frontend + Reports)
+    runs-on: ubuntu-latest
+    needs: [ backend, frontend ]
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev')
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download Frontend bundle
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-bundle
+          path: _site_tmp_frontend
+
+      - name: Prepare Frontend output
+        run: |
+          mkdir -p _site
+          if [ -d "_site_tmp_frontend/frontend/dist" ]; then
+            cp -r _site_tmp_frontend/frontend/dist/. _site/
+          else
+            rsync -av --exclude 'node_modules' _site_tmp_frontend/frontend/ _site/
+          fi
+          if [ -f "_site/index.html" ]; then cp _site/index.html _site/404.html; fi
+
+      - name: Build Maven site (Reports)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - run: |
+          cd backend
+          mvn -B -DskipTests=false site jacoco:report
+          cd ..
+          mkdir -p _site/reports
+          cp -r backend/target/site/. _site/reports/
+
+      - name: Disable Jekyll
+        run: touch _site/.nojekyll
+
+      # Zielordner abhängig vom Branch wählen
+      - name: Set destination dir
+        id: dest
+        run: |
+          if [ "${GITHUB_REF##*/}" = "main" ]; then
+            echo "dir=" >> $GITHUB_OUTPUT            # Root
+            echo "keep=false" >> $GITHUB_OUTPUT
+          else
+            echo "dir=previews/dev" >> $GITHUB_OUTPUT # Unterordner für dev
+            echo "keep=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: _site
+          destination_dir: ${{ steps.dest.outputs.dir }}
+          keep_files: ${{ steps.dest.outputs.keep }}
+          commit_message: "ci: deploy (${{ github.ref_name }}) from ${{ github.sha }}"
