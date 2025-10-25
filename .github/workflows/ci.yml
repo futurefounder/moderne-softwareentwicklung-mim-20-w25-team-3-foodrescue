@@ -1,5 +1,10 @@
 name: CI + Pages
 
+# GIBT dem GITHUB_TOKEN Schreibrechte auf den Code (für gh-pages Push)
+# test
+permissions:
+  contents: write
+
 on:
   push:
   pull_request:
