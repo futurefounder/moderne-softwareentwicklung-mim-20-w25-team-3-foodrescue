@@ -95,28 +95,41 @@ jobs:
 
       - name: "Debug: list downloaded artifact"
         run: |
-          echo "== artifact tree =="
-          find _site_tmp_frontend -maxdepth 3 -type d -print
+          echo "== artifact (tree, up to 3 levels) =="
+          find _site_tmp_frontend -maxdepth 3 -print
+          echo "== ls -la =="
+          ls -la _site_tmp_frontend || true
 
       - name: Prepare Frontend output
         run: |
           set -e
           mkdir -p _site
 
-          # Artefakt kann je nach Upload so oder so aussehen:
+          # Mögliche Layouts des Artefakts nacheinander prüfen:
           if   [ -d "_site_tmp_frontend/frontend/frontend_out" ]; then SRC="_site_tmp_frontend/frontend/frontend_out"
           elif [ -d "_site_tmp_frontend/frontend_out" ];         then SRC="_site_tmp_frontend/frontend_out"
+          elif [ -d "_site_tmp_frontend/dist" ];                 then SRC="_site_tmp_frontend/dist"
+          elif [ -d "_site_tmp_frontend/frontend/dist" ];        then SRC="_site_tmp_frontend/frontend/dist"
           else
-            echo "ERROR: Could not locate frontend output (frontend_out) in downloaded artifact" >&2
-            find _site_tmp_frontend -maxdepth 3 -type d -print || true
-            exit 1
+            # Falls keine Unterordner da sind, könnten die Dateien direkt im Root liegen.
+            # Dann prüfen wir auf eine typische Index-Datei.
+            if ls -A _site_tmp_frontend >/dev/null 2>&1; then
+              SRC="_site_tmp_frontend"
+            else
+              echo "ERROR: Could not locate frontend output in _site_tmp_frontend" >&2
+              exit 1
+            fi
           fi
 
           echo "Using SRC=$SRC"
           cp -r "$SRC/." _site/
+
           # SPA-Fallback
           if [ -f "_site/index.html" ]; then cp _site/index.html _site/404.html; fi
+
+          echo "== site root =="
           ls -la _site || true
+      
 
       - name: Build Maven site (Reports)
         uses: actions/setup-java@v4
