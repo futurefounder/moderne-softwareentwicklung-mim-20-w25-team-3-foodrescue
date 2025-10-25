@@ -52,25 +52,21 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      # Falls ihr keinen "build"-Schritt braucht (reines statisches HTML/JS),
-      # wird einfach der Ordner 1:1 veröffentlicht. Wenn es ein Build gibt,
-      # erwartet der Job ein Output-Verzeichnis "dist".
-      - name: Build (optional)
-        run: |
-          if npm run | grep -q "^  build"; then
-            npm run build
-          else
-            echo "No build script found; using raw frontend/ as static site."
-          fi
-
+      # Packe IMMER in ./frontend/frontend_out (auch wenn es keinen Build gibt)
       - name: Package frontend output
         run: |
           rm -rf frontend_out
           mkdir -p frontend_out
-          if [ -d "dist" ]; then
-            # wir befinden uns in working-directory: frontend
-            cp -r dist/. frontend_out/
+          if npm run | grep -q "^  build"; then
+            npm run build
+            if [ -d dist ]; then
+              cp -r dist/. frontend_out/
+            else
+              echo "Build lief, aber kein dist/-Ordner gefunden – packe Projekt-Root."
+              rsync -a --exclude 'node_modules' ./ frontend_out/
+            fi
           else
+            echo "Kein build-Script – packe statisches Frontend."
             rsync -a --exclude 'node_modules' ./ frontend_out/
           fi
 
@@ -78,13 +74,13 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: frontend-bundle
-          path: frontend/frontend_out
-
+          path: frontend_out
+          if-no-files-found: error
 
   publish:
     name: Publish GitHub Pages (Frontend + Reports)
     runs-on: ubuntu-latest
-    needs: [ backend, frontend ]
+    needs: [backend, frontend]
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev')
     steps:
       - uses: actions/checkout@v4
@@ -97,11 +93,18 @@ jobs:
           name: frontend-bundle
           path: _site_tmp_frontend
 
+      - name: Debug: list downloaded artifact
+        run: |
+          echo "== artifact tree =="
+          find _site_tmp_frontend -maxdepth 3 -type d -print
+
       - name: Prepare Frontend output
         run: |
           mkdir -p _site
-          cp -r _site_tmp_frontend/frontend/frontend_out/. _site/
+          cp -r _site_tmp_frontend/frontend_out/. _site/
+          # SPA-Fallback
           if [ -f "_site/index.html" ]; then cp _site/index.html _site/404.html; fi
+          ls -la _site || true
 
       - name: Build Maven site (Reports)
         uses: actions/setup-java@v4
@@ -119,15 +122,14 @@ jobs:
       - name: Disable Jekyll
         run: touch _site/.nojekyll
 
-      # Zielordner abhängig vom Branch wählen
-      - name: Set destination dir
+      - name: Set destination dir (main → root, dev → previews/dev)
         id: dest
         run: |
           if [ "${GITHUB_REF##*/}" = "main" ]; then
-            echo "dir=" >> $GITHUB_OUTPUT            # Root
+            echo "dir=" >> $GITHUB_OUTPUT
             echo "keep=false" >> $GITHUB_OUTPUT
           else
-            echo "dir=previews/dev" >> $GITHUB_OUTPUT # Unterordner für dev
+            echo "dir=previews/dev" >> $GITHUB_OUTPUT
             echo "keep=true" >> $GITHUB_OUTPUT
           fi
 
