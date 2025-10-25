@@ -63,16 +63,23 @@ jobs:
             echo "No build script found; using raw frontend/ as static site."
           fi
 
+      - name: Package frontend output
+        run: |
+          rm -rf frontend_out
+          mkdir -p frontend_out
+          if [ -d "dist" ]; then
+            # wir befinden uns in working-directory: frontend
+            cp -r dist/. frontend_out/
+          else
+            rsync -a --exclude 'node_modules' ./ frontend_out/
+          fi
+
       - name: Upload Frontend artifact
         uses: actions/upload-artifact@v4
         with:
           name: frontend-bundle
-          # Bevorzugt dist/, sonst gesamte frontend/
-          path: |
-            frontend/dist
-            !frontend/node_modules
-            frontend/
-          if-no-files-found: warn
+          path: frontend/frontend_out
+
 
   publish:
     name: Publish GitHub Pages (Frontend + Reports)
@@ -93,11 +100,7 @@ jobs:
       - name: Prepare Frontend output
         run: |
           mkdir -p _site
-          if [ -d "_site_tmp_frontend/frontend/dist" ]; then
-            cp -r _site_tmp_frontend/frontend/dist/. _site/
-          else
-            rsync -av --exclude 'node_modules' _site_tmp_frontend/frontend/ _site/
-          fi
+          cp -r _site_tmp_frontend/frontend/frontend_out/. _site/
           if [ -f "_site/index.html" ]; then cp _site/index.html _site/404.html; fi
 
       - name: Build Maven site (Reports)
