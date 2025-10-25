@@ -93,7 +93,7 @@ jobs:
           name: frontend-bundle
           path: _site_tmp_frontend
 
-      - name: Debug: list downloaded artifact
+      - name: "Debug: list downloaded artifact"
         run: |
           echo "== artifact tree =="
           find _site_tmp_frontend -maxdepth 3 -type d -print
