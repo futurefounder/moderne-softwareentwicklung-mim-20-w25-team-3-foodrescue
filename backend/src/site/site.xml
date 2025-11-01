@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="FoodRescue"
+         xmlns="http://maven.apache.org/DECORATION/1.8.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/DECORATION/1.8.0 http://maven.apache.org/xsd/decoration-1.8.0.xsd">
+
+  <bannerLeft>
+    <name>FoodRescue</name>
+    <href>https://futurefounder.github.io/moderne-softwareentwicklung-mim-20-w25-team-3-foodrescue/</href>
+  </bannerLeft>
+
+  <publishDate position="right"/>
+  <version position="right"/>
+
+  <body>
+    <menu name="Project Information">
+      <item name="About" href="index.html"/>
+      <item name="Project Summary" href="project-summary.html"/>
+      <item name="Dependencies" href="dependencies.html"/>
+      <item name="Plugins" href="plugins.html"/>
+    </menu>
+
+    <menu name="Project Reports">
+      <item name="Test Coverage" href="jacoco/index.html"/>
+    </menu>
+
+    <menu name="Application">
+      <item name="Frontend" href="../index.html"/>
+    </menu>
+  </body>
+
+  <skin>
+    <groupId>org.apache.maven.skins</groupId>
+    <artifactId>maven-fluido-skin</artifactId>
+    <version>2.0.0-M6</version>
+  </skin>
+
+  <custom>
+    <fluidoSkin>
+      <topBarEnabled>true</topBarEnabled>
+      <sideBarEnabled>true</sideBarEnabled>
+      <googleSearch>
+        <sitesearch/>
+      </googleSearch>
+      <sourceLineNumbersEnabled>true</sourceLineNumbersEnabled>
+      <gitHub>
+        <projectId>futurefounder/moderne-softwareentwicklung-mim-20-w25-team-3-foodrescue</projectId>
+        <ribbonOrientation>right</ribbonOrientation>
+        <ribbonColor>black</ribbonColor>
+      </gitHub>
+    </fluidoSkin>
+  </custom>
+</project>
