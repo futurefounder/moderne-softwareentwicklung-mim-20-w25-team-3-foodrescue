@@ -1,12 +1,49 @@
 ## Exclude IntelliJ settings folder
 .idea/
 *.iml
+.vscode/
+
+## Exclude Eclipse settings
+.classpath
+.project
+.settings/
 *.iws
 *.ipr
 
 ## Exclude macOS system files
 .DS_Store
 
+## Exclude Maven / Java build artifacts
+/target/
+*.class
+hs_err_pid*
+*.log
+logs/
+
+## Exclude code coverage results
+jacoco.exec
+coverage/
+
+## Exclude Node.js and frontend dependencies
+node_modules/
+frontend/node_modules/
+npm-debug.log
+yarn-error.log
+dist/
+build/
+
+## Exclude environment variable files
+.env
+.env.*
+
+## Exclude editor swap and temporary files
+*.swp
+*~
+
+## Exclude other system files
+Thumbs.db
+
+# keep packed jars and wrapper files committed (.mvn/wrapper) intentionally
 ## Maven
 backend/target/
 **/target/
