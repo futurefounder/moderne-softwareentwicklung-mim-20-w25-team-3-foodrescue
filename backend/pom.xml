@@ -99,7 +99,8 @@
                 <version>3.2.5</version>
                 <configuration>
                     <!-- Enables Byte Buddy experimental support when Mockito inlines mocks on very new JDKs -->
-                    <argLine>-Dnet.bytebuddy.experimental=true</argLine>
+                    <!-- @{argLine} is populated by JaCoCo, we append ByteBuddy experimental flag -->
+                    <argLine>@{argLine} -Dnet.bytebuddy.experimental=true</argLine>
                 </configuration>
             </plugin>
 

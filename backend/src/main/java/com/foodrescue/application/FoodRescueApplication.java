@@ -1,4 +1,4 @@
-package com.example.foodrescue;
+package com.foodrescue;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

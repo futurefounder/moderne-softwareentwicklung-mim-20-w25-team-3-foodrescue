@@ -1,8 +1,8 @@
-package com.example.foodrescue;
+package com.foodrescue;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.example.foodrescue.core.RescueService;
+import com.foodrescue.application.services.RescueService;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 

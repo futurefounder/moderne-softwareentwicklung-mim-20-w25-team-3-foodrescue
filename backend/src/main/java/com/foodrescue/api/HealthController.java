@@ -1,6 +1,6 @@
-package com.example.foodrescue.api;
+package com.foodrescue.api;
 
-import com.example.foodrescue.core.RescueService;
+import com.foodrescue.application.services.RescueService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
