@@ -17,4 +17,3 @@ public interface DomainEvent {
    */
   LocalDateTime occurredOn();
 }
-

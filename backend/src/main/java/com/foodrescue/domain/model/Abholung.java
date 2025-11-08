@@ -22,4 +22,3 @@ public class Abholung {
     // Private Konstruktor für Persistence Framework
   }
 }
-

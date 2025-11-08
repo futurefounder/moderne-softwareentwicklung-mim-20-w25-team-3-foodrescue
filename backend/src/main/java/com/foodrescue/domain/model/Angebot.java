@@ -22,4 +22,3 @@ public class Angebot {
     // Private Konstruktor für Persistence Framework
   }
 }
-

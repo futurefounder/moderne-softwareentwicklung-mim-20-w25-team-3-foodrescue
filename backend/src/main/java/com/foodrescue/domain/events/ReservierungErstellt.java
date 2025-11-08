@@ -8,6 +8,5 @@ import java.time.LocalDateTime;
  * <p>Dieses Event signalisiert, dass ein Retter ein verfügbares Angebot reserviert hat und es zur
  * Abholung vorgemerkt wurde.
  */
-public record ReservierungErstellt(
-    Long reservierungId, Long angebotId, LocalDateTime occurredOn) implements DomainEvent {}
-
+public record ReservierungErstellt(Long reservierungId, Long angebotId, LocalDateTime occurredOn)
+    implements DomainEvent {}

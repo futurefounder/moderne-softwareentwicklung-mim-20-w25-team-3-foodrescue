@@ -10,4 +10,3 @@ import java.time.LocalDateTime;
  */
 public record AngebotVeröffentlicht(Long angebotId, LocalDateTime occurredOn)
     implements DomainEvent {}
-

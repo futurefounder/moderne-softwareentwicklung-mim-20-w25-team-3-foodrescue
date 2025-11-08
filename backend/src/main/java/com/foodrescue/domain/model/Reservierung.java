@@ -22,4 +22,3 @@ public class Reservierung {
     // Private Konstruktor für Persistence Framework
   }
 }
-
