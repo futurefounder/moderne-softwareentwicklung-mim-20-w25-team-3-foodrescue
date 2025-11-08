@@ -11,7 +11,7 @@ Eine weitere Schwachstelle in der Implementierungsstrategie ist, dass die Tests 
 dass die erst am Ende geschrieben werden. Diese sollten jedoch nach dem Test-Driven-Developement noch vor der implementierung der Implementierung der Klassen usw. erfolgen.
 Hierfür sollte eine Teststrategie genauer definiert werden. Diese Vorschläge wurden übernommen.
 Weitere Vorschläge die nicht übernommen wurden sind folgende.
-Dass GitHub Pages nur für das Frontend geeignet ist. Diese Aussage ist, sowie andere Aussagend er LLM korrekt und muss daher nicht übernommen werden, da es bereits umgesetzt wird.
+Dass GitHub Pages nur für das Frontend geeignet ist. Diese Aussage ist, sowie andere Aussagen der LLM korrekt und muss daher nicht übernommen werden, da es bereits umgesetzt wird.
 
 **Schwachstellen:**
 - fehlender Use-Case-Layer
