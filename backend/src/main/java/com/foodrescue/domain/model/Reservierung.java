@@ -5,9 +5,9 @@ import java.time.LocalDateTime;
 /**
  * Aggregate Root: Reservierung
  *
- * <p>Repräsentiert eine Reservierung eines Lebensmittelangebots durch einen Retter.
+ * Repräsentiert eine Reservierung eines Lebensmittelangebots durch einen Retter.
  *
- * <p>Diese Klasse ist als Platzhalter für zukünftige Use-Case-driven Implementierung vorgesehen.
+ * Diese Klasse ist als Platzhalter für zukünftige Use-Case-driven Implementierung vorgesehen.
  */
 public class Reservierung {
 

@@ -5,9 +5,9 @@ import java.time.LocalDateTime;
 /**
  * Aggregate Root: Abholung
  *
- * <p>Repräsentiert den Abholvorgang einer reservierten Lebensmittelrettung.
+ * Repräsentiert den Abholvorgang einer reservierten Lebensmittelrettung.
  *
- * <p>Diese Klasse ist als Platzhalter für zukünftige Use-Case-driven Implementierung vorgesehen.
+ * Diese Klasse ist als Platzhalter für zukünftige Use-Case-driven Implementierung vorgesehen.
  */
 public class Abholung {
 

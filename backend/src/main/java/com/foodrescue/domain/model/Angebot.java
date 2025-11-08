@@ -5,9 +5,9 @@ import java.time.LocalDateTime;
 /**
  * Aggregate Root: Angebot
  *
- * <p>Repräsentiert ein Lebensmittelangebot, das von einem Anbieter zur Rettung bereitgestellt wird.
+ * Repräsentiert ein Lebensmittelangebot, das von einem Anbieter zur Rettung bereitgestellt wird.
  *
- * <p>Diese Klasse ist als Platzhalter für zukünftige Use-Case-driven Implementierung vorgesehen.
+ * Diese Klasse ist als Platzhalter für zukünftige Use-Case-driven Implementierung vorgesehen.
  */
 public class Angebot {
 
@@ -40,7 +40,7 @@ public class Angebot {
   /**
    * Factory-Methode zum Erstellen eines neuen Angebots
    * 
-   * <p>HINWEIS: Validierung wird in TDD Schritt 2 hinzugefügt
+   * HINWEIS: Validierung wird in TDD Schritt 2 hinzugefügt
    */
   public static Angebot erstellen(
       String anbieterName,
