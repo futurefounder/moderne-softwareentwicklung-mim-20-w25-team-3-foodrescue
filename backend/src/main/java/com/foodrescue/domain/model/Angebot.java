@@ -95,10 +95,11 @@ public class Angebot {
   // - Buchstaben (inkl. Umlaute)
   // - Leerzeichen und Bindestriche erlaubt (nicht am Anfang/Ende)
   //
-  // TELEFON_PATTERN: ^(\+49|0)[1-9][0-9\s\-/]{4,}$
-  // - Starts mit +49 oder 0
+  // TELEFON_PATTERN: ^(\+49|0)[1-9](?=(?:[^\d]*\d){4})[0-9\s\-/]+$
+  // - Startet mit +49 oder 0
   // - Gefolgt von Ziffer 1-9
-  // - Mindestens 4 weitere Ziffern (mit optionalen Leerzeichen, -, /)
+  // - Stellt sicher (per Lookahead), dass mindestens 4 weitere Ziffern im Rest der Nummer vorkommen
+  // - Erlaubt, dass diese Ziffern von Leerzeichen, - oder / durchsetzt sein können
   //
   // BESCHREIBUNG_PATTERN: min 10 Zeichen, max 500 Zeichen, nicht nur Whitespace
   // - Längenprüfung: 10 <= length <= 500

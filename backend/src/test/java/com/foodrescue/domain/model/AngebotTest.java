@@ -15,10 +15,10 @@ import org.junit.jupiter.api.Test;
  *
  * Übersicht der Teststruktur:
  * 
- * 1. Happy Path Tests:
- *    - Überprüfen die grundlegende Objekterstellung und Getter-Funktionalität ohne Validierung
- *    - Diese Tests BESTEHEN in der RED-Phase, da sie keine Validierung erwarten
- *    - Verwenden assertNotNull und assertEquals
+ * 1. Happy Path Test:
+ *    - Überprüft die grundlegende Objekterstellung und Getter-Funktionalität ohne Validierung
+ *    - Dieser Test BESTEHT in der RED-Phase, da er keine Validierung erwartet
+ *    - Verwendet assertNotNull und assertEquals
  *
  * 2. Edge Case Tests:
  *    - Testen Grenzwerte (z.B. minimale Namenslänge, maximale Beschreibungslänge)
@@ -33,7 +33,7 @@ import org.junit.jupiter.api.Test;
 public class AngebotTest {
 
   // ==============================================
-  // HAPPY PATH TESTS 
+  // HAPPY PATH TEST 
   // ==============================================
 
   @Test
@@ -112,7 +112,7 @@ public class AngebotTest {
 
   @Test
   void sollteNullWerteAbweisen() {
-    // Negative Test: Null-Wert (redundanter Test - wird mehrfach geprüft)
+    // Negative Test: Null-Wert für Name (unvollständiger Test - prüft nur ein Feld)
     assertThrows(
         IllegalArgumentException.class,
         () ->
