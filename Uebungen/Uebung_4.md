@@ -36,8 +36,29 @@ Das LLM erhielt klare Anweisungen, Test-Cases für Happy-Path, Edge-Cases und ne
 
 **2. Test-Cases Generierung:** Das LLM generierte insgesamt 6 Test-Cases, aufgeteilt in drei Kategorien. Die Happy-Path-Tests (2 Tests) überprüfen gültige Eingaben mit Standard-Daten sowie mit Sonderzeichen (Umlaute, Bindestriche). Die Edge-Case-Tests (2 Tests) prüfen Grenzwerte: Name zu kurz (unter 2 Zeichen) und Beschreibung zu lang (über 500 Zeichen). Die negativen Tests (2 Tests) decken einen grundlegenden Formatfehler (Email ohne @) sowie Null-Werte ab.
 
-**3. Regex-Validierung:** Das LLM generierte fünf Regex-Patterns für die Validierungslogik: EMAIL_PATTERN (mit Lokalteil, @, Domain und TLD), NAME_PATTERN (Buchstaben inkl. Umlaute, min. 2 Zeichen, Bindestriche/Leerzeichen erlaubt), TELEFON_PATTERN (deutsche Formate mit +49 oder 0, keine 0 nach Vorwahl), BESCHREIBUNG_PATTERN (10-500 Zeichen, kein reiner Whitespace) und MENGE_PATTERN (positive Dezimalzahl mit optionaler Einheit wie kg, g, Stück). Diese Patterns wurden als Kommentare in der Angebot-Klasse dokumentiert.
+**3. Kritische Bewertung:** Das LLM hat zum Start zu viele (41!) Tests erstellt und sich dabei z.T. nicht an die gepromptete Struktur gehalten. Beispielsweise wurde dieser Test als Happy-Path Test deklariert
 
-**4. Kritische Bewertung der Tests:** Die LLM-generierten Tests decken die wichtigsten Szenarien kompakt ab. Besonders hilfreich waren die Edge-Cases für konkrete Grenzwerte (Name mindestens 2 Zeichen, Beschreibung maximal 500 Zeichen). Die Aufteilung in 2+2+2 Tests war übersichtlich und fokussiert. Allerdings gibt es Raum für Verbesserungen: Der Test sollteNullWerteAbweisen prüft nur den Namen-Parameter auf null, während andere Felder nicht getestet werden - dieser Test ist damit unvollständig und täuscht Vollständigkeit vor. Es fehlen Tests für wichtige Fälle wie ungültige Telefonnummern (ohne Vorwahl), ungültige Mengenangaben (Text statt Zahl) oder zu kurze Beschreibungen. Die Test-Suite ist bewusst minimalistisch gehalten, was für eine Übung akzeptabel ist, aber in einem echten Projekt unzureichend wäre.
+```java
+@Test
+void sollteAngebotMitUmlautenUndBindestrichErstellen() {
+  // Happy Path mit Sonderzeichen (Umlaute, Bindestrich)
+  Angebot angebot =
+      Angebot.erstellen(
+          "Müller-Lüdenscheidt",
+          "mueller@example.de",
+          "030 987654",
+          "Verschiedene Backwaren vom Vortag",
+          "10 Stück");
+
+  assertNotNull(angebot);
+  assertEquals("Müller-Lüdenscheidt", angebot.getAnbieterName());
+}
+```
+
+Dieser Test ist kein Happy-Path-Test, sondern testet bereits Validierungslogik (ob Umlaute und Bindestriche akzeptiert werden).
+
+**4. Regex-Validierung:** Das LLM generierte fünf Regex-Patterns für die Validierungslogik: EMAIL_PATTERN (mit Lokalteil, @, Domain und TLD), NAME_PATTERN (Buchstaben inkl. Umlaute, min. 2 Zeichen, Bindestriche/Leerzeichen erlaubt), TELEFON_PATTERN (deutsche Formate mit +49 oder 0, keine 0 nach Vorwahl), BESCHREIBUNG_PATTERN (10-500 Zeichen, kein reiner Whitespace) und MENGE_PATTERN (positive Dezimalzahl mit optionaler Einheit wie kg, g, Stück). Diese Patterns wurden als Kommentare in der Angebot-Klasse dokumentiert.
+
+**5. Kritische Bewertung der Tests:** Die LLM-generierten Tests decken die wichtigsten Szenarien kompakt ab. Besonders hilfreich waren die Edge-Cases für konkrete Grenzwerte (Name mindestens 2 Zeichen, Beschreibung maximal 500 Zeichen). Die Aufteilung in 2+2+2 Tests war übersichtlich und fokussiert. Allerdings gibt es Raum für Verbesserungen: Der Test sollteNullWerteAbweisen prüft nur den Namen-Parameter auf null, während andere Felder nicht getestet werden - dieser Test ist damit unvollständig und täuscht Vollständigkeit vor. Es fehlen Tests für wichtige Fälle wie ungültige Telefonnummern (ohne Vorwahl), ungültige Mengenangaben (Text statt Zahl) oder zu kurze Beschreibungen. Die Test-Suite ist bewusst minimalistisch gehalten, was für eine Übung akzeptabel ist, aber in einem echten Projekt unzureichend wäre.
 
 **5. Implementierung und Testergebnisse:** Die JUnit-Tests wurden vollständig implementiert und ausgeführt. Wie im TDD-Ansatz erwartet, befinden wir uns in der RED-Phase: Von 6 Tests schlagen 4 fehl (alle Validierungs-Tests), während 2 Happy-Path-Tests durchlaufen (die noch keine Validierung erwarten). Die Validierungslogik wurde bewusst NICHT implementiert - dies ist Aufgabe von TDD Schritt 2. Die kompakte Test-Suite ist vollständig lauffähig und bereit für die Implementierung der Domänenlogik in der nächsten Übung.

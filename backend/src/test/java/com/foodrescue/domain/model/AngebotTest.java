@@ -56,20 +56,6 @@ public class AngebotTest {
     assertNotNull(angebot.getErstelltAm());
   }
 
-  @Test
-  void sollteAngebotMitUmlautenUndBindestrichErstellen() {
-    // Happy Path mit Sonderzeichen (Umlaute, Bindestrich)
-    Angebot angebot =
-        Angebot.erstellen(
-            "Müller-Lüdenscheidt",
-            "mueller@example.de",
-            "030 987654",
-            "Verschiedene Backwaren vom Vortag",
-            "10 Stück");
-
-    assertNotNull(angebot);
-    assertEquals("Müller-Lüdenscheidt", angebot.getAnbieterName());
-  }
 
   // ==============================================
   // EDGE CASE TESTS 
