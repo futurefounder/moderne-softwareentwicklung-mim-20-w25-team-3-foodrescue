@@ -101,11 +101,4 @@ public class Angebot {
   // - Stellt sicher (per Lookahead), dass mindestens 4 weitere Ziffern im Rest der Nummer vorkommen
   // - Erlaubt, dass diese Ziffern von Leerzeichen, - oder / durchsetzt sein können
   //
-  // BESCHREIBUNG_PATTERN: min 10 Zeichen, max 500 Zeichen, nicht nur Whitespace
-  // - Längenprüfung: 10 <= length <= 500
-  // - trim().length() > 0
-  //
-  // MENGE_PATTERN: ^[0-9]+(\.[0-9]+)?\s*(kg|g|Stück|Stk\.?|Packungen?|Liter?|ml)?$
-  // - Positive Zahl (mit optionalem Dezimalteil)
-  // - Optional: Einheit (kg, g, Stück, Packung, Liter, ml)
 }

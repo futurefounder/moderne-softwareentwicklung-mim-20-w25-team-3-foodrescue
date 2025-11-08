@@ -41,14 +41,14 @@ Das LLM erhielt Anweisungen, Test-Cases für Happy-Path, Edge-Cases und negative
 ```java
 @Test
 void sollteAngebotMitUmlautenUndBindestrichErstellen() {
-  // Happy Path mit Sonderzeichen (Umlaute, Bindestrich)
-  Angebot angebot =
-      Angebot.erstellen(
-          "Müller-Lüdenscheidt",
-          "mueller@example.de",
-          "030 987654",
-          "Verschiedene Backwaren vom Vortag",
-          "10 Stück");
+    // Happy Path mit Sonderzeichen (Umlaute, Bindestrich)
+    Angebot angebot = Angebot.erstellen(
+        "Müller-Lüdenscheidt",
+        "mueller@example.de",
+        "030 987654",
+        "Verschiedene Backwaren vom Vortag",
+        "10 Stück"
+    );
 
   assertNotNull(angebot);
   assertEquals("Müller-Lüdenscheidt", angebot.getAnbieterName());
@@ -59,7 +59,15 @@ Dieser Test ist kein Happy-Path-Test, sondern testet bereits Validierungslogik (
 
 **Positive Aspekte:** Die Aufteilung in Happy Path, Edge Cases und Negative Tests wurde eingehalten. Der Basis-Happy-Path-Test ist vollständig, und die Edge-Case-Tests für Grenzwerte (Name min. 2 Zeichen, Beschreibung max. 500 Zeichen) führen korrekterweise zu fails (RED-Phase).
 
-**2.4. Regex-Validierung:** Das LLM generierte fünf Regex-Patterns für die Validierungslogik: EMAIL_PATTERN (mit Lokalteil, @, Domain und TLD), NAME_PATTERN (Buchstaben inkl. Umlaute, min. 2 Zeichen, Bindestriche/Leerzeichen erlaubt), TELEFON_PATTERN (deutsche Formate mit +49 oder 0, keine 0 nach Vorwahl), BESCHREIBUNG_PATTERN (10-500 Zeichen, kein reiner Whitespace) und MENGE_PATTERN (positive Dezimalzahl mit optionaler Einheit wie kg, g, Stück). Diese Patterns wurden als Kommentare in der Angebot-Klasse dokumentiert.
+**2.4. Regex-Validierung:**
+
+- Das LLM generierte fünf Regex-Patterns für die Validierungslogik:
+  - **EMAIL_PATTERN:** Mit Lokalteil, @, Domain und TLD
+  - **NAME_PATTERN:** Buchstaben inkl. Umlaute, mindestens 2 Zeichen, Bindestriche/Leerzeichen erlaubt
+  - **TELEFON_PATTERN:** Deutsche Formate mit +49 oder 0, keine 0 nach Vorwahl
+  - **BESCHREIBUNG_PATTERN:** 10–500 Zeichen, kein reiner Whitespace
+  - **MENGE_PATTERN:** Positive Dezimalzahl mit optionaler Einheit wie kg, g, Stück
+- Diese Patterns wurden als Kommentare in der Angebot-Klasse dokumentiert.
 
 **2.5. Kritische Bewertung der Tests:** Die LLM-generierten Tests decken die wichtigsten Szenarien kompakt ab. Besonders hilfreich waren die Edge-Cases für konkrete Grenzwerte (Name mindestens 2 Zeichen, Beschreibung maximal 500 Zeichen). Die Aufteilung in 1+2+2 Tests war übersichtlich und fokussiert. Allerdings gibt es Raum für Verbesserungen: Der Test sollteNullWerteAbweisen prüft nur den Namen-Parameter auf null, während andere Felder nicht getestet werden - dieser Test ist damit unvollständig und täuscht Vollständigkeit vor. Es fehlen Tests für wichtige Fälle wie ungültige Telefonnummern (ohne Vorwahl), ungültige Mengenangaben (Text statt Zahl) oder zu kurze Beschreibungen. Die Test-Suite ist bewusst minimalistisch gehalten, was für eine Übung akzeptabel ist, aber in einem echten Projekt unzureichend wäre.
 
