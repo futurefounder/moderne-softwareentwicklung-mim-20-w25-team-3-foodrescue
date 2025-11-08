@@ -1,4 +1,4 @@
-package com.example.foodrescue.core;
+package com.foodrescue.application.services;
 
 import java.util.List;
 import java.util.stream.Collectors;
