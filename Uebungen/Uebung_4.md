@@ -13,19 +13,59 @@ Hierfür sollte eine Teststrategie genauer definiert werden. Diese Vorschläge w
 Weitere Vorschläge die nicht übernommen wurden sind folgende.
 Dass GitHub Pages nur für das Frontend geeignet ist. Diese Aussage ist, sowie andere Aussagen der LLM korrekt und muss daher nicht übernommen werden, da es bereits umgesetzt wird.
 
-**Schwachstellen:**
-- fehlender Use-Case-Layer
-- Tests werden erst an letzter Stelle geschrieben
-
-**Vorschlag der LLM:**
-- schrittweise implementierung der domains pro Use Case (angenommen)
-- Tests nach dem Test-Driven-Developement zu beginn implementieren (angenommen)
-- Teststrategie sollte erstellt werden (angenommen)
-- GitHub Pages nur für das Frontend verwenden (abgelehnt, da bereist umgesetzt)
-
 ### Ausgewählte Domain-Events
 
 Aufgrund des Vorschlags der LLM dass die Bennenung konsistent sein sollte und zwar in folgendem Stil, <DomänenobjektL><Vergangenheitsform>, sind dies unsere ausgewählten Domain-Events.
+
 - **AngebotVeröffentlicht**
 - **ReservierungErstellt**
 - **AbholungAbgeschlossen**
+
+## 2. TDD Schritt 1: Testfälle mit LLM generieren und validieren
+
+### Vorgehen und Dokumentation
+
+**2.1. LLM-Prompt Erstellung:** Für die Domänenlogik des Angebot-Aggregates wurde ein Prompt erstellt, der die Validierung von **Anbieter-Daten** beschreibt. Die zu testenden Felder waren:
+
+- AnbieterName
+- AnbieterEmail
+- AnbieterTelefon
+- Beschreibung und Menge
+
+Das LLM erhielt Anweisungen, Test-Cases für Happy-Path, Edge-Cases und negative Tests zu generieren.
+
+**2.2. Test-Cases Generierung:** Das LLM generierte insgesamt 5 Test-Cases, aufgeteilt in drei Kategorien. Der Happy-Path-Test (1 Test) überprüft die grundlegende Objekterstellung und ob die Getter-Methoden die übergebenen Werte korrekt zurückgeben, ohne Validierung zu erwarten. Die Edge-Case-Tests (2 Tests) prüfen Grenzwerte: Name zu kurz (unter 2 Zeichen) und Beschreibung zu lang (über 500 Zeichen). Die negativen Tests (2 Tests) erwarten, dass ungültige Eingaben abgelehnt werden: Email ohne @ und null-Werte.
+
+**2.3. Kritische Bewertung:** Das LLM hat zum Start zu viele (41!) Tests erstellt und sich dabei z.T. nicht an die gepromptete Struktur gehalten. Beispielsweise wurde dieser Test als Happy-Path Test deklariert
+
+```java
+@Test
+void sollteAngebotMitUmlautenUndBindestrichErstellen() {
+    // Happy Path mit Sonderzeichen (Umlaute, Bindestrich)
+    Angebot angebot = Angebot.erstellen(
+        "Müller-Lüdenscheidt",
+        "mueller@example.de",
+        "030 987654",
+        "Verschiedene Backwaren vom Vortag",
+        "10 Stück"
+    );
+
+  assertNotNull(angebot);
+  assertEquals("Müller-Lüdenscheidt", angebot.getAnbieterName());
+}
+```
+
+Dieser Test ist kein Happy-Path-Test, sondern testet bereits Validierungslogik (ob Umlaute und Bindestriche akzeptiert werden).
+
+**Positive Aspekte:** Die Aufteilung in Happy Path, Edge Cases und Negative Tests wurde eingehalten. Der Basis-Happy-Path-Test ist vollständig, und die Edge-Case-Tests für Grenzwerte (Name min. 2 Zeichen, Beschreibung max. 500 Zeichen) führen korrekterweise zu fails (RED-Phase).
+
+**2.4. Regex-Validierung:**
+
+- Das LLM generierte fünf Regex-Patterns für die Validierungslogik:
+  - **EMAIL_PATTERN:** Mit Lokalteil, @, Domain und TLD
+  - **NAME_PATTERN:** Buchstaben inkl. Umlaute, mindestens 2 Zeichen, Bindestriche/Leerzeichen erlaubt
+  - **TELEFON_PATTERN:** Deutsche Formate mit +49 oder 0, keine 0 nach Vorwahl
+
+**2.5. Kritische Bewertung der Tests:** Die LLM-generierten Tests decken für den Start gute Szenarien ab. Die Aufteilung in 1+2+2 Tests war übersichtlich und fokussiert. Allerdings gibt es Raum für Verbesserungen: Der Test sollteNullWerteAbweisen prüft nur den Namen-Parameter auf null, während andere Felder nicht getestet werden, dieser Test ist damit unvollständig. Es fehlen Tests für wichtige Fälle wie ungültige Telefonnummern (ohne Vorwahl), ungültige Mengenangaben (Text statt Zahl) oder zu kurze Beschreibungen.
+
+**2.6. Implementierung und Testergebnisse:** Die JUnit-Tests wurden vollständig implementiert und ausgeführt. Wie im TDD-Ansatz erwartet, befinden wir uns in der RED-Phase: Von 5 Tests schlagen 4 fehl (alle Validierungs-Tests), während 1 Happy-Path-Test durchläuft (der keine Validierung erwartet). Die Validierungslogik wurde bewusst nicht implementiert, dies ist Aufgabe von TDD Schritt 2. Die erste Test-Suite ist an dieser Stelle vollständig lauffähig und bereit für die Implementierung der Domänenlogik in der nächsten Aufgabe.
