@@ -1,6 +1,6 @@
 package com.foodrescue.domain.events;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 /**
  * Domain Event: Wird ausgelöst, wenn eine Reservierung für ein Angebot erstellt wurde.
@@ -8,5 +8,17 @@ import java.time.LocalDateTime;
  * <p>Dieses Event signalisiert, dass ein Retter ein verfügbares Angebot reserviert hat und es zur
  * Abholung vorgemerkt wurde.
  */
-public record ReservierungErstellt(Long reservierungId, Long angebotId, LocalDateTime occurredOn)
-    implements DomainEvent {}
+
+public final class ReservierungErstellt implements DomainEvent {
+    private final String reservierungsId;
+    private final Instant when = Instant.now();
+    public ReservierungErstellt(String reservierungsId){
+        this.reservierungsId = reservierungsId;
+    }
+    public String getReservierungsId(){
+        return reservierungsId;
+    }
+    @Override public Instant occurredOn(){
+        return when;
+    }
+}
