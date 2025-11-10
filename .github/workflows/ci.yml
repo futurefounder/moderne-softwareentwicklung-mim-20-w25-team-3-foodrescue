@@ -1,22 +1,33 @@
+
+# Anzeigename des Workflows in der GitHub-Actions-Oberfläche.
 name: CI + Pages
 
 # GIBT dem GITHUB_TOKEN Schreibrechte auf den Code (für gh-pages Push)
 # test
+# Token-Berechtigungen für diesen Workflow (least-privilege-Prinzip).
 permissions:
   contents: write
 
+# Auslöser (Trigger), bei denen der Workflow startet – z. B. Push, PR, Schedule oder manuell.
 on:
   push:
   pull_request:
 
+# Sammlung aller Jobs. Jeder Job läuft standardmäßig isoliert in einer eigenen VM/Container.
+
 jobs:
   backend:
     name: Build & Test (Backend)
+    # Wählt die Runner-Umgebung (z. B. ubuntu-latest).
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: backend
+    # Schritte (Steps) dieses Jobs; werden in Reihenfolge ausgeführt.
     steps:
+      # Schritt: Verwendung einer wiederverwendbaren Action 'actions/checkout@v4'.
+      # (Actions sind vorgefertigte Bausteine, z. B. 'actions/checkout' oder 'setup-node'.)
+      # Checkt den Repository-Code aus, damit weitere Schritte darauf zugreifen können.
       - uses: actions/checkout@v4
 
       - name: Set up Java
@@ -37,14 +48,20 @@ jobs:
 
   frontend:
     name: Lint & Build (Frontend)
+    # Wählt die Runner-Umgebung (z. B. ubuntu-latest).
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: frontend
+    # Schritte (Steps) dieses Jobs; werden in Reihenfolge ausgeführt.
     steps:
+      # Schritt: Verwendung einer wiederverwendbaren Action 'actions/checkout@v4'.
+      # (Actions sind vorgefertigte Bausteine, z. B. 'actions/checkout' oder 'setup-node'.)
+      # Checkt den Repository-Code aus, damit weitere Schritte darauf zugreifen können.
       - uses: actions/checkout@v4
 
       - name: Set up Node
+        # Installiert und konfiguriert Node.js in der gewünschten Version (inkl. Caching von npm/yarn).
         uses: actions/setup-node@v4
         with:
           node-version: '20'
@@ -52,9 +69,11 @@ jobs:
           cache-dependency-path: frontend/package-lock.json
 
       - name: Install deps
+        # npm: Paketmanager-Befehle (Install, Test, Build, Lint).
         run: npm ci
 
       - name: Lint
+        # npm: Paketmanager-Befehle (Install, Test, Build, Lint).
         run: npm run lint
 
       # Packe IMMER in ./frontend/frontend_out (auch wenn es keinen Build gibt)
@@ -62,7 +81,9 @@ jobs:
         run: |
           rm -rf frontend_out
           mkdir -p frontend_out
+          # npm: Paketmanager-Befehle (Install, Test, Build, Lint).
           if npm run | grep -q "^  build"; then
+            # npm: Paketmanager-Befehle (Install, Test, Build, Lint).
             npm run build
             if [ -d dist ]; then
               cp -r dist/. frontend_out/
@@ -84,11 +105,19 @@ jobs:
 
   publish:
     name: Publish GitHub Pages (Frontend + Reports)
+    # Wählt die Runner-Umgebung (z. B. ubuntu-latest).
     runs-on: ubuntu-latest
+    # Abhängigkeiten: Dieser Job startet erst, wenn die angegebenen Jobs erfolgreich waren.
     needs: [backend, frontend]
+    # Bedingte Ausführung: Dieser Abschnitt/Job läuft nur, wenn die Bedingung wahr ist.
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev')
+    # Schritte (Steps) dieses Jobs; werden in Reihenfolge ausgeführt.
     steps:
+      # Schritt: Verwendung einer wiederverwendbaren Action 'actions/checkout@v4'.
+      # (Actions sind vorgefertigte Bausteine, z. B. 'actions/checkout' oder 'setup-node'.)
+      # Checkt den Repository-Code aus, damit weitere Schritte darauf zugreifen können.
       - uses: actions/checkout@v4
+        # 'with': Eingabeparameter für die verwendete Action.
         with:
           fetch-depth: 0
 
@@ -134,7 +163,7 @@ jobs:
 
           echo "== site root =="
           ls -la _site || true
-      
+
 
       - name: Build Maven site (Reports)
         uses: actions/setup-java@v4

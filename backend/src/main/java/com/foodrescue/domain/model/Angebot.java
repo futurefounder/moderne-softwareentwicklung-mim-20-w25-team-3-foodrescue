@@ -9,78 +9,75 @@ import java.time.LocalDateTime;
  *
  * Diese Klasse ist als Platzhalter für zukünftige Use-Case-driven Implementierung vorgesehen.
  */
+
+import com.foodrescue.domain.events.AngebotVeröffentlicht;
+import com.foodrescue.domain.events.DomainEvent;
+import com.foodrescue.exceptions.DomainException;
+
+import java.util.*;
+
 public class Angebot {
 
-  private Long id;
-  private String anbieterName;
-  private String anbieterEmail;
-  private String anbieterTelefon;
-  private String beschreibung;
-  private String menge; // z.B. "2.5 kg" oder "10 Stück"
-  private LocalDateTime erstelltAm;
+    public enum Status { VERFUEGBAR, RESERVIERT, ABGEHOLT, ENTFERNT }
 
-  // Private Konstruktor für Persistence Framework
-  private Angebot() {}
+    private final String id;
+    private final String anbieterId;
+    private String titel;
+    private String beschreibung;
+    private Set<String> tags;
+    private AbholZeitfenster zeitfenster;
+    private Status status = Status.ENTFERNT; // noch nicht veröffentlicht
+    private final List<DomainEvent> domainEvents = new ArrayList<>();
 
-  // Private Konstruktor für Factory-Methode
-  private Angebot(
-      String anbieterName,
-      String anbieterEmail,
-      String anbieterTelefon,
-      String beschreibung,
-      String menge) {
-    this.anbieterName = anbieterName;
-    this.anbieterEmail = anbieterEmail;
-    this.anbieterTelefon = anbieterTelefon;
-    this.beschreibung = beschreibung;
-    this.menge = menge;
-    this.erstelltAm = LocalDateTime.now();
-  }
+    private Angebot(String id, String anbieterId, String titel, String beschreibung, Set<String> tags, AbholZeitfenster zeitfenster) {
+        if (id == null || anbieterId == null || titel == null || zeitfenster == null) {
+            throw new DomainException("Angebot unvollständig");
+        }
+        this.id = id;
+        this.anbieterId = anbieterId;
+        this.titel = titel;
+        this.beschreibung = beschreibung == null ? "" : beschreibung;
+        this.tags = tags == null ? Set.of() : Set.copyOf(tags);
+        this.zeitfenster = zeitfenster;
+    }
 
-  /**
-   * Factory-Methode zum Erstellen eines neuen Angebots
-   * 
-   * HINWEIS: Validierung wird in TDD Schritt 2 hinzugefügt
-   */
-  public static Angebot erstellen(
-      String anbieterName,
-      String anbieterEmail,
-      String anbieterTelefon,
-      String beschreibung,
-      String menge) {
-    // TODO: Validierung wird nach TDD-Prinzip in Schritt 2 implementiert
-    // Aktuell keine Validierung - Tests werden fehlschlagen (Red-Phase)
-    return new Angebot(anbieterName, anbieterEmail, anbieterTelefon, beschreibung, menge);
-  }
+    public static Angebot neu(String id, String anbieterId, String titel, String beschreibung, Set<String> tags, AbholZeitfenster fenster) {
+        return new Angebot(id, anbieterId, titel, beschreibung, tags, fenster);
+    }
 
-  // Getter-Methoden
-  public Long getId() {
-    return id;
-  }
+    public List<DomainEvent> veroeffentlichen() {
+        if (status != Status.ENTFERNT) {
+            throw new DomainException("Angebot ist bereits veröffentlicht oder aktiv");
+        }
+        status = Status.VERFUEGBAR;
+        var evt = new AngebotVeröffentlicht(id);
+        domainEvents.add(evt);
+        return List.of(evt);
+    }
 
-  public String getAnbieterName() {
-    return anbieterName;
-  }
+    public Reservierung reservieren(String abholerId, Abholcode code) {
+        if (status != Status.VERFUEGBAR) {
+            throw new DomainException("Angebot ist nicht verfügbar");
+        }
+        status = Status.RESERVIERT;
+        return Reservierung.erstelle(UUID.randomUUID().toString(), id, abholerId, code);
+    }
 
-  public String getAnbieterEmail() {
-    return anbieterEmail;
-  }
+    // Getter
+    public String getId(){
+        return id;
+    }
+    public Status getStatus(){
+        return status;
+    }
+    public AbholZeitfenster getZeitfenster(){
+        return zeitfenster;
+    }
+    public List<DomainEvent> getDomainEvents(){
+        return List.copyOf(domainEvents);
+    }
+}
 
-  public String getAnbieterTelefon() {
-    return anbieterTelefon;
-  }
-
-  public String getBeschreibung() {
-    return beschreibung;
-  }
-
-  public String getMenge() {
-    return menge;
-  }
-
-  public LocalDateTime getErstelltAm() {
-    return erstelltAm;
-  }
 
   // Geplante Regex-Patterns für zukünftige Validierung (TDD Schritt 2):
   //
@@ -101,4 +98,4 @@ public class Angebot {
   // - Stellt sicher (per Lookahead), dass mindestens 4 weitere Ziffern im Rest der Nummer vorkommen
   // - Erlaubt, dass diese Ziffern von Leerzeichen, - oder / durchsetzt sein können
   //
-}
+//}

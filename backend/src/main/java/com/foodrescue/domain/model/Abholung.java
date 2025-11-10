@@ -1,6 +1,12 @@
 package com.foodrescue.domain.model;
 
+import com.foodrescue.domain.events.AbholungAbgeschlossen;
+import com.foodrescue.domain.events.DomainEvent;
+import com.foodrescue.exceptions.DomainException;
+
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Aggregate Root: Abholung
@@ -11,14 +17,62 @@ import java.time.LocalDateTime;
  */
 public class Abholung {
 
-  private Long id;
-  private Long reservierungId;
-  private LocalDateTime abgeholtAm;
+    public enum Status { ANGELEGT, ABGESCHLOSSEN, FEHLGESCHLAGEN }
 
-  // Konstruktoren, Getter, Setter und Business-Logik werden bei Bedarf hinzugefügt
-  // wenn konkrete Use Cases diese benötigen
+    private final String id;
+    private final String reservierungsId;
+    private final Abholcode abholcode;
+    private final Instant angelegtAm;
+    private Status status;
+    private Instant abgeschlossenAm;
 
-  private Abholung() {
-    // Private Konstruktor für Persistence Framework
-  }
+    public Abholung(String id, String reservierungsId, Abholcode abholcode) {
+        if (id == null || reservierungsId == null || abholcode == null)
+            throw new DomainException("Abholung unvollständig");
+        this.id = id;
+        this.reservierungsId = reservierungsId;
+        this.abholcode = abholcode;
+        this.status = Status.ANGELEGT;
+        this.angelegtAm = Instant.now();
+    }
+
+    /**
+     * Bestätigt die Abholung, falls der Code korrekt ist.
+     * Gibt das ausgelöste DomainEvent zurück.
+     */
+    public List<DomainEvent> bestaetigen(Abholcode eingegeben) {
+        if (status != Status.ANGELEGT) {
+            throw new DomainException("Abholung wurde bereits verarbeitet");
+        }
+
+        if (!abholcode.equals(eingegeben)) {
+            status = Status.FEHLGESCHLAGEN;
+            throw new DomainException("Falscher Abholcode");
+        }
+
+        status = Status.ABGESCHLOSSEN;
+        abgeschlossenAm = Instant.now();
+        return List.of(new AbholungAbgeschlossen(reservierungsId));
+    }
+
+    // Getter
+    public String getId() {
+        return id;
+    }
+    public String getReservierungsId() {
+        return reservierungsId;
+    }
+    public Abholcode getAbholcode() {
+        return abholcode;
+    }
+    public Status getStatus() {
+        return status;
+    }
+    public Instant getAngelegtAm() {
+        return angelegtAm;
+    }
+    public Instant getAbgeschlossenAm() {
+        return abgeschlossenAm;
+    }
 }
+

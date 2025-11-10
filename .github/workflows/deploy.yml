@@ -1,12 +1,15 @@
+
+# Anzeigename des Workflows in der GitHub-Actions-Oberfläche.
 name: Deploy to GitHub Pages
 
+# Auslöser (Trigger), bei denen der Workflow startet – z. B. Push, PR, Schedule oder manuell.
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+# Token-Berechtigungen für diesen Workflow (least-privilege-Prinzip).
 permissions:
   contents: read
   pages: write
@@ -14,16 +17,27 @@ permissions:
 
 # Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
 # However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+# Verhindert parallele/konkurrierende Ausführungen (z. B. um doppelte Deployments zu vermeiden).
 concurrency:
   group: "pages"
   cancel-in-progress: false
 
+# Sammlung aller Jobs. Jeder Job läuft standardmäßig isoliert in einer eigenen VM/Container.
+
+# Job 'jobs': Einheitlicher Arbeitsablauf mit eigenem Runner und Steps.
+
 jobs:
   # Build job
   build:
+    # Wählt die Runner-Umgebung (z. B. ubuntu-latest).
     runs-on: ubuntu-latest
+    # Schritte (Steps) dieses Jobs; werden in Reihenfolge ausgeführt.
     steps:
+      # Schritt: Checkout
+      # (Wird genau in dieser Reihenfolge ausgeführt. Nachfolgende 'uses', 'run', 'with' definieren Details.)
       - name: Checkout
+        # 'uses': Referenz auf eine Action (owner/repo@version). Pin möglichst auf eine spezifische Version/SHA für Reproduzierbarkeit.
+        # Checkt den Repository-Code aus, damit weitere Schritte darauf zugreifen können.
         uses: actions/checkout@v4
 
       - name: Set up JDK 21
@@ -33,6 +47,7 @@ jobs:
           distribution: "temurin"
 
       - name: Cache Maven packages
+        # Richtet einen Cache ein (z. B. für Dependencies), um Builds zu beschleunigen.
         uses: actions/cache@v4
         with:
           path: ~/.m2
@@ -40,6 +55,7 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
 
       - name: Set up Node.js
+        # Installiert und konfiguriert Node.js in der gewünschten Version (inkl. Caching von npm/yarn).
         uses: actions/setup-node@v4
         with:
           node-version: "20"
@@ -49,11 +65,13 @@ jobs:
       - name: Install frontend dependencies
         run: |
           cd frontend
+          # npm: Paketmanager-Befehle (Install, Test, Build, Lint).
           npm ci
 
       - name: Lint frontend
         run: |
           cd frontend
+          # npm: Paketmanager-Befehle (Install, Test, Build, Lint).
           npm run lint
 
       - name: Build backend with Maven
@@ -85,13 +103,23 @@ jobs:
 
   # Deployment job
   deploy:
+    # Ziel-Umgebung (z. B. 'staging', 'production'); kann für Deployments und Schutzregeln genutzt werden.
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+    # Wählt die Runner-Umgebung (z. B. ubuntu-latest).
     runs-on: ubuntu-latest
+    # Abhängigkeiten: Dieser Job startet erst, wenn die angegebenen Jobs erfolgreich waren.
     needs: build
+    # Bedingte Ausführung: Dieser Abschnitt/Job läuft nur, wenn die Bedingung wahr ist.
     if: github.ref == 'refs/heads/main'
+    # Schritte (Steps) dieses Jobs; werden in Reihenfolge ausgeführt.
     steps:
+      # Schritt: Deploy to GitHub Pages
+      # (Wird genau in dieser Reihenfolge ausgeführt. Nachfolgende 'uses', 'run', 'with' definieren Details.)
       - name: Deploy to GitHub Pages
+        # 'id': Bezeichner des Schritts, nützlich um Ausgaben in späteren Schritten zu referenzieren.
         id: deployment
+        # 'uses': Referenz auf eine Action (owner/repo@version). Pin möglichst auf eine spezifische Version/SHA für Reproduzierbarkeit.
         uses: actions/deploy-pages@v4
+

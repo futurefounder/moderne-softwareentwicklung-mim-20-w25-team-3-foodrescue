@@ -1,6 +1,6 @@
 package com.foodrescue.domain.events;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 /**
  * Basis-Interface für alle Domain Events im FoodRescue System.
@@ -15,5 +15,5 @@ public interface DomainEvent {
    *
    * @return Der Zeitstempel des Events
    */
-  LocalDateTime occurredOn();
+  Instant occurredOn();
 }
