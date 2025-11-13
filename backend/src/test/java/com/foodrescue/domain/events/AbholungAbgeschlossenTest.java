@@ -1,29 +1,27 @@
 package com.foodrescue.domain.events;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.Instant;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 public class AbholungAbgeschlossenTest {
 
-    @Test
-    void speichertReservierungsIdUndZeitpunkt() {
-        AbholungAbgeschlossen event = new AbholungAbgeschlossen("r1");
+  @Test
+  void speichertReservierungsIdUndZeitpunkt() {
+    AbholungAbgeschlossen event = new AbholungAbgeschlossen("r1");
 
-        // nutzt getReservierungsId()
-        assertEquals("r1", event.getReservierungsId());
+    // nutzt getReservierungsId()
+    assertEquals("r1", event.getReservierungsId());
 
-        // nutzt occurredOn()
-        Instant first = event.occurredOn();
-        Instant second = event.occurredOn();
+    // nutzt occurredOn()
+    Instant first = event.occurredOn();
+    Instant second = event.occurredOn();
 
-        assertNotNull(first);
-        // Zeitstempel ist im Objekt fix gespeichert
-        assertEquals(first, second);
-        // grobe Plausibilitätsprüfung: liegt nicht in der Zukunft
-        assertFalse(first.isAfter(Instant.now().plusSeconds(1)));
-    }
+    assertNotNull(first);
+    // Zeitstempel ist im Objekt fix gespeichert
+    assertEquals(first, second);
+    // grobe Plausibilitätsprüfung: liegt nicht in der Zukunft
+    assertFalse(first.isAfter(Instant.now().plusSeconds(1)));
+  }
 }
-

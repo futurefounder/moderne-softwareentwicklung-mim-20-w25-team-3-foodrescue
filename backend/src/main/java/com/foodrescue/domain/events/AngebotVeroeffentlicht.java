@@ -9,16 +9,19 @@ package com.foodrescue.domain.events;
 import java.time.Instant;
 
 public final class AngebotVeroeffentlicht implements DomainEvent {
-    private final String angebotsId;
-    private final Instant when = Instant.now();
+  private final String angebotsId;
+  private final Instant when = Instant.now();
 
-    public AngebotVeroeffentlicht(String angebotsId) {
-        this.angebotsId = angebotsId;
-    }
-    public String getAngebotsId(){
-        return angebotsId;
-    }
-    @Override public Instant occurredOn(){
-        return when;
-    }
+  public AngebotVeroeffentlicht(String angebotsId) {
+    this.angebotsId = angebotsId;
+  }
+
+  public String getAngebotsId() {
+    return angebotsId;
+  }
+
+  @Override
+  public Instant occurredOn() {
+    return when;
+  }
 }

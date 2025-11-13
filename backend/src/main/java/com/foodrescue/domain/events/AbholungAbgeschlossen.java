@@ -9,15 +9,19 @@ import java.time.Instant;
  * der Rettungsvorgang abgeschlossen ist.
  */
 public final class AbholungAbgeschlossen implements DomainEvent {
-    private final String reservierungsId;
-    private final Instant when = Instant.now();
-    public AbholungAbgeschlossen(String reservierungsId){
-        this.reservierungsId = reservierungsId;
-    }
-    public String getReservierungsId(){
-        return reservierungsId;
-    }
-    @Override public Instant occurredOn(){
-        return when;
-    }
+  private final String reservierungsId;
+  private final Instant when = Instant.now();
+
+  public AbholungAbgeschlossen(String reservierungsId) {
+    this.reservierungsId = reservierungsId;
+  }
+
+  public String getReservierungsId() {
+    return reservierungsId;
+  }
+
+  @Override
+  public Instant occurredOn() {
+    return when;
+  }
 }

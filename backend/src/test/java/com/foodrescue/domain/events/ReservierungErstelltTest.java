@@ -1,26 +1,25 @@
 package com.foodrescue.domain.events;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.Instant;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 public class ReservierungErstelltTest {
 
-    @Test
-    void speichertReservierungsIdUndZeitpunkt() {
-        ReservierungErstellt event = new ReservierungErstellt("r1");
+  @Test
+  void speichertReservierungsIdUndZeitpunkt() {
+    ReservierungErstellt event = new ReservierungErstellt("r1");
 
-        // nutzt getReservierungsId()
-        assertEquals("r1", event.getReservierungsId());
+    // nutzt getReservierungsId()
+    assertEquals("r1", event.getReservierungsId());
 
-        // nutzt occurredOn()
-        Instant first = event.occurredOn();
-        Instant second = event.occurredOn();
+    // nutzt occurredOn()
+    Instant first = event.occurredOn();
+    Instant second = event.occurredOn();
 
-        assertNotNull(first);
-        assertEquals(first, second);
-        assertFalse(first.isAfter(Instant.now().plusSeconds(1)));
-    }
+    assertNotNull(first);
+    assertEquals(first, second);
+    assertFalse(first.isAfter(Instant.now().plusSeconds(1)));
+  }
 }
