@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ReservierungTest {
+public class ReservierungTest {
 
     @Test
     void erstellen_emittiertEvent() {
@@ -39,5 +39,46 @@ class ReservierungTest {
         var r = Reservierung.erstelle("r1", "a1", "user1", Abholcode.of("AB12"));
         r.stornieren();
         assertEquals(Reservierung.Status.STORNIERT, r.getStatus());
+    }
+
+    @Test
+    void constructorRejectsNulls() {
+        assertThrows(DomainException.class,
+                () -> Reservierung.erstelle(null, "a", "u", Abholcode.of("AB12")));
+        assertThrows(DomainException.class,
+                () -> Reservierung.erstelle("r", null, "u", Abholcode.of("AB12")));
+        assertThrows(DomainException.class,
+                () -> Reservierung.erstelle("r", "a", null, Abholcode.of("AB12")));
+        assertThrows(DomainException.class,
+                () -> Reservierung.erstelle("r", "a", "u", null));
+    }
+
+    @Test
+    void bestaetigen_rejectIfNotActive() {
+        var code = Abholcode.of("AB12");
+        var r = Reservierung.erstelle("r1", "a1", "u1", code);
+        r.stornieren(); // status = STORNIERT
+
+        assertThrows(DomainException.class, () -> r.bestaetigeAbholung(code));
+    }
+
+    @Test
+    void stornieren_setsStatus() {
+        var r = Reservierung.erstelle("r1", "a1", "u1", Abholcode.of("AB12"));
+
+        r.stornieren();
+
+        assertEquals(Reservierung.Status.STORNIERT, r.getStatus());
+    }
+
+    @Test
+    void bestaetigen_createsEvent() {
+        var code = Abholcode.of("AB12");
+        var r = Reservierung.erstelle("r1", "a1", "u1", code);
+
+        var events = r.bestaetigeAbholung(code);
+
+        assertInstanceOf(AbholungAbgeschlossen.class, events.get(0));
+        assertEquals(2, r.getDomainEvents().size()); // ReservierungErstellt + AbholungAbgeschlossen
     }
 }

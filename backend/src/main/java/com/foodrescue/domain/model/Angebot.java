@@ -1,7 +1,5 @@
 package com.foodrescue.domain.model;
 
-import java.time.LocalDateTime;
-
 /**
  * Aggregate Root: Angebot
  *
@@ -10,7 +8,7 @@ import java.time.LocalDateTime;
  * Diese Klasse ist als Platzhalter für zukünftige Use-Case-driven Implementierung vorgesehen.
  */
 
-import com.foodrescue.domain.events.AngebotVeröffentlicht;
+import com.foodrescue.domain.events.AngebotVeroeffentlicht;
 import com.foodrescue.domain.events.DomainEvent;
 import com.foodrescue.exceptions.DomainException;
 
@@ -50,7 +48,7 @@ public class Angebot {
             throw new DomainException("Angebot ist bereits veröffentlicht oder aktiv");
         }
         status = Status.VERFUEGBAR;
-        var evt = new AngebotVeröffentlicht(id);
+        var evt = new AngebotVeroeffentlicht(id);
         domainEvents.add(evt);
         return List.of(evt);
     }

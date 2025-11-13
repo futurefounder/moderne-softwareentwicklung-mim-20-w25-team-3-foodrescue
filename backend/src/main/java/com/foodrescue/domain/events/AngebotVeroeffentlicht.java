@@ -8,11 +8,11 @@ package com.foodrescue.domain.events;
  */
 import java.time.Instant;
 
-public final class AngebotVeröffentlicht implements DomainEvent {
+public final class AngebotVeroeffentlicht implements DomainEvent {
     private final String angebotsId;
     private final Instant when = Instant.now();
 
-    public AngebotVeröffentlicht(String angebotsId) {
+    public AngebotVeroeffentlicht(String angebotsId) {
         this.angebotsId = angebotsId;
     }
     public String getAngebotsId(){

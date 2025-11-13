@@ -2,7 +2,7 @@ package com.foodrescue.domain.model;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.foodrescue.domain.events.AngebotVeröffentlicht;
+import com.foodrescue.domain.events.AngebotVeroeffentlicht;
 import com.foodrescue.exceptions.DomainException;
 import org.junit.jupiter.api.Test;
 
@@ -63,8 +63,8 @@ public class AngebotTest {
         var events = angebot.veroeffentlichen();
 
         assertEquals(Angebot.Status.VERFUEGBAR, angebot.getStatus());
-        assertTrue(events.stream().anyMatch(e -> e instanceof AngebotVeröffentlicht));
-        assertTrue(angebot.getDomainEvents().stream().anyMatch(e -> e instanceof AngebotVeröffentlicht));
+        assertTrue(events.stream().anyMatch(e -> e instanceof AngebotVeroeffentlicht));
+        assertTrue(angebot.getDomainEvents().stream().anyMatch(e -> e instanceof AngebotVeroeffentlicht));
     }
 
     @Test
@@ -153,6 +153,19 @@ public class AngebotTest {
     void neu_mitNullZeitfensterWirftFehler() {
         assertThrows(DomainException.class, () ->
                 Angebot.neu("a1", "anbieter1", "Suppe", "x", Set.of(), null));
+    }
+
+    @Test
+    void gettersReturnCorrectValues() {
+        var fenster = AbholZeitfenster.of(
+                LocalDateTime.now().plusHours(1),
+                LocalDateTime.now().plusHours(3));
+
+        var a = Angebot.neu("a1", "anb1", "Titel", null, null, fenster);
+
+        assertEquals("a1", a.getId());
+        assertEquals(Angebot.Status.ENTFERNT, a.getStatus());
+        assertEquals(fenster, a.getZeitfenster());
     }
 
     /**

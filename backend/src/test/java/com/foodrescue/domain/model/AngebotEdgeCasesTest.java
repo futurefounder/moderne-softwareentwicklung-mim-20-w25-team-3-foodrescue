@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
-class AngebotEdgeCasesTest {
+public class AngebotEdgeCasesTest {
 
     @Test
     void veroeffentlichen_doppelt_nicht_erlaubt() {

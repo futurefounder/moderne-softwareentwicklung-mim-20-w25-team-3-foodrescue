@@ -4,7 +4,7 @@ import com.foodrescue.exceptions.DomainException;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-class ReservierungEdgeCasesTest {
+public class ReservierungEdgeCasesTest {
     @Test
     void stornieren_nichtMehrMoeglich_nachAbholung() {
         var r = Reservierung.erstelle("r1","a1","u1", Abholcode.of("AB12"));

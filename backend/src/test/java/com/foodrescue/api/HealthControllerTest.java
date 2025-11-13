@@ -1,10 +1,9 @@
-package com.foodrescue;
+package com.foodrescue.api;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import com.foodrescue.api.HealthController;
 import com.foodrescue.application.services.RescueService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(controllers = HealthController.class)
-class HealthControllerTest {
+public class HealthControllerTest {
 
   @Autowired private MockMvc mvc;
 
