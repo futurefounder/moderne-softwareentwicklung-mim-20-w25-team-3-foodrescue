@@ -6,7 +6,8 @@ import com.foodrescue.application.services.RescueService;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-class RescueServiceTest {
+public class RescueServiceTest {
+
   private final RescueService service = new RescueService();
 
   @Test
@@ -14,5 +15,11 @@ class RescueServiceTest {
     var input = List.of("frische Milch", "Konserven", "Pasta", "frische Beeren");
     var result = service.filterNonPerishables(input);
     assertThat(result).containsExactlyInAnyOrder("Konserven", "Pasta");
+  }
+
+  @Test
+  void healthReturnsOk() {
+    // deckt die Methode RescueService.health() ab
+    assertThat(service.health()).isEqualTo("OK");
   }
 }
