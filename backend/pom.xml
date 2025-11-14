@@ -35,6 +35,11 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>jakarta.transaction</groupId>
+            <artifactId>jakarta.transaction-api</artifactId>
+        </dependency>
+
         <!-- Test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -110,11 +115,10 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
                 <configuration>
-                    <!-- Enables Byte Buddy experimental support when Mockito inlines mocks on very new JDKs -->
-                    <!-- @{argLine} is populated by JaCoCo, we append ByteBuddy experimental flag -->
-                    <argLine>@{argLine} -Dnet.bytebuddy.experimental=true</argLine>
+                    <argLine>@{argLine}</argLine>
                 </configuration>
             </plugin>
+
 
             <!-- Maven Site Plugin for generating documentation -->
             <plugin>
