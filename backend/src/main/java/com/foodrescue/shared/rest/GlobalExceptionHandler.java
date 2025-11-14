@@ -12,8 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
   @ExceptionHandler(IllegalArgumentException.class)
-  public ResponseEntity<Map<String, String>> handleIllegalArgument(
-      IllegalArgumentException ex) {
+  public ResponseEntity<Map<String, String>> handleIllegalArgument(IllegalArgumentException ex) {
     Map<String, String> error = new HashMap<>();
     error.put("error", "Validation Error");
     error.put("message", ex.getMessage());
@@ -44,4 +43,3 @@ public class GlobalExceptionHandler {
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
   }
 }
-
