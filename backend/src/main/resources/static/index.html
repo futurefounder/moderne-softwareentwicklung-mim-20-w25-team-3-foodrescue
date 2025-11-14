@@ -1,42 +1,115 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="de">
 
 <head>
-    <meta charset="utf-8" />
-    <title>FoodRescue</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <style>
-        body {
-            font-family: system-ui, sans-serif;
-            margin: 2rem;
-        }
-
-        .card {
-            border: 1px solid #ddd;
-            border-radius: 12px;
-            padding: 1rem;
-            max-width: 640px;
-        }
-
-        button {
-            padding: .6rem 1rem;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            cursor: pointer;
-        }
-
-        pre {
-            background: #f7f7f7;
-            padding: .75rem;
-            border-radius: 8px;
-            overflow: auto;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodRescue - Lebensmittel retten</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-    <h1>FoodRescue – Lebensmittel retten</h1>
+    <!-- Photo Credit: Photo by Mikhail Nilov: https://www.pexels.com/photo/food-salad-healthy-vegetables-6613047/ -->
 
+    <div class="container">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <div class="hero-image"></div>
+
+        </div>
+
+        <!-- Form Section -->
+        <div class="form-section">
+            <div class="form-container">
+                <!-- Header -->
+                <div class="form-header">
+                    <h2 id="form-title">Save Food, Fight Waste</h2>
+                    <p id="form-subtitle">Bitte melde dich an</p>
+                </div>
+
+                <!-- Login/Signup Form -->
+                <form id="auth-form" class="auth-form">
+                    <!-- Name field (only for signup) -->
+                    <div class="form-group" id="name-group" style="display: none;">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" placeholder="Ihr vollständiger Name"
+                            autocomplete="name">
+                    </div>
+
+                    <!-- Email field -->
+                    <div class="form-group">
+                        <label for="email">E-Mail-Adresse</label>
+                        <input type="email" id="email" name="email" placeholder="ihre.email@beispiel.de" required
+                            autocomplete="email">
+                    </div>
+
+                    <!-- Password field (hidden for now) -->
+                    <div class="form-group" style="display: none;">
+                        <label for="password">Passwort</label>
+                        <input type="password" id="password" name="password" placeholder="Ihr Passwort"
+                            autocomplete="current-password">
+                    </div>
+
+                    <!-- Confirm Password field (hidden for now) -->
+                    <div class="form-group" id="confirm-password-group" style="display: none;">
+                        <label for="confirm-password">Passwort bestätigen</label>
+                        <input type="password" id="confirm-password" name="confirm-password"
+                            placeholder="Passwort wiederholen" autocomplete="new-password">
+                    </div>
+
+                    <!-- Role selector (only for signup) -->
+                    <div class="form-group" id="role-group" style="display: none;">
+                        <label for="role">Willst du Essens abholen oder anbieten?</label>
+                        <select id="role" name="role">
+                            <option value="">Bitte wähle deine Rolle</option>
+                            <option value="ABHOLER">Abholen</option>
+                            <option value="ANBIETER">Anbieten (coming soon)</option>
+                        </select>
+                    </div>
+
+                    <!-- Forgot password link (hidden for now) -->
+                    <div class="form-extra" id="forgot-password-link" style="display: none;">
+                        <a href="#" class="link-text" id="forgot-password">Passwort vergessen?</a>
+                    </div>
+
+                    <!-- Submit button -->
+                    <button type="submit" class="btn-primary" id="submit-btn">
+                        Anmelden
+                    </button>
+
+                    <!-- Toggle between login/signup -->
+                    <div class="form-footer">
+                        <p id="toggle-text">
+                            Noch kein Konto?
+                            <a href="#" class="link-primary" id="toggle-mode">Registrieren</a>
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for "Forgot Password" -->
+    <div id="forgot-password-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Passwort zurücksetzen</h3>
+                <button class="modal-close" id="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Diese Funktion ist noch nicht verfügbar.</p>
+                <p>Bitte versuchen Sie es später noch einmal.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="modal-ok">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 
 </html>
