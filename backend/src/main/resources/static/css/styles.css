@@ -1,6 +1,4 @@
-/* ===================================
-   ROOT VARIABLES - Color Palette
-   =================================== */
+/* Root Variables - Color Palette */
 :root {
   --color-sage: #b0c4b1;
   --color-slate: #4a5759;
@@ -21,9 +19,7 @@
   --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* ===================================
-   RESET & BASE STYLES
-   =================================== */
+/* Reset & Base Styles */
 * {
   margin: 0;
   padding: 0;
@@ -38,9 +34,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ===================================
-   LAYOUT COMPONENTS
-   =================================== */
+/* Layout Components */
 .container {
   display: flex;
   min-height: 100vh;
@@ -61,7 +55,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url("food-rescue-hero-login.jpg");
+  background-image: url("../img/food-rescue-hero-login.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -118,9 +112,7 @@ body {
   box-shadow: var(--shadow-md);
 }
 
-/* ===================================
-   FORM COMPONENTS
-   =================================== */
+/* Form Components */
 
 /* Form Header */
 .form-header {
@@ -289,9 +281,7 @@ body {
   text-decoration: underline;
 }
 
-/* ===================================
-   MODAL COMPONENT
-   =================================== */
+/* Modal Component */
 .modal {
   display: none;
   position: fixed;
@@ -379,9 +369,7 @@ body {
   justify-content: flex-end;
 }
 
-/* ===================================
-   ANIMATIONS
-   =================================== */
+/* Animations */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -402,9 +390,7 @@ body {
   }
 }
 
-/* ===================================
-   RESPONSIVE DESIGN
-   =================================== */
+/* Responsive Design */
 @media (max-width: 968px) {
   .container {
     flex-direction: column;
@@ -457,9 +443,7 @@ body {
   }
 }
 
-/* ===================================
-   UTILITY CLASSES
-   =================================== */
+/* Utility Classes */
 .hidden {
   display: none !important;
 }
