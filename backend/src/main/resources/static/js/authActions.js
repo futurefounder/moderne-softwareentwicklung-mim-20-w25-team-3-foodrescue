@@ -33,7 +33,15 @@ function handleLogin() {
   }
 
   console.log("Login attempt:", { email });
-  showError("Login-Funktionalität ist noch nicht implementiert.");
+
+  // Store login state in localStorage (simplified login without backend validation)
+  localStorage.setItem("isLoggedIn", "true");
+  localStorage.setItem("userEmail", email);
+  localStorage.setItem("userName", "Benutzer"); // Default name for login
+  localStorage.setItem("userRole", "ABHOLER"); // Default role
+
+  // Redirect to dashboard
+  window.location.href = "/dashboard.html";
 }
 
 async function handleSignup() {
@@ -88,10 +96,17 @@ async function handleSignup() {
       console.log("User registered successfully:", userData);
       showSuccess(`Registrierung erfolgreich! Willkommen ${userData.name}!`);
 
-      // Switch to login mode after success
+      // Store user data in localStorage
+      localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("userName", userData.name);
+      localStorage.setItem("userEmail", userData.email);
+      localStorage.setItem("userRole", userData.rolle);
+      localStorage.setItem("userId", userData.id);
+
+      // Redirect to dashboard after success
       setTimeout(() => {
-        switchToLoginMode();
-      }, 2000);
+        window.location.href = "/dashboard.html";
+      }, 1500);
     } else {
       // Handle backend validation errors
       let errorMessage = "Registrierung fehlgeschlagen.";

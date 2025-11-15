@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodRescue - Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        .dashboard-container {
+            min-height: 100vh;
+            background-color: var(--color-cream);
+            padding: 2rem;
+        }
+
+        .dashboard-header {
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            text-align: center;
+        }
+
+        .dashboard-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--color-slate);
+            margin-bottom: 0.5rem;
+        }
+
+        .dashboard-subtitle {
+            font-size: 1.125rem;
+            color: var(--color-text-light);
+        }
+
+        .dashboard-content {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: var(--color-white);
+            border-radius: 16px;
+            box-shadow: var(--shadow-md);
+            padding: 2.5rem;
+        }
+
+        .user-info {
+            margin-bottom: 2rem;
+        }
+
+        .user-info-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--color-slate);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--color-sage);
+        }
+
+        .user-info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--color-cream);
+        }
+
+        .user-info-item:last-child {
+            border-bottom: none;
+        }
+
+        .user-info-label {
+            font-weight: 600;
+            color: var(--color-text-dark);
+        }
+
+        .user-info-value {
+            color: var(--color-text-light);
+        }
+
+        .dashboard-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--color-sage);
+        }
+
+        .btn-logout {
+            flex: 1;
+            padding: 0.85rem 1rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--color-white);
+            background-color: var(--color-rose);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            font-family: var(--font-primary);
+        }
+
+        .btn-logout:hover {
+            background-color: #e19aa3;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-logout:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 640px) {
+            .dashboard-container {
+                padding: 1rem;
+            }
+
+            .dashboard-title {
+                font-size: 2rem;
+            }
+
+            .dashboard-content {
+                padding: 1.5rem;
+            }
+
+            .user-info-item {
+                flex-direction: column;
+                gap: 0.25rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">Willkommen bei FoodRescue</h1>
+            <p class="dashboard-subtitle">Dein Dashboard</p>
+        </div>
+
+        <div class="dashboard-content">
+            <div class="user-info">
+                <h2 class="user-info-title">Deine Informationen</h2>
+                <div class="user-info-item">
+                    <span class="user-info-label">Name:</span>
+                    <span class="user-info-value" id="user-name">Lädt...</span>
+                </div>
+                <div class="user-info-item">
+                    <span class="user-info-label">E-Mail:</span>
+                    <span class="user-info-value" id="user-email">Lädt...</span>
+                </div>
+                <div class="user-info-item">
+                    <span class="user-info-label">Rolle:</span>
+                    <span class="user-info-value" id="user-role">Lädt...</span>
+                </div>
+            </div>
+
+            <div class="dashboard-actions">
+                <button class="btn-logout" id="logout-btn">Abmelden</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="/js/dashboard.js"></script>
+</body>
+
+</html>
