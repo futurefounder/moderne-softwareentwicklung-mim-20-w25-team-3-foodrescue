@@ -115,70 +115,31 @@
 
 .sidebar-footer {
   padding: 1rem;
+  border-top: 1px solid var(--color-cream);
 }
 
-.btn-logout-sidebar {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 2.25rem;
-  padding: 0 1rem;
-  border-radius: 12px;
-  background-color: var(--color-slate);
-  color: var(--color-white);
+.sidebar-footer .nav-link {
+  width: 100%;
+  background: none;
   border: none;
-  font-size: 0.875rem;
-  font-weight: 600;
-  font-family: var(--font-primary);
   cursor: pointer;
-  transition: all var(--transition-speed) ease;
-}
-
-.btn-logout-sidebar:hover {
-  background-color: #3a4547;
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-sm);
-}
-
-.btn-logout-sidebar:active {
-  transform: translateY(0);
-}
-
-.logout-icon {
-  width: 1em;
-  height: 1em;
-  fill: currentColor;
-  margin-right: 0.5rem;
-}
-
-.logout-text {
-  font-weight: 600;
-  font-size: 0.875rem;
+  font-family: var(--font-primary);
 }
 
 /* Main Content Area */
 .main-content {
   margin-left: 240px;
-  padding-top: 4rem;
   max-height: 100vh;
   overflow: auto;
 }
 
 /* Header */
 .main-header {
-  position: fixed;
-  right: 0;
-  top: 0;
-  left: 240px;
-  background-color: var(--color-cream);
-  padding: 0.75rem 1rem;
-  height: 4rem;
-  z-index: 100;
+  padding: 1.5rem 0;
+  text-align: center;
 }
 
 .header-container {
-  max-width: 64rem;
-  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -219,7 +180,7 @@
 
 /* Main Content Sections */
 .content-wrapper {
-  padding: 1.5rem 2rem;
+  padding: 2rem 2rem 1.5rem 2rem;
 }
 
 .content-container {
@@ -232,7 +193,6 @@
   background-color: var(--color-white);
   border-radius: 24px;
   padding: 2rem;
-  margin-bottom: 1.25rem;
 }
 
 .greeting-title {
@@ -305,10 +265,12 @@
   flex-shrink: 0;
 }
 
-.calendar-icon {
+.pickup-icon-svg {
   width: 1.5em;
   height: 1.5em;
-  fill: var(--color-slate);
+  stroke: var(--color-slate);
+  fill: none;
+  stroke-width: 2;
 }
 
 .pickup-info {
