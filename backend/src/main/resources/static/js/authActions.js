@@ -51,12 +51,12 @@ async function handleSignup() {
 
   // Validate each field individually for better error messages
   if (!name) {
-    showError("Bitte gib deinen vollständigen Namen ein.");
+    showError("Bitte gib deinen vollständigen Namen ein");
     return;
   }
 
   if (!email) {
-    showError("Bitte gib deine E-Mail-Adresse ein.");
+    showError("Bitte gib deine E-Mail-Adresse ein");
     return;
   }
 
@@ -68,7 +68,7 @@ async function handleSignup() {
   }
 
   if (!role) {
-    showError("Bitte wähle deine Rolle (Abholen oder Anbieten).");
+    showError("Bitte wähle deine Rolle (Abholen oder Anbieten)");
     return;
   }
 
