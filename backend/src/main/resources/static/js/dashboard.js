@@ -17,31 +17,11 @@ function checkAuth() {
 // Load user info from localStorage
 function loadUserInfo() {
   const userName = localStorage.getItem("userName");
-  const userEmail = localStorage.getItem("userEmail");
-  const userRole = localStorage.getItem("userRole");
 
-  // Update DOM elements
-  const nameElement = document.getElementById("user-name");
-  const emailElement = document.getElementById("user-email");
-  const roleElement = document.getElementById("user-role");
-
-  if (nameElement) {
-    nameElement.textContent = userName || "Nicht verfügbar";
-  }
-
-  if (emailElement) {
-    emailElement.textContent = userEmail || "Nicht verfügbar";
-  }
-
-  if (roleElement) {
-    // Format role for display
-    let roleDisplay = userRole || "Nicht verfügbar";
-    if (userRole === "ABHOLER") {
-      roleDisplay = "Abholer";
-    } else if (userRole === "ANBIETER") {
-      roleDisplay = "Anbieter";
-    }
-    roleElement.textContent = roleDisplay;
+  // Update greeting with user name
+  const greetingNameElement = document.getElementById("user-greeting-name");
+  if (greetingNameElement) {
+    greetingNameElement.textContent = userName || "Benutzer";
   }
 }
 
@@ -79,4 +59,3 @@ function init() {
 
 // Run initialization when DOM is ready
 init();
-

@@ -9,155 +9,141 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
-    <style>
-        .dashboard-container {
-            min-height: 100vh;
-            background-color: var(--color-cream);
-            padding: 2rem;
-        }
-
-        .dashboard-header {
-            max-width: 800px;
-            margin: 0 auto 2rem;
-            text-align: center;
-        }
-
-        .dashboard-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--color-slate);
-            margin-bottom: 0.5rem;
-        }
-
-        .dashboard-subtitle {
-            font-size: 1.125rem;
-            color: var(--color-text-light);
-        }
-
-        .dashboard-content {
-            max-width: 800px;
-            margin: 0 auto;
-            background-color: var(--color-white);
-            border-radius: 16px;
-            box-shadow: var(--shadow-md);
-            padding: 2.5rem;
-        }
-
-        .user-info {
-            margin-bottom: 2rem;
-        }
-
-        .user-info-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--color-slate);
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid var(--color-sage);
-        }
-
-        .user-info-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 0.75rem 0;
-            border-bottom: 1px solid var(--color-cream);
-        }
-
-        .user-info-item:last-child {
-            border-bottom: none;
-        }
-
-        .user-info-label {
-            font-weight: 600;
-            color: var(--color-text-dark);
-        }
-
-        .user-info-value {
-            color: var(--color-text-light);
-        }
-
-        .dashboard-actions {
-            display: flex;
-            gap: 1rem;
-            margin-top: 2rem;
-            padding-top: 2rem;
-            border-top: 1px solid var(--color-sage);
-        }
-
-        .btn-logout {
-            flex: 1;
-            padding: 0.85rem 1rem;
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--color-white);
-            background-color: var(--color-rose);
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all var(--transition-speed) ease;
-            font-family: var(--font-primary);
-        }
-
-        .btn-logout:hover {
-            background-color: #e19aa3;
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .btn-logout:active {
-            transform: translateY(0);
-        }
-
-        @media (max-width: 640px) {
-            .dashboard-container {
-                padding: 1rem;
-            }
-
-            .dashboard-title {
-                font-size: 2rem;
-            }
-
-            .dashboard-content {
-                padding: 1.5rem;
-            }
-
-            .user-info-item {
-                flex-direction: column;
-                gap: 0.25rem;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="/css/dashboard.css">
 </head>
 
-<body>
-    <div class="dashboard-container">
-        <div class="dashboard-header">
-            <h1 class="dashboard-title">Willkommen bei FoodRescue</h1>
-            <p class="dashboard-subtitle">Dein Dashboard</p>
+<body class="dashboard-body">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-top">
+            <div class="sidebar-header">
+                <!-- Lunch icons created by Freepik - Flaticon: https://www.flaticon.com/free-icon/healthy-food_9757152 -->
+                <img src="/img/kawaii-food.png" alt="FoodRescue Logo" class="sidebar-logo">
+                <h1 class="sidebar-title">
+                    <span class="sidebar-title-highlight">Food</span><span class="sidebar-title-orange">Rescue</span>
+                </h1>
+            </div>
+            <nav class="sidebar-nav">
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="javascript:void(0)" class="nav-link active">
+                            <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                            </svg>
+                            Überblick
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="javascript:void(0)" class="nav-link">
+                            <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0 1 18 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3 1.5 1.5 3-3.75" />
+                            </svg>
+                            Buchungen
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
+        <div class="sidebar-footer">
+            <button class="btn-logout-sidebar" id="logout-btn">
+                <svg class="logout-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15" />
+                </svg>
+                <span class="logout-text">Logout</span>
+            </button>
+        </div>
+    </aside>
 
-        <div class="dashboard-content">
-            <div class="user-info">
-                <h2 class="user-info-title">Deine Informationen</h2>
-                <div class="user-info-item">
-                    <span class="user-info-label">Name:</span>
-                    <span class="user-info-value" id="user-name">Lädt...</span>
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header -->
+        <header class="main-header">
+            <div class="header-container">
+                <button class="btn-find-donations">
+                    <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+                        <path
+                            d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
+                    </svg>
+                    Verfügbare Spenden finden
+                </button>
+            </div>
+        </header>
+
+        <!-- Content -->
+        <div class="content-wrapper">
+            <div class="content-container">
+                <!-- Greeting Card -->
+                <div class="greeting-card">
+                    <h1 class="greeting-title">Hi, <span id="user-greeting-name">Lädt...</span></h1>
                 </div>
-                <div class="user-info-item">
-                    <span class="user-info-label">E-Mail:</span>
-                    <span class="user-info-value" id="user-email">Lädt...</span>
-                </div>
-                <div class="user-info-item">
-                    <span class="user-info-label">Rolle:</span>
-                    <span class="user-info-value" id="user-role">Lädt...</span>
+
+                <!-- Geplante Abholungen Section -->
+                <div class="pickups-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Geplante Abholungen</h2>
+                        <p class="section-subtitle">Ihre nächsten geplanten Abholtermine</p>
+                    </div>
+
+                    <div class="pickups-list">
+                        <!-- Pickup Item 1 -->
+                        <div class="pickup-item">
+                            <div class="pickup-left">
+                                <div class="pickup-icon">
+                                    <svg class="calendar-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                                        <path
+                                            d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4V.5zM16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2zm-3.5-7h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5z" />
+                                    </svg>
+                                </div>
+                                <div class="pickup-info">
+                                    <h3 class="pickup-name">Bäckerei Schmidt</h3>
+                                    <p class="pickup-address">Hauptstraße 42</p>
+                                </div>
+                            </div>
+                            <div class="pickup-time">Heute um 16:00 Uhr</div>
+                        </div>
+
+                        <!-- Pickup Item 2 -->
+                        <div class="pickup-item">
+                            <div class="pickup-left">
+                                <div class="pickup-icon">
+                                    <svg class="calendar-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                                        <path
+                                            d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4V.5zM16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2zm-3.5-7h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5z" />
+                                    </svg>
+                                </div>
+                                <div class="pickup-info">
+                                    <h3 class="pickup-name">Lokaler Hofladen</h3>
+                                    <p class="pickup-address">Dorfweg 15</p>
+                                </div>
+                            </div>
+                            <div class="pickup-time">Morgen um 10:00 Uhr</div>
+                        </div>
+
+                        <!-- Pickup Item 3 -->
+                        <div class="pickup-item">
+                            <div class="pickup-left">
+                                <div class="pickup-icon">
+                                    <svg class="calendar-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                                        <path
+                                            d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4V.5zM16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2zm-3.5-7h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5z" />
+                                    </svg>
+                                </div>
+                                <div class="pickup-info">
+                                    <h3 class="pickup-name">Restaurant Bella Italia</h3>
+                                    <p class="pickup-address">Marktplatz 8</p>
+                                </div>
+                            </div>
+                            <div class="pickup-time">Samstag um 14:30 Uhr</div>
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            <div class="dashboard-actions">
-                <button class="btn-logout" id="logout-btn">Abmelden</button>
-            </div>
         </div>
-    </div>
+    </main>
 
     <script type="module" src="/js/dashboard.js"></script>
 </body>
