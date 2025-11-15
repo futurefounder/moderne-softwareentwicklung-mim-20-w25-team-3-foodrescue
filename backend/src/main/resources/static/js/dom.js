@@ -15,11 +15,6 @@ export const elements = {
   emailInput: document.getElementById("email"),
   roleGroup: document.getElementById("role-group"),
   roleSelect: document.getElementById("role"),
-  forgotPasswordLink: document.getElementById("forgot-password-link"),
-  forgotPassword: document.getElementById("forgot-password"),
-  modal: document.getElementById("forgot-password-modal"),
-  closeModal: document.getElementById("close-modal"),
-  modalOk: document.getElementById("modal-ok"),
 };
 
 // Toggle link is dynamically recreated, so we query it on demand

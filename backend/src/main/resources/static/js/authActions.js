@@ -68,7 +68,7 @@ async function handleSignup() {
   }
 
   if (!role) {
-    showError("Bitte wähle deine Rolle (Abholen oder Anbieten)");
+    showError("Bitte wähle deine Rolle");
     return;
   }
 
