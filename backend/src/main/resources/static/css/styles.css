@@ -1,0 +1,370 @@
+/* Root Variables - Color Palette */
+:root {
+  --color-sage: #b0c4b1;
+  --color-slate: #4a5759;
+  --color-cream: #dedbd2;
+  --color-peach: #f7e1d7;
+  --color-rose: #edafb8;
+
+  --color-text-dark: #2c3333;
+  --color-text-light: #5a6266;
+  --color-white: #ffffff;
+
+  --font-primary: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Helvetica", "Arial", sans-serif;
+  --transition-speed: 0.3s;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Reset & Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-primary);
+  color: var(--color-text-dark);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Layout Components */
+.container {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--color-white);
+}
+
+/* Hero Section (Left Side) */
+.hero-section {
+  position: relative;
+  flex: 1;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.hero-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("../img/food-rescue-hero-login.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.hero-title {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: var(--color-white);
+  margin-bottom: 1rem;
+  text-align: center;
+  letter-spacing: -0.5px;
+  text-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
+.hero-subtitle {
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: var(--color-cream);
+  text-align: center;
+  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Form Section (Right Side) */
+.form-section {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background-color: var(--color-cream);
+}
+
+.form-container {
+  width: 100%;
+  max-width: 360px;
+  padding: 2.25rem;
+  border-radius: 16px;
+  background-color: rgba(255, 255, 255, 0.85);
+  box-shadow: var(--shadow-md);
+}
+
+/* Form Components */
+
+/* Form Header */
+.form-header {
+  text-align: center;
+  margin-bottom: 1.75rem;
+}
+
+.form-header h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-slate);
+  margin-bottom: 0.5rem;
+  white-space: nowrap;
+}
+
+.form-header p {
+  font-size: 0.9rem;
+  color: var(--color-text-light);
+}
+
+/* Form Groups */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-slate);
+  letter-spacing: 0.25px;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.7rem 0.85rem;
+  font-size: 0.95rem;
+  color: var(--color-text-dark);
+  background-color: var(--color-cream);
+  border: 2px solid var(--color-sage);
+  border-radius: 10px;
+  transition: all var(--transition-speed) ease;
+  font-family: var(--font-primary);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--color-slate);
+  box-shadow: 0 0 0 3px rgba(74, 87, 89, 0.1);
+}
+
+.form-group input::placeholder {
+  color: #9ca3af;
+}
+
+.form-group select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234A5759' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1.25rem;
+  padding-right: 2.5rem;
+}
+
+.anbieter-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  margin-top: 0.25rem;
+}
+
+/* Buttons */
+.btn-primary {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-white);
+  background-color: var(--color-slate);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all var(--transition-speed) ease;
+  font-family: var(--font-primary);
+  margin-top: 0.5rem;
+}
+
+.btn-primary:hover {
+  background-color: #3a4547;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  padding: 0.65rem 1.25rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-white);
+  background-color: var(--color-sage);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all var(--transition-speed) ease;
+  font-family: var(--font-primary);
+}
+
+.btn-secondary:hover {
+  background-color: #9db09e;
+}
+
+/* Form Footer */
+.form-footer {
+  text-align: center;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-sage);
+}
+
+.form-footer p {
+  font-size: 0.9375rem;
+  color: var(--color-text-light);
+}
+
+.link-primary {
+  color: var(--color-slate);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color var(--transition-speed) ease;
+}
+
+.link-primary:hover {
+  color: var(--color-sage);
+  text-decoration: underline;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 968px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .hero-section {
+    min-height: 40vh;
+  }
+
+  .hero-title {
+    font-size: 2.5rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.25rem;
+  }
+
+  .form-section {
+    min-height: 60vh;
+  }
+
+  .form-container {
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-section {
+    min-height: 30vh;
+  }
+
+  .hero-title {
+    font-size: 2rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+
+  .form-container {
+    padding: 1.5rem;
+  }
+
+  .form-header h2 {
+    font-size: 1.25rem;
+  }
+
+  .modal-content {
+    width: 95%;
+  }
+}
+
+/* Utility Classes */
+.hidden {
+  display: none !important;
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.mt-1 {
+  margin-top: 0.5rem;
+}
+.mt-2 {
+  margin-top: 1rem;
+}
+.mt-3 {
+  margin-top: 1.5rem;
+}
+
+.mb-1 {
+  margin-bottom: 0.5rem;
+}
+.mb-2 {
+  margin-bottom: 1rem;
+}
+.mb-3 {
+  margin-bottom: 1.5rem;
+}

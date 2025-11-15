@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodRescue - Lebensmittel retten</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <!-- Photo Credit: Photo by Mikhail Nilov: https://www.pexels.com/photo/food-salad-healthy-vegetables-6613047/ -->
+
+    <div class="container">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <div class="hero-image"></div>
+
+        </div>
+
+        <!-- Form Section -->
+        <div class="form-section">
+            <div class="form-container">
+                <!-- Header -->
+                <div class="form-header">
+                    <h2 id="form-title">Save Food, Fight Waste</h2>
+                    <p id="form-subtitle">Bitte melde dich an</p>
+                </div>
+
+                <!-- Login/Signup Form -->
+                <form id="auth-form" class="auth-form" novalidate>
+                    <!-- Name field (only for signup) -->
+                    <div class="form-group" id="name-group" style="display: none;">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" placeholder="Ihr vollständiger Name"
+                            autocomplete="name">
+                    </div>
+
+                    <!-- Email field -->
+                    <div class="form-group">
+                        <label for="email">E-Mail-Adresse</label>
+                        <input type="email" id="email" name="email" placeholder="ihre.email@beispiel.de" required
+                            autocomplete="email">
+                    </div>
+
+                    <!-- Password field (hidden for now) -->
+                    <div class="form-group" style="display: none;">
+                        <label for="password">Passwort</label>
+                        <input type="password" id="password" name="password" placeholder="Ihr Passwort"
+                            autocomplete="current-password">
+                    </div>
+
+                    <!-- Confirm Password field (hidden for now) -->
+                    <div class="form-group" id="confirm-password-group" style="display: none;">
+                        <label for="confirm-password">Passwort bestätigen</label>
+                        <input type="password" id="confirm-password" name="confirm-password"
+                            placeholder="Passwort wiederholen" autocomplete="new-password">
+                    </div>
+
+                    <!-- Role selector (only for signup) -->
+                    <div class="form-group" id="role-group" style="display: none;">
+                        <label for="role">Rolle</label>
+                        <select id="role" name="role">
+                            <option value="">Bitte wähle deine Rolle</option>
+                            <option value="ABHOLER">Abholer</option>
+                        </select>
+                    </div>
+
+                    <!-- Submit button -->
+                    <button type="submit" class="btn-primary" id="submit-btn">
+                        Anmelden
+                    </button>
+
+                    <!-- Toggle between login/signup -->
+                    <div class="form-footer">
+                        <p id="toggle-text">
+                            Noch kein Konto?
+                            <a href="#" class="link-primary" id="toggle-mode">Registrieren</a>
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="/js/main.js"></script>
+</body>
+
+</html>
