@@ -84,7 +84,7 @@ gutes Design:
 
 ### Dies gelingt durch Prinzipen die gelebt werden müssen in Form von Best Practices und Smells, dem wissen was passiert wenn man die Prinzipen und Regeln nicht einhält.
 
-## 4. Best practices für Clean Code
+## 4. Best practices und Prinzipien für Clean Code und besseres entwicklen von Code
 
 Im folgenden werden Bestpractices und dazugehörige Smells für folgende Bereiche erläutert
 
@@ -138,16 +138,12 @@ Wobei es zwei Meinungen gibt:
 
 - andere Module verlassen sich auf Variablen, die plötzlich negative Zahlen haben und für Fehler sorgen
 
-**Smell** = 
-
 ### Felder sollen den Zustand definieren
 
 **BP** = Felder sollten einen stabilen Zustand eines Objektes repräsentieren
 
 - durch lokale Variablen
 - durch Extrahieren einer Klasse, die temporäre Zustände berechnet oder verwendet
-
-**Smell** =
 
 ### eine korrekte Behandlung von Exceptions verwenden
 
@@ -157,8 +153,6 @@ Wobei es zwei Meinungen gibt:
 - auf Ebene auf der man sinvoll damit umgehen kann
 - sauber verarbeiten werden
 - nicht für den normalen Kontrollfluss verwendet werden
-
-**Smell** =
 
 ### Duplizierten Code vermeiden
 
@@ -171,15 +165,11 @@ Dies verschlechtert die Verständlichkeit und macht Fehler wahrscheinlicher
 
 **BP** = den Refactoring Katalog kennen und die entsprechenden Menüs in der IDE kennen, sowie anwenden können
 
-**Smell** =
-
 ## Code und dessen Qualität
 
 ### Lokale Deklarationen verwenden
 
 **BP** = dort deklarieren wo die Variable verwendet wird und Sammlungen von Deklarationen am Blockanfang vermeiden
-
-**Smell** =
 
 ### selbsterklärende Variablen verwenden
 
@@ -191,19 +181,13 @@ Dies verschlechtert die Verständlichkeit und macht Fehler wahrscheinlicher
 
 **BP** = verschachtelter Code sollte zunehmend spezifische Aufgaben übernehmen und auf höherer Ebene soltle die Abstraktion oder Wahrscheinlichkeit eines Aufrufes höher sein
 
-**Smell** =
-
 ### Multi-Thread Code trennen
 
 **BP** = Multi- Thread code sollte nicht mit normalen code vermischt werden und ein Thread sollte in eine eigene Klasse gekapselt werden
 
-**Smell** =
-
 ### Conditionals kapseln
 
 **BP** = prüfen ob es sinnvoll ist komplexe Logik zu kapseln
-
-**Smell** =
 
 ### Negative Bedingungen Vermeiden
 
@@ -236,7 +220,6 @@ Dies verschlechtert die Verständlichkeit und macht Fehler wahrscheinlicher
 
 **BP** = eine fachliche Methode sollte nicht mit Querschnittsaufgaben wie Persistenz, Logging, Sicherheit und Monitoring zugemüllt werden
 
-**Smell** =
 
 ### Tennung von Interfaces
 
@@ -244,16 +227,120 @@ Dies verschlechtert die Verständlichkeit und macht Fehler wahrscheinlicher
 
 - besser kleines und stabiles Interface ableiten, welches verwendet werden kann
 
-**Smell** = 
 
-### Conditionals kapseln
+### Versteckte Informationen
 
-**BP** =
+**BP** = Klassen sollten nur das exponieren, was andere unbedingt wissen müssen, außer unsichtbare Attribute und interne Details sind ausdrücklich gewünscht
 
-**Smell** =
+### Inversion of Control
 
-### Packages
+**BP** = die Steuerung der Ablauflogik  sollte umgedreht ablaufen
 
-### Produktivität
+- das Framework ruft die Komponente auf
 
-### Management
+
+### Dependency Injection
+
+**BP** = Abhängigkeiten sollten von außen in die Klasse gegeben werden anstatt von der Klasse selbst erzeugt zu werden
+
+### Open Colsed Principle
+
+**BP** = Komponenten sollten offen für Erweiterungen sein, aber geschlossen für Modifikationen
+
+### Einfaches und komplexes Refactoring
+
+**BP** = der Code wird so umgestaltet, dass sein Verhalten unverändert bleibt indem er durch Tests abgesichert ist und 
+leicht Rückgängig zu machen ist. 
+
+
+### Alle Basic und Enterprise Patterns prüfen
+
+- Strategy
+- Factory
+- Adapter
+- Strukturpattern
+- Kontrollfluss
+- Aufteilung der komponenten
+- DAtenbankzugriff
+- 
+### Die Implementierung sollte den Entwurf wiederspiegeln
+
+**BP** = Implementierung und Entwurf wie UML-Diagramm oder DDD-Darstellung dürfen nicht auseinander driften
+
+## Packages
+
+### Common Closure und Common Resue
+- Packages bzw. eine Klasse sollte so gestaltet werden, dass sie nicht geändert werden muss, aber erweritert werden kann
+- Klassen die gemeinsam geändert uoder gemeinsam wiederverwendet werden, gehören in das selbe Package
+
+### Visualisierung von Paketabhängigkeiten
+- Packages sollten nur nach rechts oder unten zugreifen, aber nie nach oben oder links.
+
+### Paketabhängigkeiten müssen Zyklusfrei sein
+- bereits wenige Zyklen reduzieren die Andelbarkeit und Evolierbarkeit großer Softwaresysteme dramatisch
+
+### Stabile Abhängigkeiten
+- instabile Pakete sollten von stabileren Paketen abhängig sein
+
+### Stabile Abstraktionen
+- je stabiler ein Paket desto abstrakter sollte es sein
+
+## Produktivität
+
+### Beachten der Pfadregel
+
+**BP** = jeder Code wird besser hinterlassen wie man ihn zu Beginn vorgefunden hat
+
+### Die Ursache bekämpfen und nicht die Wirkung
+
+**BP** = Es ist effektiver nach der Ursache zu suchen anstatt die Nebenwirkungen zu beseitigen
+
+### Komponentenorientiertes denken
+
+**BP** = Komponenten bzw. Domains auf kleiner Ebene bietet lose Kopplung und hohe kohäsion
+
+### keine goldenen Wasserhähne
+
+**BP** = Funktionalitäten sollten dem Kernziel dienen, sonst wird das System aufgeblasen
+
+### Prinzip der kleinstmöglichen Überraschung
+
+### System für die Versionskontrolle verwenden
+
+### Issues und Fehler werden öffentlich verwaltet
+
+### Effektives Buildmanagement verwenden
+
+### CI/CD mit kurzer Cycle-Time 
+
+## Management
+
+### Ablenkungen ausschalten
+
+- für konzentriertes Arbeiten Ablenkungen ausschalten und beiseite legen
+
+### Fast Launcher
+- imemr einen schnellen Launcher für Anwendungen und Weblinks zur Hand haben
+
+### Tastenkombinationen und IDE shortcuts beherrschen
+- ständiger wechsel zwischen Maus und Tastatur stört den Arbeitsfluss und kostet Zeit
+
+### mehrere Bildschrime oder Virtuelle Desktops
+
+### Scripting Profi
+- schreiben von Macros und Shellskripts
+- 
+### UNIX nutzen
+
+### den besten Editor und die beste IDE nutzen
+
+### Das Rad nicht neu erfinden
+- die Bibliotheken kennen
+
+### Iterative Entwicklung wie Scrum verwenden
+
+### lesen, öesen, lesen und sich Weiterbilden
+
+### Events besuchen und von den Meistern lernen
+
+### Sein Wissen teilen
