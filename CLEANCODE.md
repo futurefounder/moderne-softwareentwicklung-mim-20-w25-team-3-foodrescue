@@ -8,13 +8,11 @@ Inhaltsverzeichnis
 
 **3. Motivation Clean Code anzuwenden**
 
-**4. Best practices für Clean Code**
+**4. Best practices für Clean Code und Beispiele aus dem Projekt**
 
 **5. Clean Code und Generative KI**
 
-**6. Schlussfolgerungen für Git-Anfänger**
-
-**7. Fazit**
+**6. Fazit**
 
 
 ## 1. Was versteht man unter Clean Code ?
@@ -90,8 +88,9 @@ gutes Design:
 
 Im folgenden werden Bestpractices und dazugehörige Smells für folgende Bereiche erläutert
 
+- Programmierprinzipien
 - Grundlagen
-- Code und dessen Qualität
+- Code Basics
 - Architektur und Klassendesign
 - Packages
 - Produktivität
@@ -174,39 +173,84 @@ Dies verschlechtert die Verständlichkeit und macht Fehler wahrscheinlicher
 
 **Smell** =
 
-### Code und dessen Qualität
+## Code und dessen Qualität
 
-### Magic Numbers vermeiden
+### Lokale Deklarationen verwenden
 
-**BP** =
-
-**Smell** =
-
-### Magic Numbers vermeiden
-
-**BP** =
+**BP** = dort deklarieren wo die Variable verwendet wird und Sammlungen von Deklarationen am Blockanfang vermeiden
 
 **Smell** =
 
-### Magic Numbers vermeiden
+### selbsterklärende Variablen verwenden
 
-**BP** =
+**BP** = eine ausreichende Anzahl an selbsterklärenden Variablem verwenden
+
+**Smell** = dadurch sind einzelen Schritte verständlich, gut lesbar und besser wartbar
+
+### korrekte Verwendung von Verschachtelungen
+
+**BP** = verschachtelter Code sollte zunehmend spezifische Aufgaben übernehmen und auf höherer Ebene soltle die Abstraktion oder Wahrscheinlichkeit eines Aufrufes höher sein
+
+**Smell** =
+
+### Multi-Thread Code trennen
+
+**BP** = Multi- Thread code sollte nicht mit normalen code vermischt werden und ein Thread sollte in eine eigene Klasse gekapselt werden
 
 **Smell** =
 
-### Magic Numbers vermeiden
+### Conditionals kapseln
 
-**BP** =
-
-**Smell** =
-
-### Magic Numbers vermeiden
-
-**BP** =
+**BP** = prüfen ob es sinnvoll ist komplexe Logik zu kapseln
 
 **Smell** =
+
+### Negative Bedingungen Vermeiden
+
+**BP** = negative ausdrücke vermeiden
+
+**Smell** = schwer zu lesen und zu verstehen
+
+### Randbedingungen kapseln
+
+**BP** = Randbedingungen für Schleifen usw. deutlich erkennbar machen und an einer Stelle gebündelt implementieren
+
+**Smell** = erschwert unnötig das Refactoring
+
 
 ### Architektur und Klassendesign
+
+### stärkere Kopplung bei Vererbung als bei Instanzen
+
+**BP** = Besser instantiieren als vererben
+
+**Smell** = erschwert Testbarkeit und Austauschbarkeit von Komponenten
+
+### Single Responsibility Principle
+
+**BP** = eine Klasse / Modul soll genau eine Verantwortung haben
+
+**Smell** = viele fachliche Abhängigkeiten durch unterschiedliche Aufgaben in einer Klasse machen Änderungen komplex und fehleranfällig
+
+### einzelne Querschnittsaufgaben
+
+**BP** = eine fachliche Methode sollte nicht mit Querschnittsaufgaben wie Persistenz, Logging, Sicherheit und Monitoring zugemüllt werden
+
+**Smell** =
+
+### Tennung von Interfaces
+
+**BP** = Die Abhängigkeiten von Interfaces sollte minimal sein und Interfaces sollten getrennt und gezielt zugeschnitten werden
+
+- besser kleines und stabiles Interface ableiten, welches verwendet werden kann
+
+**Smell** = 
+
+### Conditionals kapseln
+
+**BP** =
+
+**Smell** =
 
 ### Packages
 
