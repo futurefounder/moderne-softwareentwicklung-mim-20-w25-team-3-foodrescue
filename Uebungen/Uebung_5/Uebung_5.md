@@ -2,26 +2,27 @@
 
 ## 1. Überblick und Anwendung einfacher Metriken
 
-Für die Aufgabe wurde aufgrund des Vortrages des Teams 8 SonarQube gewählt, da dieses Tool auf in der Aufgabe 3 benötigt wird. 
-Die Installation verlief in meinem Umfeld nicht reibungsfrei und die endgültige Lösung des Problems, dass sich SonarQube nicht mit IntelliJ IDEA verbinden ließ, wurde erst durch eine VM mit kompletter, sauberer Installation gelöst. 
+Für die Aufgabe wurde aufgrund des Vortrages des Teams 8 SonarQube gewählt, da dieses Tool auf in der Aufgabe 3 benötigt wird.
+Die Installation verlief in meinem Umfeld nicht reibungsfrei und die endgültige Lösung des Problems, dass sich SonarQube nicht mit IntelliJ IDEA verbinden ließ, wurde erst durch eine VM mit kompletter, sauberer Installation gelöst.
 Nachdem ich hier SonarQube lauffähig bekommen habe, konnte ich dies auch in meine eigentliche Umgebung lauffähig bekommen.
 Die Analyse des Codes mit SonarQube zeigte einige interessante Metriken auf.
 Die wichtigsten Metriken sind:
 
 ### McCabe-Metrik (Zyklomatische Komplexität)
 
-| Wert      |                Bedeutung                | 
-|:----------|:---------------------------------------:| 
-| 1–10      |   Einfacher Eingriff, geringes Risiko   | 
-| 11–20     |       Komplexes, mittleres Risiko       | 
-| 21–50     |          Komplex, hohes Risiko          | 
-| &gt; 50 | Nicht testbarer Code, sehr hohes Risiko | 
+| Wert    |                Bedeutung                |
+| :------ | :-------------------------------------: |
+| 1–10    |   Einfacher Eingriff, geringes Risiko   |
+| 11–20   |       Komplexes, mittleres Risiko       |
+| 21–50   |          Komplex, hohes Risiko          |
+| &gt; 50 | Nicht testbarer Code, sehr hohes Risiko |
 
 Daher wurden einige Klassen näher betrachtet, welche einen Wert größer als 10 hatten, und im Rahmen der Übung hierzu Empfehlungen via LLM eingeholt.
 
 #### Klasse Abholung.java – Wert 13
 
 Empfehlung zur Reduzierung der Komplexität:
+
 1. Guard Clauses auslagern in private Validierungsmethoden.
 2. Statuswechsel und Fehlermeldungen trennen
 3. (Optional) State Pattern für Statuslogik
@@ -150,4 +151,36 @@ Um dauerhaft eine Mindestabdeckung zu gewährleisten, wurde das **Quality Gate**
 
 ## 4. Frontend-Entwicklung und Erweiterung der Anwendung
 
+Das Frontend der FoodRescue-Anwendung besteht aus zwei Hauptseiten
+
+- `index.html` für Login/Registrierung und
+- `dashboard.html` für eingeloggte User
+
+Es wird eine modulare JavaScript-Architektur mit separaten Modulen für Authentifizierung, DOM-Manipulation und Benachrichtigungen eingesetzt:
+
+- `main.js` - Haupteinstiegspunkt der Anwendung
+- `authActions.js` - Authentifizierungs-Logik für Login/Registrierung
+- `authMode.js` - Verwaltung des Authentifizierungsmodus (Login/Registrierung)
+- `dom.js` - DOM-Manipulation und Element-Referenzen
+- `notifications.js` - Anzeige von Fehler- und Erfolgsmeldungen
+- `dashboard.js` - Dashboard-Funktionalität und Logout
+
+### Zusammenspiel Frontend und Backend
+
+Die zentrale Backend-Funktionalität der Userverwaltung wird über die REST-API `/api/users` (POST-Methode) angesprochen, damit eingegebene Daten serverseitig validiert werden können, für Testzwecke werden die Daten jedoch noch nicht persistent gespeichert, sondern im `localStorage` abgelegt. Das Dashboard zeigt aktuell statische Informationen (Abholtermine, Navigationspunkte) an, um später weitere Backend-Services wie Angebotsmanagement und Reservierungsverwaltung über entsprechende API-Endpunkte anzubinden.
+
 ## 5. Reflexion zum Einsatz von Metriken und LLM
+
+### LLM & Frontendentwicklung
+
+Beim Einsatz des LLM für die Frontendentwicklung zeigte sich, dass ohne klare Instruktionen zunächst eine einzige `script.js`-Datei mit mehreren hundert Zeilen entstand, die kaum wartbar war und zudem keinerlei Verzeichnisstruktur für CSS oder Bildressourcen vorsah.
+
+![LLM-Frontend-before.png](LLM-Frontend-before.png)
+_Initialie Frontend-Ordner Struktur des LLMs_
+
+Erst durch gezieltes Prompting hin zu einer modularen Struktur mit klaren Verantwortlichkeiten, separaten Ordnern (`css/`, `img/`) und erläuternden Kommentaren wurde der Code übersichtlicher und besser erweiterbar. Die Erfahrung unterstreicht, wie wichtig klare Vorgaben an das LLM sind, um maintainable Ergebnisse zu erhalten, die keine technischen Schulden erzeugen.
+
+![LLM-Frontend-after.png](LLM-Frontend-after.png)
+_Optimierte Frontend-Ordner Struktur nach gezielten Prompts_
+
+Darüber hinaus generierte das LLM wiederholt fehlerhafte SVG-Bider, nutzte unharmonische Farbkombinationen und produzierte Positionierungs Probleme bei einigen Elementen (z. B. Überlappungen). Diese Aspekte mussten manuell nachgebessert werden, indem z.B. Farbpaletten definiert, auf spezifische Elemente angepasst und vereinheitlicht wurde und Elemente gezielt nachpositioniert wurden. Auch hier zeigte sich, dass UI/UX-Feinheiten ohne konkrete Vorgaben kaum in ausreichender Qualität geliefert werden.
