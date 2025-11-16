@@ -78,10 +78,13 @@ body {
   width: 100%;
   height: 100%;
   background-image: linear-gradient(
-    to bottom,
-    rgba(222, 219, 210, 0.3),
-    rgba(176, 196, 177, 0.85)
-  );
+      to right,
+      transparent 0%,
+      transparent 30%,
+      rgba(222, 219, 210, 0.4) 82%,
+      rgba(222, 219, 210, 1) 100%
+    ),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.033), rgba(43, 59, 45, 1));
   pointer-events: none;
 }
 
@@ -137,6 +140,20 @@ body {
 }
 
 /* Form Components */
+
+/* Form Icon */
+.form-icon {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.form-icon img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  margin-top: -60px;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+}
 
 /* Form Header */
 .form-header {
