@@ -21,7 +21,7 @@ function handleLogin() {
   const email = elements.emailInput.value.trim();
 
   if (!email) {
-    showError("Bitte E-Mail-Adresse eingeben.");
+    showError("Bitte E-Mail-Adresse eingeben");
     return;
   }
 
