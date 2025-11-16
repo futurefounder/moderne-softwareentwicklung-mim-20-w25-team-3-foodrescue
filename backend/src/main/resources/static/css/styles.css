@@ -135,8 +135,10 @@ body {
   max-width: 360px;
   padding: 2.25rem;
   border-radius: 16px;
-  background-color: rgba(255, 255, 255, 0.85);
-  box-shadow: var(--shadow-md);
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.136);
 }
 
 /* Form Components */
