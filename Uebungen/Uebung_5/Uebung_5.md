@@ -96,4 +96,14 @@ Die zentrale Backend-Funktionalität der Userverwaltung wird über die REST-API 
 
 ### LLM & Frontendentwicklung
 
-Beim Einsatz des LLM für die Frontendentwicklung zeigte sich, dass ohne klare Instruktionen zunächst eine einzige `script.js`-Datei mit mehreren hundert Zeilen entstand, die kaum wartbar war und zudem keinerlei Verzeichnisstruktur für CSS oder Bildressourcen vorsah. Erst durch gezieltes Prompting hin zu einer modularen Struktur mit klaren Verantwortlichkeiten, separaten Ordnern (`css/`, `img/`) und erläuternden Kommentaren wurde der Code übersichtlicher und besser erweiterbar. Die Erfahrung unterstreicht, wie wichtig klare Vorgaben an das LLM sind, um maintainable Ergebnisse zu erhalten, die keine technischen Schulden erzeugen.
+Beim Einsatz des LLM für die Frontendentwicklung zeigte sich, dass ohne klare Instruktionen zunächst eine einzige `script.js`-Datei mit mehreren hundert Zeilen entstand, die kaum wartbar war und zudem keinerlei Verzeichnisstruktur für CSS oder Bildressourcen vorsah.
+
+![LLM-Frontend-before.png](LLM-Frontend-before.png)
+_Initialie Frontend-Ordner Struktur des LLMs_
+
+Erst durch gezieltes Prompting hin zu einer modularen Struktur mit klaren Verantwortlichkeiten, separaten Ordnern (`css/`, `img/`) und erläuternden Kommentaren wurde der Code übersichtlicher und besser erweiterbar. Die Erfahrung unterstreicht, wie wichtig klare Vorgaben an das LLM sind, um maintainable Ergebnisse zu erhalten, die keine technischen Schulden erzeugen.
+
+![LLM-Frontend-after.png](LLM-Frontend-after.png)
+_Optimierte Frontend-Ordner Struktur nach gezielten Prompts_
+
+Darüber hinaus generierte das LLM wiederholt fehlerhafte SVG-Bider, nutzte unharmonische Farbkombinationen und produzierte Positionierungs Probleme bei einigen Elementen (z. B. Überlappungen). Diese Aspekte mussten manuell nachgebessert werden, indem z.B. Farbpaletten definiert, auf spezifische Elemente angepasst und vereinheitlicht wurde und Elemente gezielt nachpositioniert wurden. Auch hier zeigte sich, dass UI/UX-Feinheiten ohne konkrete Vorgaben kaum in ausreichender Qualität geliefert werden.
