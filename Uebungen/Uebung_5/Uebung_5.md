@@ -69,6 +69,83 @@ Als Möglichkeiten zur Reduzierung wurde vom LLM folgendes vorgeschlagen:
 
 ## 2. Test Coverage erweitern und Code Coverage verbessern
 
+### Zielsetzung
+Ziel dieses Arbeitsschritts war es, die **Testabdeckung der FoodRescue-Anwendung gezielt zu erhöhen**, um eine höhere **Code-Qualität und Stabilität** der zentralen Logikkomponenten sicherzustellen.  
+Mithilfe von **JaCoCo** wurde die aktuelle Testabdeckung gemessen, Lücken identifiziert und anschließend durch gezielte Unit- und Integrationstests geschlossen.
+
+#### Eingesetzte Tools
+| Tool | Zweck |
+|------|-------|
+| **JUnit 5** | Schreiben und Ausführen der Unit-Tests |
+| **Mockito** | Mocking von Abhängigkeiten (Repositories, Services) |
+| **Spring Boot Test** | Integrationstests der REST-Schicht |
+| **JaCoCo** | Ermittlung und Reporting der Test Coverage |
+| **IntelliJ Coverage View | Visualisierung der Abdeckungsergebnisse |
+
+### Vorgehensweise
+
+#### Code Coverage analysieren und Prompts für das LLM erstellen
+- in IntelliJ wurden alle Testklassen über "Run all Tests with Coverage" laufen gelassen und analysiert
+- beim Ergebnis wurde anschließend geschaut welche Klassen und Methoden noch nicht zu mindestens 80 % abgedeckt waren
+- dem LLM, in dem Fall ChatGPT 5.1, wurden die Klassen dann gegeben mit dem Prompt für eine 100 prozentige Testabdeckung zu sorgen und ggf. zusätzlich Edge Cases zu erstellen
+- die durch das LLM erstellten Testklassen wurden zusätzlich geprüft und teilweise um Logik erweitert
+
+#### Kritische Klassen wurden priorisiert
+Die folgenden Bereiche wurden als **qualitätskritisch** eingestuft:
+| Ebene | Begründung |
+|--------|-------------|
+| `FoodREscueApplication` | Zentrale Geschäftslogik
+| `Repositories` | Datenhaltung, Validierung von Such- und Speicherlogik |
+| `REST-Controller` | Schnittstelle zur Außenwelt, Mapping von Fehlern und Validierungen |
+| `Value Objects` | Enthalten Validierungsregeln und sind Teil des Domain Models |
+
+#### 🔹 Domain / Value Objects
+- Tests für ungültige Eingaben (`null`, leere Strings, zu lange Werte)
+- Tests für korrekte `equals()`- und `hashCode()`-Implementierungen
+
+#### 🔹 REST Controller
+- MockMvc-Tests für:
+- **404 Not Found** (Profil/User existiert nicht)
+- **400 Bad Request** (ungültige Request-Payload)
+- Korrekte `Content-Type`- und `Status`-Antworten
+
+#### 🔹 Repository (In-Memory)
+- Sicherstellung, dass bestehende IDs überschrieben werden
+- Paralleles Speichern (Thread-Sicherheit)
+
+
+### JaCoCo Quality Gate wurde aktiviert
+Um dauerhaft eine Mindestabdeckung zu gewährleisten, wurde das **Quality Gate** in der `pom.xml` konfiguriert:
+
+```xml
+<execution>
+  <id>check</id>
+  <phase>verify</phase>
+  <goals>
+    <goal>check</goal>
+  </goals>
+  <configuration>
+    <rules>
+      <rule>
+        <element>BUNDLE</element>
+        <limits>
+          <limit>
+            <counter>INSTRUCTION</counter>
+            <value>COVEREDRATIO</value>
+            <minimum>0.80</minimum>
+          </limit>
+          <limit>
+            <counter>BRANCH</counter>
+            <value>COVEREDRATIO</value>
+            <minimum>0.70</minimum>
+          </limit>
+        </limits>
+      </rule>
+    </rules>
+  </configuration>
+</execution>
+```
+
 ## 3. Technical Debt und Regelverletzungen mit LLM analysieren
 
 ## 4. Frontend-Entwicklung und Erweiterung der Anwendung
