@@ -8,9 +8,11 @@ Inhaltsverzeichnis
 
 **3. Motivation Clean Code anzuwenden**
 
-**4. Best practices für Clean Code und Beispiele aus dem Projekt**
+**4. Grundlegende Prinzipien der Programmierung**
 
-**5. Clean Code und Generative KI**
+**5. Best practices für Clean Code und Beispiele aus dem Projekt**
+
+**6. Clean Code und Generative KI**
 
 **6. Fazit**
 
@@ -84,7 +86,27 @@ gutes Design:
 
 ### Dies gelingt durch Prinzipen die gelebt werden müssen in Form von Best Practices und Smells, dem wissen was passiert wenn man die Prinzipen und Regeln nicht einhält.
 
-## 4. Best practices und Prinzipien für Clean Code und besseres entwicklen von Code
+## 4. Grundlegende Prinzipien der Programmierung
+
+### Die bekanntesten Prinzipien unter Softwareentwicklern sind:
+- Don't repeat yourself.
+- Keep it simple, stupid.
+
+Diese besagen:
+
+- Copy and Paste ist eine der häufigsten Fehlerquellen 
+- sowohl die Struktur als auch die Menge an code ist einfach zu halten und sollte später erweiterbar sein 
+
+### Weitere Prinzipien sind: 
+
+- zu frühe Optimierungen vermeiden
+- Doing vs. Calling Code
+- konfigurierbare Daten auf hoher Ebene
+- Vorsicht bei Konfigurationen
+- versteckte zeitliche Kopplung vermeiden
+- nicht willkürlich sein
+
+## 5. Best practices und Prinzipien für Clean Code und besseres entwicklen von Code
 
 Im folgenden werden Bestpractices und dazugehörige Smells für folgende Bereiche erläutert
 
@@ -344,3 +366,16 @@ leicht Rückgängig zu machen ist.
 ### Events besuchen und von den Meistern lernen
 
 ### Sein Wissen teilen
+
+
+## 6. Clean Code und Generative KI
+
+Es gibt 4 Bereiche wo generative KI aktiv genutz werden kann
+
+**1. zur Überwachung von Code**
+
+**2. sich spontane Vorschläge geben lassen**
+
+**3. auf Anfrage zum Druchführen einer Code-Analyse**
+
+**4. zum Durchführen eines Refactoring**
