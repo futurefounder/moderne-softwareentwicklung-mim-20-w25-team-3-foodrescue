@@ -86,3 +86,130 @@ gutes Design:
 
 ### Dies gelingt durch Prinzipen die gelebt werden müssen in Form von Best Practices und Smells, dem wissen was passiert wenn man die Prinzipen und Regeln nicht einhält.
 
+## 4. Best practices für Clean Code
+
+Im folgenden werden Bestpractices und dazugehörige Smells für folgende Bereiche erläutert
+
+- Grundlagen
+- Code und dessen Qualität
+- Architektur und Klassendesign
+- Packages
+- Produktivität
+- Management
+
+## Grundlagen
+
+### Nutzlosen code entfernen
+
+**BP** = Wenn Code tatsächlich zur späteren Aufgabe gehört wird dieser mit TODO() versehen und in die Backlogliste eingetragen
+
+**Smell** = ungenutzer & zweckloser Code der setehen bleibt verringert die Code Coverage
+
+### Nutzlose kommentare entfernen
+
+**BP** = Code mindestens auf Paket- oder Klassenebene ausreichend dokumentieren
+
+Wobei es zwei Meinungen gibt: 
+- alles muss Dokumentiert werden
+- der Code muss klar geschrieben sein
+
+**Smell** = für abstrakten einstieg in den Quellcode
+
+### Präzise Bennenungen
+
+**BP** = selbsterklärende Namen verwenden die nicht zu lang sind und eine konsistente Benennung beibehalten
+
+- Klasse: beschreibe die Art der Implementierung
+- Methode: beschreibe was sie macht und niemals wie sie es macht
+- Interface: beschreibe die Funktionalität die sie abstrahiert
+- Nebenwirkungen: der Name muss diese ausdrücken
+- kein Typ/ kein Scope: muss im Namen stehen
+
+**Smell** = der code sollte sich wie Prosa lesen
+
+### Magic Numbers vermeiden
+
+**BP** = genau deutlich machen was Zahlen bedeuten
+
+**Smell** = viel Zeit wird verloren um Magic numbers zu verstehen
+
+### Keine Seiteneffekte erzeugen
+
+**BP** = eine Funktion darf keine Seiteneffekte erzeugen
+
+- andere Module verlassen sich auf Variablen, die plötzlich negative Zahlen haben und für Fehler sorgen
+
+**Smell** = 
+
+### Felder sollen den Zustand definieren
+
+**BP** = Felder sollten einen stabilen Zustand eines Objektes repräsentieren
+
+- durch lokale Variablen
+- durch Extrahieren einer Klasse, die temporäre Zustände berechnet oder verwendet
+
+**Smell** =
+
+### eine korrekte Behandlung von Exceptions verwenden
+
+**BP** = Exceptions sollten :  
+
+- so spezifisch wie möglich abgefangen werden
+- auf Ebene auf der man sinvoll damit umgehen kann
+- sauber verarbeiten werden
+- nicht für den normalen Kontrollfluss verwendet werden
+
+**Smell** =
+
+### Duplizierten Code vermeiden
+
+**BP** = Don't repeat yourself
+
+**Smell** = bläht die Codebasis auf und sorgt für erhöhten Wartungsaufwand und Inkonsistenz. 
+Dies verschlechtert die Verständlichkeit und macht Fehler wahrscheinlicher
+
+### Refactoring
+
+**BP** = den Refactoring Katalog kennen und die entsprechenden Menüs in der IDE kennen, sowie anwenden können
+
+**Smell** =
+
+### Code und dessen Qualität
+
+### Magic Numbers vermeiden
+
+**BP** =
+
+**Smell** =
+
+### Magic Numbers vermeiden
+
+**BP** =
+
+**Smell** =
+
+### Magic Numbers vermeiden
+
+**BP** =
+
+**Smell** =
+
+### Magic Numbers vermeiden
+
+**BP** =
+
+**Smell** =
+
+### Magic Numbers vermeiden
+
+**BP** =
+
+**Smell** =
+
+### Architektur und Klassendesign
+
+### Packages
+
+### Produktivität
+
+### Management
