@@ -20,30 +20,32 @@ Inhaltsverzeichnis
 ## 1. Was versteht man unter Clean Code ?
 
 **Clean Code** ist der verantwortungsvolle Umgang mit Code, der als Gestaltung von gutem code beziehungsweise guter Software zu verstehen ist.
-Hierbei ist nicht nur der Code an sich relevant sondern auch die Architektur und der gesamte aufbau des Softwareprojektes.
+Hierbei ist nicht nur der Code an sich relevant, sondern auch die Architektur und der gesamte Aufbau des Softwareprojektes.
 
 ## 2. Was versteht man unter technical debt und wie denken Manger und Entwickler darüber ?
 
 **Technical debt** bezeichnet die Gefahr, die Probleme und die Folgen, welche aus schlecht geschrieben Code entstehen.
-- Manager, Unternehmen und Entwickler sind sich der Bedeutung eines hohen technical debt( technische Schuld) nicht bewusst.
+- Manager, Unternehmen und Entwickler sind sich der Bedeutung eines hohen technical debt(technische Schuld) nicht bewusst.
 
 ### Manager
-- durch den Lock-In-Effekt sind Kunden 10 Jahre oder länger an Produkt gebunden.
+- durch den Lock-In-Effekt sind Kunden 10 Jahre oder länger an das Produkt gebunden.
 
-Daher sind Entscheidungen auf folgenden Grundlagen gegen gutes Design.
+Daher werden Entscheidungen auf Grund von folgender Einordnung gegen gutes Design getroffen.
 
-- schnelles Geld verdienen und bewusst rücksichtslos
-- Unwissende, die  Qualität, Code Qualität, Design und technical debt nicht verstehen
+TODO(image einfügen)
+
+- schnelles Geld verdienen und bewusst rücksichtslos sein
+- Unwissende, die  Qualität, Codequalität, Design und technical debt nicht verstehen
 - der Gefahr von technical debt nicht bewusst sein und das Problem verschieben
 - Qualität ist von anfang an im blick und Fehler werden erkannt, *aber* es wird gehofft später die Zeit dafür zu finden.
 
 ### Entwickler
 
-Entwickler arbeiten jedoch mit folgendem wissen
+Entwickler arbeiten jedoch mit dem folgenden Wissen:
 
 - sie müssen Manager erst davon Überzeugen, dass ein geringer technical debt ein Vorteil ist
-- das Wissen, dass Code zu 90% gelesen wird und das nicht nur von einer Person
-- das Wissen, dass die Wartung von Code und die ERweiterung mehr als die Gesamtkosten von software ausmachen
+- das Wissen, dass Code zu 90% gelesen wird und nicht nur von einer Person
+- das Wissen, dass die Wartung von Code und die Erweiterung mehr als die Gesamtkosten von Software ausmachen
 
 ## 3. Motivation Clean Code anzuwenden
 
