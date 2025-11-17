@@ -149,6 +149,26 @@ Um dauerhaft eine Mindestabdeckung zu gewährleisten, wurde das **Quality Gate**
 
 ## 3. Technical Debt und Regelverletzungen mit LLM analysieren
 
+Nach der Analyse mit SonarQube ergab sich folgendes aktuelles Bild.
+
+![img_9.png](SonarQube-Quality-Gate.png)
+
+Wie in der Übersicht zu sehen ist, wurden 79 Issues gefunden. Die Duplikation wird mit 6,4% angegeben.
+Für die Behebung der gefundenen Issues, wird von SonarQube eine Gesamtdauer von 7h15min für die Behebung angegeben. Die Debt Ratio liegt bei 0.8, was zu einem Gesamtrating von A führt.
+
+![img_9.png](Maintainability.png)
+
+Das Risiko und die Wartbarkeit der Anwendung ist daher als sehr gut anzusehen., was in den beiden Übersichten erkenntlich ist.
+
+![img_10.png](Risk.png)
+
+![img_10.png](Maintainability-Overview.png)
+
+Hier ist für die Klasse Angebot.java einmal die Übersicht zur Behebung des technical debt angegeben.
+
+![img_10.png](Klasse-Angebot.png)
+
+
 ## 4. Frontend-Entwicklung und Erweiterung der Anwendung
 
 Das Frontend der FoodRescue-Anwendung besteht aus zwei Hauptseiten
