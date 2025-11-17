@@ -19,13 +19,13 @@ Inhaltsverzeichnis
 
 ## 1. Was versteht man unter Clean Code ?
 
-**Clean Code** ist der verantwortungsvolle Umgang mit Code, der als Gestaltung von gutem code beziehungsweise guter Software zu verstehen ist.
+**Clean Code** ist der verantwortungsvolle Umgang mit Code, der als Gestaltung von gutem Code beziehungsweise guter Software zu verstehen ist.
 Hierbei ist nicht nur der Code an sich relevant, sondern auch die Architektur und der gesamte Aufbau des Softwareprojektes.
 
-## 2. Was versteht man unter technical debt und wie denken Manger und Entwickler darüber ?
+## 2. Was versteht man unter technical debt und wie denken Manager und Entwickler darüber ?
 
-**Technical debt** bezeichnet die Gefahr, die Probleme und die Folgen, welche aus schlecht geschrieben Code entstehen.
-- Manager, Unternehmen und Entwickler sind sich der Bedeutung eines hohen technical debt(technische Schuld) nicht bewusst.
+**Technical debt** bezeichnet die Gefahr, die Probleme und die Folgen, welche aus schlecht geschriebenen Code entstehen.
+- Manager, Unternehmen und Entwickler sind sich der Bedeutung eines hohen technical debt (technische Schuld) nicht bewusst.
 
 ### Manager
 - durch den Lock-In-Effekt sind Kunden 10 Jahre oder länger an das Produkt gebunden.
@@ -37,13 +37,13 @@ TODO(image einfügen)
 - schnelles Geld verdienen und bewusst rücksichtslos sein
 - Unwissende, die  Qualität, Codequalität, Design und technical debt nicht verstehen
 - der Gefahr von technical debt nicht bewusst sein und das Problem verschieben
-- Qualität ist von anfang an im blick und Fehler werden erkannt, *aber* es wird gehofft später die Zeit dafür zu finden.
+- Qualität ist von Anfang an im Blick und Fehler werden erkannt, *aber* es wird gehofft später die Zeit dafür zu finden.
 
 ### Entwickler
 
 Entwickler arbeiten jedoch mit dem folgenden Wissen:
 
-- sie müssen Manager erst davon Überzeugen, dass ein geringer technical debt ein Vorteil ist
+- sie müssen Manager erst davon überzeugen, dass ein geringer technical debt ein Vorteil ist
 - das Wissen, dass Code zu 90% gelesen wird und nicht nur von einer Person
 - das Wissen, dass die Wartung von Code und die Erweiterung mehr als die Gesamtkosten von Software ausmachen
 
@@ -72,7 +72,7 @@ Der Aufwand für das Einführen neuer Features steigt.
 
 Der Break-Even-Point, an dem es sich nicht mehr lohnt den technical debt zu erhöhen, weil man mit dem Produkt kein Geld mehr verdienen kann, ist schneller erreicht.
 
-Die Vorteile & Nachteile von der Verwendung von gutem Design oder keinem Design sind folgende:
+Die Vorteile & Nachteile von der Verwendung von gutem Design oder keinem Design sind Folgende:
 
 kein Design:
 - zu Beginn schneller mehr Funktionalitäten
@@ -86,7 +86,7 @@ gutes Design:
 - die Produktivität bleibt erhalten
 - neue Features können besser implementiert werden
 
-### Dies gelingt durch Prinzipen die in Form von Best Practices und Smells, dem wissen was passiert, wenn man die Prinzipen und Regeln nicht einhält, gelebt werden müssen.
+### Dies gelingt durch Prinzipen die in Form von Best Practices und Smells, dem Wissen was passiert, wenn man die Prinzipen und Regeln nicht einhält, gelebt werden müssen.
 
 ## 4. Grundlegende Prinzipien der Programmierung
 
@@ -108,9 +108,9 @@ Diese besagen folgendes:
 - versteckte zeitliche Kopplung vermeiden
 - nicht willkürlich sein
 
-## 5. Best practices und Prinzipien für Clean Code und besseres Entwicklen von Code
+## 5. Best practices für Clean Code und Beispiele aus dem Projekt
 
-Im folgenden werden Bestpractices und dazugehörige Smells für folgende Bereiche erläutert
+Im Folgenden werden Bestpractices und dazugehörige Smells für folgende Bereiche erläutert
 
 - Programmierprinzipien
 - Grundlagen
@@ -122,7 +122,7 @@ Im folgenden werden Bestpractices und dazugehörige Smells für folgende Bereich
 
 ## Grundlagen
 
-### Nutzlosen code entfernen
+### Nutzlosen Code entfernen
 
 **BP** = Wenn Code tatsächlich zur späteren Aufgabe gehört, wird dieser mit einem TODO() versehen und in die Backlogliste eingetragen.
 
@@ -133,12 +133,12 @@ Im folgenden werden Bestpractices und dazugehörige Smells für folgende Bereich
 **BP** = Der Code sollte mindestens auf Paket- oder Klassenebene ausreichend dokumentiert sein.
 
 Wobei es zwei Meinungen gibt: 
-- alles muss Dokumentiert werden
+- alles muss dokumentiert werden
 - der Code muss klar lesbar geschrieben sein
 
 **Smell** = Dies dient für den abstrakten Einstieg in den Quellcode.
 
-### Präzise Bennenungen
+### Präzise Benennungen
 
 **BP** = Es sollten selbsterklärende Namen verwendet werden, die nicht zu lang sind und es sollte eine konsistente Benennung beibehalten werden.
 
