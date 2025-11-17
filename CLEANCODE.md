@@ -753,3 +753,18 @@ Es gibt 4 Bereiche wo generative KI aktiv genutz werden kann
 **3. auf Anfrage zum Druchführen einer Code-Analyse**
 
 **4. zum Durchführen eines Refactoring**
+
+
+## 7. Fazit
+
+### Clean Code ist mehr als eine Sammlung von Prinzipien und Empfehlungen.
+
+Clan Code ist eine Arbeitskultur und ein Qualitätsversprechen an sich selbst und das Team, welches die Software langfristig weiterentwicklt.
+Clean Code ist ein kontinuierlicher Prozess und eine berufliche Haltung.
+Wobei sich jeder Schritt in richtung Qualität auszahlt und eine Investition in folgende Punkte ist.
+
+- in stabiliere Produkte
+- in gerinegre Kosten
+- in bessere Wartbarkeit
+- in höhere Zufriedenheit bei Nutzern und entwicklern
+- in den Erfolg des Unternehmens
