@@ -10,7 +10,7 @@ Inhaltsverzeichnis
 
 **4. Grundlegende Prinzipien der Programmierung**
 
-**5. Best practices für Clean Code und Beispiele aus dem Projekt**
+**5. Best practices für Clean Code und Beispiele**
 
 **6. Clean Code und Generative KI**
 
@@ -108,7 +108,7 @@ Diese besagen folgendes:
 - versteckte zeitliche Kopplung vermeiden
 - nicht willkürlich sein
 
-## 5. Best practices für Clean Code und Beispiele aus dem Projekt
+## 5. Best practices für Clean Code und Beispiele
 
 Im Folgenden werden Bestpractices und dazugehörige Smells für folgende Bereiche erläutert
 
@@ -126,7 +126,42 @@ Im Folgenden werden Bestpractices und dazugehörige Smells für folgende Bereich
 
 **BP** = Wenn Code tatsächlich zur späteren Aufgabe gehört, wird dieser mit einem TODO() versehen und in die Backlogliste eingetragen.
 
-**Smell** = Ungenutzer & zweckloser Code, der setehen bleibt, verringert die Code Coverage.
+**Smell** = Ungenutzer & zweckloser Code, der stehen bleibt, verringert die Code Coverage.
+
+
+#### ❌ falsch – unnützer Code bleibt einfach stehen
+```java
+public class PriceCalculator {
+
+    public double calculateTotal(double price, int quantity) {
+        double total = price * quantity;
+
+        // Geplante Rabattfunktion … irgendwann
+        // private double applyDiscount(double total) {
+        //     return total * 0.9;
+        // }
+        //
+        // double discounted = applyDiscount(total); // aktuell nicht genutzt
+
+        return total;
+    }
+}
+```
+
+#### ✔️ richtig - Code für spätere Aufgaben wird mit TODO gekennzeichnet
+```java
+public class PriceCalculator {
+
+    public double calculateTotal(double price, int quantity) {
+        double total = price * quantity;
+
+        // TODO: Rabattfunktion implementieren (siehe Backlog)
+        // Idee: applyDiscount(total) -> total * 0.9
+
+        return total;
+    }
+}
+```
 
 ### Nutzlose Kommentare entfernen
 
@@ -137,6 +172,35 @@ Wobei es zwei Meinungen gibt:
 - der Code muss klar lesbar geschrieben sein
 
 **Smell** = Dies dient für den abstrakten Einstieg in den Quellcode.
+
+#### ❌ falsch – ungenutzte Variablen und Methoden
+```java
+public class UserProcessor {
+
+    public String processUser(String user) {
+        int unusedValue = 42;  // Wird nie verwendet
+
+        helper(); // Wird gar nichts tun
+
+        return "Processing " + user;
+    }
+
+    private void helper() {
+        // die Methodenvariable wird nicht genutzt
+        String user = "test";
+    }
+}
+```
+
+#### ✔️ richtig - unnützer Code wird konsequent entfernt
+public class UserProcessor {
+
+    public String processUser(String user) {
+        return "Processing " + user;
+    }
+}
+```
+
 
 ### Präzise Benennungen
 
@@ -150,11 +214,77 @@ Wobei es zwei Meinungen gibt:
 
 **Smell** = Der Code sollte sich wie Prosa lesen.
 
+#### ❌ Schlechter Code – unklare und irreführende Namen
+
+```java
+public class X1 {
+
+    public void doStuff(int a) {
+        if (a > 18) {
+            System.out.println("OK");
+        }
+    }
+}
+
+interface D {
+    void t();
+}
+```
+
+#### ✔️ richtig - präzise, aussagekräftige und konsistente Namen
+```java
+public class AgeValidator {
+
+    public void validateAdultAge(int age) {
+        if (isAdult(age)) {
+            System.out.println("Age is valid for adult requirements.");
+        }
+    }
+
+    private boolean isAdult(int age) {
+        return age >= 18;
+    }
+}
+
+interface Notifier {
+    void sendNotification();
+}
+```
+
 ### Magic Numbers vermeiden
 
 **BP** = Es sollte genau deutlich gemacht werden, was die Zahlen bedeuten.
 
 **Smell** = Es wird viel Zeit verloren, um Magic Numbers zu verstehen.
+
+#### ❌ Schlechter Code – Bedeutung der Zahlen nicht erkennbar
+```java
+public class DiscountCalculator {
+
+    public double calculate(double amount) {
+        if (amount > 500) {
+            return amount * 0.85; // ? Warum 0.85?
+        }
+        return amount;
+    }
+}
+```
+
+#### ✔️ richtig - Verwendung von Konstanten mit eindeutigen Namen
+```java
+public class DiscountCalculator {
+
+    private static final double MIN_AMOUNT_FOR_DISCOUNT = 500.0;
+    private static final double DISCOUNT_FACTOR = 0.85;
+
+    public double calculate(double amount) {
+        if (amount > MIN_AMOUNT_FOR_DISCOUNT) {
+            return amount * DISCOUNT_FACTOR;
+        }
+        return amount;
+    }
+}
+```
 
 ### Keine Seiteneffekte erzeugen
 
@@ -162,12 +292,55 @@ Wobei es zwei Meinungen gibt:
 
 - andere Module verlassen sich auf Variablen, diese sollten nicht plötzlich negative Zahlen haben und für Fehler sorgen
 
+#### ❌ Schlechter Code – Methode verändert unerwartet den Zustand
+
+```java
+public class AccountService {
+
+    private double balance = 1000.0;
+
+    public double getBalanceAndApplyFees() {
+        // Seiteneffekt: Der Kontostand wird verändert,
+        // obwohl der Methodenname nur "lesen" suggeriert
+        balance = balance - 50.0; // Gebühr abziehen
+        return balance;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+}
+```
+
 ### Felder sollen den Zustand definieren
 
 **BP** = Felder sollten einen stabilen Zustand eines Objektes repräsentieren.
 
 - durch lokale Variablen
 - durch Extrahieren einer Klasse, die temporäre Zustände berechnet oder verwendet
+
+#### ❌ Schlechter Code – Felder als temporäre Berechnungsvariablen
+
+public class OrderCalculator {
+
+    // Diese Felder definieren keinen stabilen Objektzustand,
+    // sie werden nur innerhalb von Methoden temporär genutzt
+    private double netPrice;
+    private double tax;
+    private double total;
+
+    public double calculateTotal(double amount, double taxRate) {
+        netPrice = amount;
+        tax = netPrice * taxRate;
+        total = netPrice + tax;
+        return total;
+    }
+}
+```
+- Felder werden nur als Zwischenwerte genutzt
+- die Instanz hat nach Berechnungen einen „zufälligen“ Zustand
+- Nebenläufigkeit / Parallelität wird schwierig und fehleranfällig
+- von außen ist unklar, welche Werte gerade gültig sind
 
 ### Korrekte Behandlung von Exceptions verwenden
 
@@ -177,6 +350,54 @@ Wobei es zwei Meinungen gibt:
 - auf einer Ebene sein, auf der man sinvoll damit umgehen kann
 - sauber verarbeitet werden
 - nicht für den normalen Kontrollfluss verwendet werden
+
+#### ❌ Schlechter Code – zu allgemeines Catch, schlechtes Handling
+```java
+public class FileReaderService {
+
+    public String readConfig(String path) {
+        try {
+            // Alles Mögliche kann hier schiefgehen
+            java.nio.file.Path filePath = java.nio.file.Paths.get(path);
+            return java.nio.file.Files.readString(filePath);
+        } catch (Exception e) {
+            // Alles wird geschluckt und mit null beantwortet
+            // Fängt Exception viel zu allgemein
+            // Keine Log-Ausgabe, kein Hinweis auf Fehlerursache
+            // null als Rückgabewert → Folgefehler an anderer Stelle
+            // Keine differenzierte Reaktion auf unterschiedliche Fehlerarten
+            return null;
+        }
+    }
+}
+```
+#### ✔️ Guter Code – spezifische Exceptions, sinnvolles Handling
+
+```java
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+public class FileReaderService {
+
+    public String readConfig(String path) throws IOException {
+        Path filePath = Paths.get(path);
+
+        try {
+            return Files.readString(filePath);
+        } catch (NoSuchFileException e) {
+            // Spezifische Behandlung: Datei existiert nicht
+            // sinnvolle Log-Nachricht oder alternative Rückgabe
+            throw new IOException("Config file not found: " + path, e);
+        } catch (IOException e) {
+            // Andere I/O-Fehler
+            throw new IOException("Error reading config file: " + path, e);
+        }
+    }
+}
+```
 
 ### Duplizierten Code vermeiden
 
