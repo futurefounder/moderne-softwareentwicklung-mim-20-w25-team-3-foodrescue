@@ -529,16 +529,16 @@ public class OrderProcessor {
 
 #### ✔️ Bessere Strukturierung / Architektur
 
--Frühe Rückgaben (Early Return) nutzen, um tiefe Verschachtelungen zu verhindern.
--Guard Clauses verwenden, um ungültige Zustände sofort zu verlassen.
--Methoden extrahieren, um jede Methode auf ein einziges Abstraktionsniveau zu bringen.
--Komplexe Bedingungen in sprechende Methoden auslagern (z. B. isValidCustomer()).
--Objekte modellieren, die Entscheidungen übernehmen → Verantwortung verteilen.
--Strategie- oder State-Pattern nutzen, wenn verschiedene Fälle unterschiedliche Logiken erfordern.
--Polymorphie statt Kontrollstrukturen – die Objektstruktur entscheidet das Verhalten.
--Enums mit Verhalten (Enum Strategy) statt switch/case.
--Null-Checks vermeiden → Null Object Pattern.
--Verwendung von Optional zur Vereinfachung von Prüfungen.
+- Frühe Rückgaben (Early Return) nutzen, um tiefe Verschachtelungen zu verhindern.
+- Guard Clauses verwenden, um ungültige Zustände sofort zu verlassen.
+- Methoden extrahieren, um jede Methode auf ein einziges Abstraktionsniveau zu bringen.
+- Komplexe Bedingungen in sprechende Methoden auslagern (z. B. isValidCustomer()).
+- Objekte modellieren, die Entscheidungen übernehmen → Verantwortung verteilen.
+- Strategie- oder State-Pattern nutzen, wenn verschiedene Fälle unterschiedliche Logiken erfordern.
+- Polymorphie statt Kontrollstrukturen – die Objektstruktur entscheidet das Verhalten.
+- Enums mit Verhalten (Enum Strategy) statt switch/case.
+- Null-Checks vermeiden → Null Object Pattern.
+- Verwendung von Optional zur Vereinfachung von Prüfungen.
 
 ### Multi-Thread Code trennen
 
