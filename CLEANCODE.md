@@ -193,6 +193,7 @@ public class UserProcessor {
 ```
 
 #### ✔️ richtig - unnützer Code wird konsequent entfernt
+```java
 public class UserProcessor {
 
     public String processUser(String user) {
@@ -215,7 +216,6 @@ public class UserProcessor {
 **Smell** = Der Code sollte sich wie Prosa lesen.
 
 #### ❌ Schlechter Code – unklare und irreführende Namen
-
 ```java
 public class X1 {
 
@@ -293,7 +293,6 @@ public class DiscountCalculator {
 - andere Module verlassen sich auf Variablen, diese sollten nicht plötzlich negative Zahlen haben und für Fehler sorgen
 
 #### ❌ Schlechter Code – Methode verändert unerwartet den Zustand
-
 ```java
 public class AccountService {
 
@@ -320,7 +319,7 @@ public class AccountService {
 - durch Extrahieren einer Klasse, die temporäre Zustände berechnet oder verwendet
 
 #### ❌ Schlechter Code – Felder als temporäre Berechnungsvariablen
-
+```java
 public class OrderCalculator {
 
     // Diese Felder definieren keinen stabilen Objektzustand,
@@ -405,9 +404,86 @@ public class FileReaderService {
 
 **Smell** =  Dies bläht die Codebasis auf und sorgt für erhöhten Wartungsaufwand und Inkonsistenz. Es wird ebenfalls die Verständlichkeit verschlechtert und macht Fehler wahrscheinlicher.
 
+#### ❌ Schlechter Code – Duplizierte Logik
+```java
+public class UserService {
+
+    public void createAdminUser(String username, String password) {
+        if (username == null || username.isBlank()) {
+            throw new IllegalArgumentException("Username required");
+        }
+        if (password == null || password.length() < 8) {
+            throw new IllegalArgumentException("Password too short");
+        }
+
+        // weitere Validierungen ...
+
+        User user = new User(username, password);
+        user.setRole("ADMIN");
+        saveToDatabase(user);
+    }
+
+    public void createStandardUser(String username, String password) {
+        if (username == null || username.isBlank()) {
+            throw new IllegalArgumentException("Username required");
+        }
+        if (password == null || password.length() < 8) {
+            throw new IllegalArgumentException("Password too short");
+        }
+
+        // dieselben Validierungen nochmal …
+
+        User user = new User(username, password);
+        user.setRole("USER");
+        saveToDatabase(user);
+    }
+
+    private void saveToDatabase(User user) {
+        // Speichern ...
+    }
+}
+```
+#### ✔️ Guter Code – Logik zentralisieren
+```java
+public class UserService {
+
+    public void createAdminUser(String username, String password) {
+        User user = createUser(username, password, "ADMIN");
+        saveToDatabase(user);
+    }
+
+    public void createStandardUser(String username, String password) {
+        User user = createUser(username, password, "USER");
+        saveToDatabase(user);
+    }
+
+    private User createUser(String username, String password, String role) {
+        validateCredentials(username, password);
+        User user = new User(username, password);
+        user.setRole(role);
+        return user;
+    }
+
+    private void validateCredentials(String username, String password) {
+        if (username == null || username.isBlank()) {
+            throw new IllegalArgumentException("Username required");
+        }
+        if (password == null || password.length() < 8) {
+            throw new IllegalArgumentException("Password too short");
+        }
+        // weitere Validierungen ...
+    }
+
+    private void saveToDatabase(User user) {
+        // Speichern ...
+    }
+}
+```
+
 ### Refactoring
 
 **BP** = Man sollte den Refactoring Katalog kennen und die entsprechenden Menüs in der IDE beherrschen.
+-Beispiele: Extract Method, Extract Class, Rename, Inline etc.
 
 ## Code und dessen Qualität
 
@@ -424,6 +500,45 @@ public class FileReaderService {
 ### Korrekte Verwendung von Verschachtelungen
 
 **BP** = Verschachtelter Code sollte zunehmend spezifische Aufgaben übernehmen und auf höherer Ebene sollte die Abstraktion oder Wahrscheinlichkeit eines Aufrufes höher sein.
+#### ❌ Schlechter Code – Unklare, tiefe Verschachtelung
+```java
+public class OrderProcessor {
+
+    public void process(Order order) {
+        if (order != null) {
+            if (order.getItems() != null && !order.getItems().isEmpty()) {
+                if (order.getCustomer() != null) {
+                    if (order.getCustomer().isActive()) {
+                        // eigentliche Logik irgendwo hier ...
+                        System.out.println("Processing order " + order.getId());
+                    } else {
+                        System.out.println("Customer inactive");
+                    }
+                } else {
+                    System.out.println("No customer");
+                }
+            } else {
+                System.out.println("No items");
+            }
+        } else {
+            System.out.println("Order is null");
+        }
+    }
+}
+```
+
+#### ✔️ Bessere Strukturierung / Architektur
+
+-Frühe Rückgaben (Early Return) nutzen, um tiefe Verschachtelungen zu verhindern.
+-Guard Clauses verwenden, um ungültige Zustände sofort zu verlassen.
+-Methoden extrahieren, um jede Methode auf ein einziges Abstraktionsniveau zu bringen.
+-Komplexe Bedingungen in sprechende Methoden auslagern (z. B. isValidCustomer()).
+-Objekte modellieren, die Entscheidungen übernehmen → Verantwortung verteilen.
+-Strategie- oder State-Pattern nutzen, wenn verschiedene Fälle unterschiedliche Logiken erfordern.
+-Polymorphie statt Kontrollstrukturen – die Objektstruktur entscheidet das Verhalten.
+-Enums mit Verhalten (Enum Strategy) statt switch/case.
+-Null-Checks vermeiden → Null Object Pattern.
+-Verwendung von Optional zur Vereinfachung von Prüfungen.
 
 ### Multi-Thread Code trennen
 
@@ -432,12 +547,27 @@ public class FileReaderService {
 ### Conditionals kapseln
 
 **BP** = Es sollte geprüft werden, ob es sinnvoll ist komplexe Logik zu kapseln.
+- komplexe Bedingungen (if-Bedingungen) sollten **gekapselt** werden – z. B. in eigene Methoden mit sprechenden Namen.  
 
 ### Negative Bedingungen Vermeiden
 
 **BP** = Es sollten negative Ausdrücke vermieden werden.
 
 **Smell** = Der Code ist schwer zu lesen und zu verstehen.
+#### ❌ Schlechter Code – doppelte Verneinungen
+```java
+public class AccessService {
+
+    public boolean hasAccess(User user) {
+        if (!user.isNotActive()) {
+            if (!user.isBlocked()) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+```
 
 ### Randbedingungen kapseln
 
@@ -445,6 +575,27 @@ public class FileReaderService {
 
 **Smell** = Dies erschwert unnötig das Refactoring.
 
+#### ❌ Schlechter Code – doppelte Verneinungen
+```java
+public class PaginationService {
+
+    public void printLastPage(List<String> items) {
+        int pageSize = 10;
+
+        int startIndex = items.size() - (items.size() % 10);
+        if (startIndex == items.size()) {
+            startIndex = items.size() - 10;
+        }
+
+        for (int i = startIndex; i < items.size(); i++) {
+            System.out.println(items.get(i));
+        }
+    }
+}
+```
+- 10 ist überall verteilt (Magic Number + Randbedingung)
+- Start-/Endindex werden an mehreren Stellen neu „erfunden“
+- Änderung der Seitenlänge → viele Stellen anpassen
 
 ### Architektur und Klassendesign
 
