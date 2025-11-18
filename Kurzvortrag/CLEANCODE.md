@@ -65,6 +65,8 @@ Das Ziel ist ein gutes Design statt kein Design
 
 ### Die Motivation Clean Code anzuwenden
 
+![good_code_bad_code.jpeg](good_code_bad_code.jpeg)
+
 Jeder kennt das Problem von schlechten Code, aber keiner bekämpft es an der Wurzel, da das Wissen nicht kohärent, sondern selektiv existiert.
 
 Die Probleme sind dabei folgende:
