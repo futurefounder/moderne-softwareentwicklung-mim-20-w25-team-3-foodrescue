@@ -213,13 +213,11 @@ public class UserProcessor {
 
 **BP** = Es sollten selbsterklärende Namen verwendet werden, die nicht zu lang sind und es sollte eine konsistente Benennung beibehalten werden.
 
-- Klasse: beschreibe die Art der Implementierung
-- Methode: beschreibe was sie macht und niemals wie sie es macht
-- Interface: beschreibe die Funktionalität die sie abstrahiert
-- Nebenwirkungen: der Name muss die Nebenwirkung ausdrücken
-- kein Typ/ kein Scope: dies muss im Namen stehen
+- Klasse: beschreibt die Art der Implementierung
+- Methode: beschreibt was sie macht und niemals wie sie es macht
+- Interface: beschreibt die Funktionalität die sie abstrahiert
 
-**Smell** = Der Code sollte sich wie Prosa lesen.
+**Smell** = Der Code sollte gut lesbar sein.
 
 #### ❌ Schlechter Code – unklare und irreführende Namen
 
@@ -261,9 +259,9 @@ interface Notifier {
 
 ### Magic Numbers vermeiden
 
-**BP** = Es sollte genau deutlich gemacht werden, was die Zahlen bedeuten.
+**BP** = Es sollte deutlich gemacht werden, was die Zahlen bedeuten.
 
-**Smell** = Es wird viel Zeit verloren, um Magic Numbers zu verstehen.
+**Smell** = Es kostet viel Zeit um Magic Numbers zu verstehen.
 
 #### ❌ Schlechter Code – Bedeutung der Zahlen nicht erkennbar
 
