@@ -178,16 +178,7 @@ public class PriceCalculator {
 }
 ```
 
-### Nutzlose Kommentare entfernen
-
-**BP** = Der Code sollte mindestens auf Paket- oder Klassenebene ausreichend dokumentiert sein.
-
-Wobei es zwei Meinungen gibt:
-
-- alles muss dokumentiert werden
-- der Code muss klar lesbar geschrieben sein
-
-**Smell** = Dies dient für den abstrakten Einstieg in den Quellcode.
+### Nutzlosen Code entfernen
 
 #### ❌ falsch – ungenutzte Variablen und Methoden
 
