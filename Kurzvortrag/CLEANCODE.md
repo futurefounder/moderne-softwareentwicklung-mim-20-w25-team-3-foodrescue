@@ -126,8 +126,13 @@ Im Folgenden werden Bestpractices und dazugehörige Smells für folgende Bereich
 - Code Basics
 - Architektur und Klassendesign
 - Packages
-- Produktivität
-- Management
+
+## Hilfreiche Tools für die IDE
+
+- SonarQube: Ein sehr beliebtes Tool für kontinuierliche Codequalitätsprüfung, das Fehler, Sicherheitslücken und Code-Smells in über 30 Sprachen wie Java erkennt.
+- Checkmarx: Bietet eine tiefgehende Analyse des Quellcodes zur Erkennung von Sicherheitslücken.
+- Codacy: Ermöglicht automatisierte Code-Reviews und ist besonders gut für die kontinuierliche Verbesserung der Codequalität geeignet.
+- SpotBugs: Ein etabliertes Open-Source-Tool zur Erkennung von Bugs und Schwachstellen, das Bytecode analysiert.
 
 ## Grundlagen
 
@@ -632,62 +637,84 @@ public class PaginationService {
 
 ### stärkere Kopplung bei Vererbung als bei Instanzen
 
-**BP** = Es sollte Besser instantiiert werden als zu vererben.
+**BP** = Es sollte in der Regel besser instanziiert werden als zu vererben.
 
-**Smell** = Dies erschwert die Testbarkeit und Austauschbarkeit von Komponenten.
+**Smell** = Übermäßige Vererbung erschwert Testbarkeit, Wiederverwendung und Austauschbarkeit. Änderungen in der Basisklasse wirken sich unkontrolliert auf Subklassen aus.
+
+#### ❌ Falsch
+
+```java
+public class DiscountOrder extends ArrayList<OrderItem> {
+
+    public double calculateTotalWithDiscount() {
+        double sum = 0;
+        for (OrderItem item : this) {
+            sum += item.price();
+        }
+        return sum * 0.9;
+    }
+}
+```
+#### ✔️ Richtig
+
+```java
+public class DiscountOrder {
+
+    private final List<OrderItem> items;
+
+    public DiscountOrder(List<OrderItem> items) {
+        this.items = new ArrayList<>(items);
+    }
+
+    public double calculateTotalWithDiscount() {
+        return items.stream().mapToDouble(OrderItem::price).sum() * 0.9;
+    }
+
+    public List<OrderItem> getItems() {
+        return Collections.unmodifiableList(items);
+    }
+}
+```
 
 ### Single Responsibility Principle
 
 **BP** = Eine Klasse bzw. Modul sollte genau eine Verantwortung haben.
 
-**Smell** = Viele fachliche Abhängigkeiten durch unterschiedliche Aufgaben in einer Klasse machen die Änderungen komplex und fehleranfällig.
+**Smell** = Eine Klasse mit vielen fachlichen Abhängigkeiten und Aufgaben wird komplex und fehleranfällig.
 
 ### einzelne Querschnittsaufgaben
 
-**BP** = Eine fachliche Methode sollte nicht mit Querschnittsaufgaben wie Persistenz, Logging, Sicherheit und Monitoring zugemüllt werden.
+**BP** = Fachliche Methoden sollten nicht mit Logging, Persistence, Security oder Monitoring vermischt werden.
 
-### Tennung von Interfaces
+### Interfaces
 
-**BP** = Die Abhängigkeiten von einem Interfaces sollte minimal sein und Interfaces sollten getrennt und gezielt zugeschnitten werden.
+**BP** = Interfaces sollten klein und fokussiert sein. Konsumenten sollen nur die Methoden sehen, die sie wirklich benötigen.
 
-- besser kleines und stabiles Interface ableiten, welches verwendet werden kann
+**Smell** = große Interfaces zwingen Implementierer zu unnötigen Methoden.
 
 ### Versteckte Informationen
 
-**BP** = Klassen sollten nur das exponieren, was andere unbedingt wissen müssen, außer unsichtbare Attribute und interne Details sind ausdrücklich gewünscht.
+**Best Practice**  
+Klassen sollen nur das preisgeben, was andere Komponenten unbedingt wissen müssen. Interne Details wie Attribute, Hilfsmethoden oder Zustände sollten verborgen bleiben. Dadurch wird Missbrauch verhindert und die Stabilität der Schnittstelle erhöht.
+
+**Smell**  
+Wenn interne Daten direkt öffentlich zugänglich sind oder Klassen viele Details nach außen offenlegen, entsteht eine hohe Kopplung. Änderungen an der internen Struktur können dann zu zahlreichen Anpassungen in anderen Teilen des Systems führen.
 
 ### Inversion of Control
 
-**BP** = Die Steuerung der Ablauflogik sollte umgedreht ablaufen.
+**Best Practice**  
+Die Steuerung des Programmablaufs soll nicht von der Anwendung selbst, sondern von einem Framework oder Container übernommen werden. Das Framework ruft deine Komponenten auf – nicht umgekehrt. Dadurch entsteht ein klar strukturierter, erweiterbarer und wartbarer Ablauf.
 
-- das Framework ruft die Komponente auf
-
-### Dependency Injection
-
-**BP** = Abhängigkeiten sollten von außen in die Klasse gegeben werden anstatt von der Klasse selbst erzeugt zu werden.
-
-### Open Colsed Principle
-
-**BP** = Komponenten sollten offen für Erweiterungen sein, aber geschlossen für Modifikationen.
-
-### Einfaches und komplexes Refactoring
-
-**BP** = Der Code sollte so umgestaltet werden, dass sein Verhalten unverändert bleibt indem er durch Tests abgesichert ist und
-leicht Rückgängig zu machen ist.
-
-### Alle Basic und Enterprise Patterns prüfen
-
-- Strategy
-- Factory
-- Adapter
-- Strukturpattern
-- Kontrollfluss
-- Aufteilung der komponenten
-- DAtenbankzugriff
+**Smell**  
+Wenn jede Klasse alles selbst erzeugt, selbst initialisiert und selbst steuert, entsteht ein monolithischer Code, der nur schwer testbar und schlecht erweiterbar ist. Ebenso ist ein System ohne IoC häufig stark von konkreten Implementierungen abhängig.
 
 ### Die Implementierung sollte den Entwurf wiederspiegeln
 
-**BP** = Die Implementierung und der Entwurf wie UML-Diagramme oder DDD-Darstellungen dürfen nicht auseinander driften.
+**Best Practice**  
+Die tatsächliche Implementierung sollte mit dem Entwurf übereinstimmen. Fachliche Modelle wie UML-Diagramme oder Domain-Driven-Design-Strukturen sollen im Code wiederzufinden sein. Dadurch bleibt das System für Entwickler nachvollziehbar und wartbar.
+
+**Smell**  
+Wenn Entwurf und Implementierung auseinanderdriften – etwa durch willkürlich organisierte Packages, Klassen ohne klaren Bezug zum Modell oder fachliche Konzepte, die im Code nicht wiederzufinden sind –, wird das System schwer verständlich, inkonsistent und fehleranfällig.
 
 ### Best-Practice am Beispiel der Orderstruktur des Frontends von FoodRescure
 
@@ -749,6 +776,29 @@ Wobei sich jeder Schritt in richtung Qualität auszahlt und eine Investition in 
 ## Weitere BPs
 
 ## Packages
+
+### Dependency Injection
+
+**BP** = Abhängigkeiten sollten von außen in die Klasse gegeben werden anstatt von der Klasse selbst erzeugt zu werden.
+
+### Open Colsed Principle
+
+**BP** = Komponenten sollten offen für Erweiterungen sein, aber geschlossen für Modifikationen.
+
+### Einfaches und komplexes Refactoring
+
+**BP** = Der Code sollte so umgestaltet werden, dass sein Verhalten unverändert bleibt indem er durch Tests abgesichert ist und
+leicht Rückgängig zu machen ist.
+
+### Alle Basic und Enterprise Patterns prüfen
+
+- Strategy
+- Factory
+- Adapter
+- Strukturpattern
+- Kontrollfluss
+- Aufteilung der komponenten
+- DAtenbankzugriff
 
 ### Common Closure und Common Resue
 
