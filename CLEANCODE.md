@@ -16,7 +16,6 @@ Inhaltsverzeichnis
 
 **6. Fazit**
 
-
 ## 1. Was versteht man unter Clean Code ?
 
 **Clean Code** ist der verantwortungsvolle Umgang mit Code, der als Gestaltung von gutem Code beziehungsweise guter Software zu verstehen ist.
@@ -25,9 +24,11 @@ Hierbei ist nicht nur der Code an sich relevant, sondern auch die Architektur un
 ## 2. Was versteht man unter technical debt und wie denken Manager und Entwickler darüber ?
 
 **Technical debt** bezeichnet die Gefahr, die Probleme und die Folgen, welche aus schlecht geschriebenen Code entstehen.
+
 - Manager, Unternehmen und Entwickler sind sich der Bedeutung eines hohen technical debt (technische Schuld) nicht bewusst.
 
 ### Manager
+
 - durch den Lock-In-Effekt sind Kunden 10 Jahre oder länger an das Produkt gebunden.
 
 Daher werden Entscheidungen auf Grund von folgender Einordnung gegen gutes Design getroffen.
@@ -35,9 +36,9 @@ Daher werden Entscheidungen auf Grund von folgender Einordnung gegen gutes Desig
 TODO(image einfügen)
 
 - schnelles Geld verdienen und bewusst rücksichtslos sein
-- Unwissende, die  Qualität, Codequalität, Design und technical debt nicht verstehen
+- Unwissende, die Qualität, Codequalität, Design und technical debt nicht verstehen
 - der Gefahr von technical debt nicht bewusst sein und das Problem verschieben
-- Qualität ist von Anfang an im Blick und Fehler werden erkannt, *aber* es wird gehofft später die Zeit dafür zu finden.
+- Qualität ist von Anfang an im Blick und Fehler werden erkannt, _aber_ es wird gehofft später die Zeit dafür zu finden.
 
 ### Entwickler
 
@@ -58,11 +59,11 @@ Das Ziel ist ein gutes Design statt kein Design
 
 ### Die Motivation Clean Code anzuwenden
 
-Jeder kennt das Problem von schlechten Code, aber keiner bekämpft es an der Wurzel, da das Wissen nicht kohärent, sondern selektiv existiert. 
+Jeder kennt das Problem von schlechten Code, aber keiner bekämpft es an der Wurzel, da das Wissen nicht kohärent, sondern selektiv existiert.
 
 Die Probleme sind dabei folgende:
 
-- die **Unwissenheit der Entwickler** 
+- die **Unwissenheit der Entwickler**
 - der **Marktdruck schnell "irgendetwas" zu liefern**
 - die **Wartbarkeit, Lesbarkeit, Testbarkeit** und **Änderbarkeit** von Code nimmt zu
 
@@ -75,13 +76,14 @@ Der Break-Even-Point, an dem es sich nicht mehr lohnt den technical debt zu erh�
 Die Vorteile & Nachteile von der Verwendung von gutem Design oder keinem Design sind Folgende:
 
 kein Design:
+
 - zu Beginn schneller mehr Funktionalitäten
 - im weiteren Verlauf sinkt die Produktivität aufgrund schlechter Wartbarkeit
 - der Aufwand für neue Features steigt
 - die Projekte scheitern dadurch
 
-
 gutes Design:
+
 - zu Beginn weniger Funktionalitäten
 - die Produktivität bleibt erhalten
 - neue Features können besser implementiert werden
@@ -91,15 +93,16 @@ gutes Design:
 ## 4. Grundlegende Prinzipien der Programmierung
 
 ### Die bekanntesten Prinzipien unter Softwareentwicklern sind:
+
 - DRY = Don't repeat yourself.
 - KISS = Keep it simple, stupid.
 
 Diese besagen folgendes:
 
 - Copy and Paste sollte vermieden werden, da dies eine der häufigsten Fehlerquellen ist
-- sowohl die Struktur als auch die Menge an Code ist einfach zu halten und sollte später erweiterbar sein 
+- sowohl die Struktur als auch die Menge an Code ist einfach zu halten und sollte später erweiterbar sein
 
-### Weitere Prinzipien sind: 
+### Weitere Prinzipien sind:
 
 - zu frühe Optimierungen vermeiden
 - Doing vs. Calling Code
@@ -128,8 +131,8 @@ Im Folgenden werden Bestpractices und dazugehörige Smells für folgende Bereich
 
 **Smell** = Ungenutzer & zweckloser Code, der stehen bleibt, verringert die Code Coverage.
 
-
 #### ❌ falsch – unnützer Code bleibt einfach stehen
+
 ```java
 public class PriceCalculator {
 
@@ -149,6 +152,7 @@ public class PriceCalculator {
 ```
 
 #### ✔️ richtig - Code für spätere Aufgaben wird mit TODO gekennzeichnet
+
 ```java
 public class PriceCalculator {
 
@@ -167,13 +171,15 @@ public class PriceCalculator {
 
 **BP** = Der Code sollte mindestens auf Paket- oder Klassenebene ausreichend dokumentiert sein.
 
-Wobei es zwei Meinungen gibt: 
+Wobei es zwei Meinungen gibt:
+
 - alles muss dokumentiert werden
 - der Code muss klar lesbar geschrieben sein
 
 **Smell** = Dies dient für den abstrakten Einstieg in den Quellcode.
 
 #### ❌ falsch – ungenutzte Variablen und Methoden
+
 ```java
 public class UserProcessor {
 
@@ -193,6 +199,7 @@ public class UserProcessor {
 ```
 
 #### ✔️ richtig - unnützer Code wird konsequent entfernt
+
 ```java
 public class UserProcessor {
 
@@ -201,7 +208,6 @@ public class UserProcessor {
     }
 }
 ```
-
 
 ### Präzise Benennungen
 
@@ -216,6 +222,7 @@ public class UserProcessor {
 **Smell** = Der Code sollte sich wie Prosa lesen.
 
 #### ❌ Schlechter Code – unklare und irreführende Namen
+
 ```java
 public class X1 {
 
@@ -232,6 +239,7 @@ interface D {
 ```
 
 #### ✔️ richtig - präzise, aussagekräftige und konsistente Namen
+
 ```java
 public class AgeValidator {
 
@@ -258,6 +266,7 @@ interface Notifier {
 **Smell** = Es wird viel Zeit verloren, um Magic Numbers zu verstehen.
 
 #### ❌ Schlechter Code – Bedeutung der Zahlen nicht erkennbar
+
 ```java
 public class DiscountCalculator {
 
@@ -271,6 +280,7 @@ public class DiscountCalculator {
 ```
 
 #### ✔️ richtig - Verwendung von Konstanten mit eindeutigen Namen
+
 ```java
 public class DiscountCalculator {
 
@@ -293,6 +303,7 @@ public class DiscountCalculator {
 - andere Module verlassen sich auf Variablen, diese sollten nicht plötzlich negative Zahlen haben und für Fehler sorgen
 
 #### ❌ Schlechter Code – Methode verändert unerwartet den Zustand
+
 ```java
 public class AccountService {
 
@@ -319,6 +330,7 @@ public class AccountService {
 - durch Extrahieren einer Klasse, die temporäre Zustände berechnet oder verwendet
 
 #### ❌ Schlechter Code – Felder als temporäre Berechnungsvariablen
+
 ```java
 public class OrderCalculator {
 
@@ -336,6 +348,7 @@ public class OrderCalculator {
     }
 }
 ```
+
 - Felder werden nur als Zwischenwerte genutzt
 - die Instanz hat nach Berechnungen einen „zufälligen“ Zustand
 - Nebenläufigkeit / Parallelität wird schwierig und fehleranfällig
@@ -343,7 +356,7 @@ public class OrderCalculator {
 
 ### Korrekte Behandlung von Exceptions verwenden
 
-**BP** = Exceptions sollten folgendes beachten:  
+**BP** = Exceptions sollten folgendes beachten:
 
 - so spezifisch wie möglich abgefangen werden
 - auf einer Ebene sein, auf der man sinvoll damit umgehen kann
@@ -351,6 +364,7 @@ public class OrderCalculator {
 - nicht für den normalen Kontrollfluss verwendet werden
 
 #### ❌ Schlechter Code – zu allgemeines Catch, schlechtes Handling
+
 ```java
 public class FileReaderService {
 
@@ -370,6 +384,7 @@ public class FileReaderService {
     }
 }
 ```
+
 #### ✔️ Guter Code – spezifische Exceptions, sinnvolles Handling
 
 ```java
@@ -402,9 +417,10 @@ public class FileReaderService {
 
 **BP** = DRY steht für "Don't repeat yourself" und bedeutet, dass man selbst geschrieben Code nicht wiederholen sollte.
 
-**Smell** =  Dies bläht die Codebasis auf und sorgt für erhöhten Wartungsaufwand und Inkonsistenz. Es wird ebenfalls die Verständlichkeit verschlechtert und macht Fehler wahrscheinlicher.
+**Smell** = Dies bläht die Codebasis auf und sorgt für erhöhten Wartungsaufwand und Inkonsistenz. Es wird ebenfalls die Verständlichkeit verschlechtert und macht Fehler wahrscheinlicher.
 
 #### ❌ Schlechter Code – Duplizierte Logik
+
 ```java
 public class UserService {
 
@@ -443,7 +459,9 @@ public class UserService {
     }
 }
 ```
+
 #### ✔️ Guter Code – Logik zentralisieren
+
 ```java
 public class UserService {
 
@@ -500,7 +518,9 @@ public class UserService {
 ### Korrekte Verwendung von Verschachtelungen
 
 **BP** = Verschachtelter Code sollte zunehmend spezifische Aufgaben übernehmen und auf höherer Ebene sollte die Abstraktion oder Wahrscheinlichkeit eines Aufrufes höher sein.
+
 #### ❌ Schlechter Code – Unklare, tiefe Verschachtelung
+
 ```java
 public class OrderProcessor {
 
@@ -547,14 +567,17 @@ public class OrderProcessor {
 ### Conditionals kapseln
 
 **BP** = Es sollte geprüft werden, ob es sinnvoll ist komplexe Logik zu kapseln.
-- komplexe Bedingungen (if-Bedingungen) sollten **gekapselt** werden – z. B. in eigene Methoden mit sprechenden Namen.  
+
+- komplexe Bedingungen (if-Bedingungen) sollten **gekapselt** werden – z. B. in eigene Methoden mit sprechenden Namen.
 
 ### Negative Bedingungen Vermeiden
 
 **BP** = Es sollten negative Ausdrücke vermieden werden.
 
 **Smell** = Der Code ist schwer zu lesen und zu verstehen.
+
 #### ❌ Schlechter Code – doppelte Verneinungen
+
 ```java
 public class AccessService {
 
@@ -576,6 +599,7 @@ public class AccessService {
 **Smell** = Dies erschwert unnötig das Refactoring.
 
 #### ❌ Schlechter Code – doppelte Verneinungen
+
 ```java
 public class PaginationService {
 
@@ -593,6 +617,7 @@ public class PaginationService {
     }
 }
 ```
+
 - 10 ist überall verteilt (Magic Number + Randbedingung)
 - Start-/Endindex werden an mehreren Stellen neu „erfunden“
 - Änderung der Seitenlänge → viele Stellen anpassen
@@ -615,13 +640,11 @@ public class PaginationService {
 
 **BP** = Eine fachliche Methode sollte nicht mit Querschnittsaufgaben wie Persistenz, Logging, Sicherheit und Monitoring zugemüllt werden.
 
-
 ### Tennung von Interfaces
 
 **BP** = Die Abhängigkeiten von einem Interfaces sollte minimal sein und Interfaces sollten getrennt und gezielt zugeschnitten werden.
 
 - besser kleines und stabiles Interface ableiten, welches verwendet werden kann
-
 
 ### Versteckte Informationen
 
@@ -633,7 +656,6 @@ public class PaginationService {
 
 - das Framework ruft die Komponente auf
 
-
 ### Dependency Injection
 
 **BP** = Abhängigkeiten sollten von außen in die Klasse gegeben werden anstatt von der Klasse selbst erzeugt zu werden.
@@ -644,9 +666,8 @@ public class PaginationService {
 
 ### Einfaches und komplexes Refactoring
 
-**BP** = Der Code sollte so umgestaltet werden, dass sein Verhalten unverändert bleibt indem er durch Tests abgesichert ist und 
-leicht Rückgängig zu machen ist. 
-
+**BP** = Der Code sollte so umgestaltet werden, dass sein Verhalten unverändert bleibt indem er durch Tests abgesichert ist und
+leicht Rückgängig zu machen ist.
 
 ### Alle Basic und Enterprise Patterns prüfen
 
@@ -658,27 +679,109 @@ leicht Rückgängig zu machen ist.
 - Aufteilung der komponenten
 - DAtenbankzugriff
 
-
 ### Die Implementierung sollte den Entwurf wiederspiegeln
 
 **BP** = Die Implementierung und der Entwurf wie UML-Diagramme oder DDD-Darstellungen dürfen nicht auseinander driften.
 
+### Best-Practice am Beispiel der Orderstruktur des Frontends von FoodRescure
+
+Die Frontend-Ordnerstruktur des FoodRescue-Projekts wendet u.a. folgende Clean Code Prinzipien an:
+
+- **Separation of Concerns** (Trennung nach Verantwortlichkeiten), 
+- **Single Responsibility Principle** (jede Datei hat eine klare Aufgabe) und 
+- **Modularisierung** (Aufteilung in wiederverwendbare Module). 
+
+Diese Prinzipien zeigen sich durch die Aufteilung in `css/`, `img/` und `js/` Ordner, wobei jeder Ordner einen spezifischen Dateityp und Verantwortungsbereich abdeckt. Im `js/` Ordner wird die Modularisierung deutlich: Jede JavaScript-Datei (authActions, authMode, dashboard, dom, main, notifications) hat eine klar definierte Aufgabe, was die Lesbarkeit und Wartbarkeit erhöht und Code-Duplikation vermeidet.
+
+> **Frontend-Ordnerstruktur:**
+>
+> ```
+> static/
+>   ├── css/
+>   │   ├── dashboard.css
+>   │   └── styles.css
+>   ├── img/
+>   │   ├── food-rescue-hero-login.jpg
+>   │   └── kawaii-food.png
+>   ├── js/
+>   │   ├── authActions.js
+>   │   ├── authMode.js
+>   │   ├── dashboard.js
+>   │   ├── dom.js
+>   │   ├── main.js
+>   │   └── notifications.js
+>   ├── dashboard.html
+>   └── index.html
+> ```
+
+## 6. Clean Code und Generative KI
+
+Generative KI bietet mindestens diverse Anwendungsbereiche, um Clean Code Prinzipien systematisch umzusetzen:
+
+**1. Kontinuierliche Code-Überwachung**
+KI-gestützte Tools überwachen den Code in Echtzeit und identifizieren automatisch Verstöße gegen Clean Code Prinzipien
+
+**2. Kontextbezogene Inline-Vorschläge**
+Während des Entwicklungsprozesses erhalten Entwickler unmittelbare Verbesserungsvorschläge direkt in ihrer Entwicklungsumgebung
+
+**3. Gezielte Code-Analyse auf Anfrage**
+Bei Bedarf können detaillierte Analysen durchgeführt werden, die Code-Qualität, Wartbarkeit und potenzielle Problembereiche aufzeigen
+
+**4. Automatisiertes Refactoring**
+KI kann komplexe Refactoring-Aufgaben durchführen und dabei die Funktionalität bewahren, während die Code-Qualität verbessert wird
+
+Dabei liegt die Vermutung nahe, dass die zunehmende Nutzung von KI zu einer Verbesserung der allgemeinen Code-Qualität beitragen würde. Jedoch scheint derzeit das Gegenteil der Fall zu sein, wie einige aktuelle Beobachtungen zeigen:
+
+
+
+
+> "**_AI Doesn't Create Technical Debt — But It Can Supercharge It_**
+>
+> _AI won't wreck your codebase by itself, but if there's no strict oversight, it can accelerate technical debt at an insane pace. The key? Never accept AI-generated code blindly—keep solid review, architecture, and quality processes in place._"
+>
+> — Quelle: [Kodus.io - "How AI-Generated Code is messing with your Technical Debt"](https://kodus.io/en/ai-generated-code-is-messing-with-your-technical-debt/#:~:text=AI%20won't%20wreck%20your,and%20quality%20processes%20in%20place])
+
+Die zentrale Erkenntnis der Artikels ist: KI erzeugt nicht per se technische Schulden, kann diese aber bei fehlender Kontrolle exponentiell beschleunigen. Der kritische Erfolgsfaktor liegt in der strikten Überwachung. KI-generierter Code sollte also nicht blind übernommen werden.
+
+## 7. Fazit
+
+### Clean Code ist mehr als eine Sammlung von Prinzipien und Empfehlungen.
+
+Clan Code ist eine Arbeitskultur und ein Qualitätsversprechen an sich selbst und das Team, welches die Software langfristig weiterentwicklt.
+Clean Code ist ein kontinuierlicher Prozess und eine berufliche Haltung.
+Wobei sich jeder Schritt in richtung Qualität auszahlt und eine Investition in folgende Punkte ist.
+
+- in stabiliere Produkte
+- in gerinegre Kosten
+- in bessere Wartbarkeit
+- in höhere Zufriedenheit bei Nutzern und entwicklern
+- in den Erfolg des Unternehmens
+
+## Anhang
+
+## Weitere BPs
+
 ## Packages
 
 ### Common Closure und Common Resue
+
 - Packages bzw. eine Klasse sollte so gestaltet werden, dass sie nicht geändert werden muss, aber erweritert werden kann
 - Klassen die gemeinsam geändert oder gemeinsam wiederverwendet werden, gehören in das selbe Package
 
 ### Visualisierung von Paketabhängigkeiten
+
 - Packages sollten nur nach rechts oder unten zugreifen, aber nie nach oben oder links.
 
 ### Paketabhängigkeiten müssen Zyklusfrei sein
+
 - bereits wenige Zyklen reduzieren die Wandelbarkeit und Evolierbarkeit großer Softwaresysteme dramatisch
 
 ### Stabile Abhängigkeiten
+
 - instabile Pakete sollten von stabileren Paketen abhängig sein
 
 ### Stabile Abstraktionen
+
 - je stabiler ein Paket desto abstrakter sollte es sein
 
 ## Produktivität
@@ -707,7 +810,7 @@ leicht Rückgängig zu machen ist.
 
 ### Effektives Buildmanagement verwenden
 
-### CI/CD mit kurzer Cycle-Time 
+### CI/CD mit kurzer Cycle-Time
 
 ## Management
 
@@ -716,14 +819,17 @@ leicht Rückgängig zu machen ist.
 - für konzentriertes Arbeiten sollten Ablenkungen ausgeschaltet und beiseite gelegt werden
 
 ### Fast Launcher
+
 - immer einen schnellen Launcher für Anwendungen und Weblinks zur Hand haben
 
 ### Tastenkombinationen und IDE shortcuts beherrschen
+
 - ständiger Wechsel zwischen Maus und Tastatur stört den Arbeitsfluss und kostet Zeit
 
 ### mehrere Bildschrime oder Virtuelle Desktops
 
 ### Scripting Profi
+
 - schreiben von Macros und Shellskripts
 
 ### UNIX nutzen
@@ -731,6 +837,7 @@ leicht Rückgängig zu machen ist.
 ### den besten Editor und die beste IDE nutzen
 
 ### Das Rad nicht neu erfinden
+
 - die Bibliotheken kennen und nutzen
 
 ### Iterative Entwicklung wie Scrum verwenden
@@ -740,31 +847,3 @@ leicht Rückgängig zu machen ist.
 ### Events besuchen und von den Meistern lernen
 
 ### Sein Wissen teilen
-
-
-## 6. Clean Code und Generative KI
-
-Es gibt 4 Bereiche wo generative KI aktiv genutz werden kann
-
-**1. zur Überwachung von Code**
-
-**2. sich spontane Vorschläge geben lassen**
-
-**3. auf Anfrage zum Druchführen einer Code-Analyse**
-
-**4. zum Durchführen eines Refactoring**
-
-
-## 7. Fazit
-
-### Clean Code ist mehr als eine Sammlung von Prinzipien und Empfehlungen.
-
-Clan Code ist eine Arbeitskultur und ein Qualitätsversprechen an sich selbst und das Team, welches die Software langfristig weiterentwicklt.
-Clean Code ist ein kontinuierlicher Prozess und eine berufliche Haltung.
-Wobei sich jeder Schritt in richtung Qualität auszahlt und eine Investition in folgende Punkte ist.
-
-- in stabiliere Produkte
-- in gerinegre Kosten
-- in bessere Wartbarkeit
-- in höhere Zufriedenheit bei Nutzern und entwicklern
-- in den Erfolg des Unternehmens
