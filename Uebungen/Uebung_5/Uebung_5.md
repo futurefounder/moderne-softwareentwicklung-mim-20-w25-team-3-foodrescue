@@ -81,7 +81,7 @@ Mithilfe von **JaCoCo** wurde die aktuelle Testabdeckung gemessen, Lücken ident
 | **Mockito** | Mocking von Abhängigkeiten (Repositories, Services) |
 | **Spring Boot Test** | Integrationstests der REST-Schicht |
 | **JaCoCo** | Ermittlung und Reporting der Test Coverage |
-| **IntelliJ Coverage View | Visualisierung der Abdeckungsergebnisse |
+| **IntelliJ** Coverage View | Visualisierung der Abdeckungsergebnisse |
 
 ### Vorgehensweise
 
