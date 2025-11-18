@@ -14,7 +14,7 @@ Inhaltsverzeichnis
 
 **6. Clean Code und Generative KI**
 
-**6. Fazit**
+**7. Fazit**
 
 ## 1. Was versteht man unter Clean Code ?
 
@@ -33,7 +33,13 @@ Hierbei ist nicht nur der Code an sich relevant, sondern auch die Architektur un
 
 Daher werden Entscheidungen auf Grund von folgender Einordnung gegen gutes Design getroffen.
 
-TODO(image einfügen)
+
+![CCD_techDebtQuadrant.gif](CCD_techDebtQuadrant.gif)
+
+    Reckless (rücksichtslos / unverantwortlich)
+    Prudent (vernünftig / besonnen)
+    Deliberate (absichtlich / bewusst)
+    Inadvertent (unbeabsichtigt / ungewollt)
 
 - schnelles Geld verdienen und bewusst rücksichtslos sein
 - Unwissende, die Qualität, Codequalität, Design und technical debt nicht verstehen
