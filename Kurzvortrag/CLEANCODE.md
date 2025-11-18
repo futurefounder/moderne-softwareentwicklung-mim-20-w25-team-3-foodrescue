@@ -178,8 +178,6 @@ public class PriceCalculator {
 }
 ```
 
-### Nutzlosen Code entfernen
-
 #### ❌ falsch – ungenutzte Variablen und Methoden
 
 ```java
