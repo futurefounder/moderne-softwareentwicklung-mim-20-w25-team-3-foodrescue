@@ -687,36 +687,17 @@ leicht Rückgängig zu machen ist.
 
 Die Frontend-Ordnerstruktur des FoodRescue-Projekts wendet u.a. folgende Clean Code Prinzipien an:
 
-- **Separation of Concerns** (Trennung nach Verantwortlichkeiten), 
-- **Single Responsibility Principle** (jede Datei hat eine klare Aufgabe) und 
-- **Modularisierung** (Aufteilung in wiederverwendbare Module). 
+- **Separation of Concerns** (Trennung nach Verantwortlichkeiten),
+- **Single Responsibility Principle** (jede Datei hat eine klare Aufgabe) und
+- **Modularisierung** (Aufteilung in wiederverwendbare Module).
 
 Diese Prinzipien zeigen sich durch die Aufteilung in `css/`, `img/` und `js/` Ordner, wobei jeder Ordner einen spezifischen Dateityp und Verantwortungsbereich abdeckt. Im `js/` Ordner wird die Modularisierung deutlich: Jede JavaScript-Datei (authActions, authMode, dashboard, dom, main, notifications) hat eine klar definierte Aufgabe, was die Lesbarkeit und Wartbarkeit erhöht und Code-Duplikation vermeidet.
 
-> **Frontend-Ordnerstruktur:**
->
-> ```
-> static/
->   ├── css/
->   │   ├── dashboard.css
->   │   └── styles.css
->   ├── img/
->   │   ├── food-rescue-hero-login.jpg
->   │   └── kawaii-food.png
->   ├── js/
->   │   ├── authActions.js
->   │   ├── authMode.js
->   │   ├── dashboard.js
->   │   ├── dom.js
->   │   ├── main.js
->   │   └── notifications.js
->   ├── dashboard.html
->   └── index.html
-> ```
+![Frontend-FoodRescue.png](Frontend-FoodRescue.png)
 
 ## 6. Clean Code und Generative KI
 
-Generative KI bietet mindestens diverse Anwendungsbereiche, um Clean Code Prinzipien systematisch umzusetzen:
+Generative KI bietet diverse Anwendungsbereiche, um Clean Code Prinzipien systematisch umzusetzen:
 
 **1. Kontinuierliche Code-Überwachung**
 KI-gestützte Tools überwachen den Code in Echtzeit und identifizieren automatisch Verstöße gegen Clean Code Prinzipien
@@ -732,16 +713,16 @@ KI kann komplexe Refactoring-Aufgaben durchführen und dabei die Funktionalität
 
 Dabei liegt die Vermutung nahe, dass die zunehmende Nutzung von KI zu einer Verbesserung der allgemeinen Code-Qualität beitragen würde. Jedoch scheint derzeit das Gegenteil der Fall zu sein, wie einige aktuelle Beobachtungen zeigen:
 
-
-
-
 > "**_AI Doesn't Create Technical Debt — But It Can Supercharge It_**
 >
 > _AI won't wreck your codebase by itself, but if there's no strict oversight, it can accelerate technical debt at an insane pace. The key? Never accept AI-generated code blindly—keep solid review, architecture, and quality processes in place._"
 >
 > — Quelle: [Kodus.io - "How AI-Generated Code is messing with your Technical Debt"](https://kodus.io/en/ai-generated-code-is-messing-with-your-technical-debt/#:~:text=AI%20won't%20wreck%20your,and%20quality%20processes%20in%20place])
 
-Die zentrale Erkenntnis der Artikels ist: KI erzeugt nicht per se technische Schulden, kann diese aber bei fehlender Kontrolle exponentiell beschleunigen. Der kritische Erfolgsfaktor liegt in der strikten Überwachung. KI-generierter Code sollte also nicht blind übernommen werden.
+![ai-copilot-code-quality-1.webp](ai-copilot-code-quality-1.webp)
+— Kodus.io - AI Copilot Code Quality
+
+Die zentrale Erkenntnis der Artikels ist: KI erzeugt nicht per se technische Schulden, kann diese aber bei fehlender Kontrolle extrem beschleunigen. Der kritische Erfolgsfaktor liegt in der Überwachung und Kontrolle des erzeugten.
 
 ## 7. Fazit
 
