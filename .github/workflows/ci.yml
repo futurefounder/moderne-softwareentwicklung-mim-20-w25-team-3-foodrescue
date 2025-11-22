@@ -1,15 +1,32 @@
-# Anzeigename des Workflows in der GitHub-Actions-Oberfläche.
+# =============================================================================
+# CI/CD Workflow für FoodRescue
+# =============================================================================
+#
+# Workflow-Übersicht:
+# 1. Backend bauen und testen (Maven, Spotless, JaCoCo)
+# 2. Frontend aus backend/src/main/resources/static/ packen
+# 3. Deployment-Status prüfen und erklären
+# 4. Auf GitHub Pages deployen (nur bei Push auf main/dev)
+#
+# Trigger:
+# - Pull Requests gegen main/dev: Tests und Build laufen
+# - Push auf main/dev: Tests, Build und Deployment laufen
+#
+# Permissions:
+# - contents:write für gh-pages Deployment
+# - checks:write für Test-Report-Annotationen
+# - pull-requests:write für PR-Kommentare mit Test-Ergebnissen
+# =============================================================================
+
 name: CI + Pages
 
-# GIBT dem GITHUB_TOKEN Schreibrechte auf den Code (für gh-pages Push)
-# test
-# Token-Berechtigungen für diesen Workflow (least-privilege-Prinzip).
+# Token-Berechtigungen für diesen Workflow (least-privilege-Prinzip)
 permissions:
   contents: write
   checks: write
   pull-requests: write
 
-# Auslöser (Trigger), bei denen der Workflow startet – z. B. Push, PR, Schedule oder manuell.
+# Workflow-Trigger: Läuft bei PRs und Pushes auf main/dev
 on:
   push:
     branches:
@@ -20,23 +37,23 @@ on:
       - main
       - dev
 
-# Sammlung aller Jobs. Jeder Job läuft standardmäßig isoliert in einer eigenen VM/Container.
+# Jobs: Jeder Job läuft standardmäßig isoliert in einer eigenen VM
 
 jobs:
+  # ---------------------------------------------------------------------------
+  # Backend: Build, Test & Coverage
+  # ---------------------------------------------------------------------------
   backend:
     name: Build & Test (Backend)
-    # Wählt die Runner-Umgebung (z. B. ubuntu-latest).
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: backend
-    # Schritte (Steps) dieses Jobs; werden in Reihenfolge ausgeführt.
     steps:
-      # Schritt: Verwendung einer wiederverwendbaren Action 'actions/checkout@v4'.
-      # (Actions sind vorgefertigte Bausteine, z. B. 'actions/checkout' oder 'setup-node'.)
-      # Checkt den Repository-Code aus, damit weitere Schritte darauf zugreifen können.
+      # Repository-Code auschecken
       - uses: actions/checkout@v4
 
+      # Java 21 mit Maven-Cache einrichten
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
@@ -44,9 +61,11 @@ jobs:
           java-version: "21"
           cache: maven
 
+      # Backend bauen, formatieren prüfen, testen und Coverage generieren
       - name: Build, Test & Coverage
         run: mvn -B spotless:check test jacoco:report
 
+      # Test-Ergebnisse als PR-Kommentar und Check veröffentlichen
       - name: Publish Test Report
         uses: dorny/test-reporter@v1
         if: always()
@@ -56,28 +75,30 @@ jobs:
           reporter: java-junit
           fail-on-error: true
 
+      # JaCoCo Coverage-Report als Artefakt hochladen
       - name: Upload JaCoCo report
         uses: actions/upload-artifact@v4
         with:
           name: jacoco-report
           path: backend/target/site/jacoco
 
+  # ---------------------------------------------------------------------------
+  # Frontend: Statische Dateien aus backend/static packen
+  # ---------------------------------------------------------------------------
   package-frontend:
     name: Package Static Frontend
-    # Wählt die Runner-Umgebung (z. B. ubuntu-latest).
     runs-on: ubuntu-latest
-    # Schritte (Steps) dieses Jobs; werden in Reihenfolge ausgeführt.
     steps:
-      # Schritt: Verwendung einer wiederverwendbaren Action 'actions/checkout@v4'.
-      # (Actions sind vorgefertigte Bausteine, z. B. 'actions/checkout' oder 'setup-node'.)
-      # Checkt den Repository-Code aus, damit weitere Schritte darauf zugreifen können.
+      # Repository-Code auschecken
       - uses: actions/checkout@v4
 
+      # Frontend-Dateien aus backend/src/main/resources/static kopieren
       - name: Package frontend from backend static resources
         run: |
           mkdir -p frontend_out
           cp -r backend/src/main/resources/static/. frontend_out/
 
+      # Frontend-Bundle als Artefakt hochladen
       - name: Upload Frontend artifact
         uses: actions/upload-artifact@v4
         with:
@@ -85,13 +106,14 @@ jobs:
           path: frontend_out
           if-no-files-found: error
 
+  # ---------------------------------------------------------------------------
+  # Deployment-Status: Erklärt warum Deployment läuft oder übersprungen wird
+  # ---------------------------------------------------------------------------
   check-deployment:
     name: Check Deployment Status
-    # Wählt die Runner-Umgebung (z. B. ubuntu-latest).
     runs-on: ubuntu-latest
-    # Dieser Job läuft immer, um Deployment-Status zu erklären
-    # Schritte (Steps) dieses Jobs; werden in Reihenfolge ausgeführt.
     steps:
+      # Deployment-Bedingungen im Job Summary anzeigen
       - name: Explain deployment conditions
         run: |
           echo "## 🚀 Deployment Status" >> $GITHUB_STEP_SUMMARY
@@ -117,30 +139,30 @@ jobs:
             echo "Your current branch (\`${{ github.ref_name }}\`) will deploy automatically after merging to main or dev! 🎉" >> $GITHUB_STEP_SUMMARY
           fi
 
+  # ---------------------------------------------------------------------------
+  # Publish: Frontend + Maven Reports auf GitHub Pages deployen
+  # ---------------------------------------------------------------------------
   publish:
     name: Publish GitHub Pages (Frontend + Reports)
-    # Wählt die Runner-Umgebung (z. B. ubuntu-latest).
     runs-on: ubuntu-latest
-    # Abhängigkeiten: Dieser Job startet erst, wenn die angegebenen Jobs erfolgreich waren.
+    # Läuft nur nach erfolgreichen Backend- und Frontend-Jobs
     needs: [backend, package-frontend]
-    # Bedingte Ausführung: Dieser Abschnitt/Job läuft nur, wenn die Bedingung wahr ist.
+    # Nur bei Push auf main oder dev deployen
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev')
-    # Schritte (Steps) dieses Jobs; werden in Reihenfolge ausgeführt.
     steps:
-      # Schritt: Verwendung einer wiederverwendbaren Action 'actions/checkout@v4'.
-      # (Actions sind vorgefertigte Bausteine, z. B. 'actions/checkout' oder 'setup-node'.)
-      # Checkt den Repository-Code aus, damit weitere Schritte darauf zugreifen können.
+      # Repository mit vollständiger Git-History auschecken
       - uses: actions/checkout@v4
-        # 'with': Eingabeparameter für die verwendete Action.
         with:
           fetch-depth: 0
 
+      # Frontend-Bundle von vorherigem Job herunterladen
       - name: Download Frontend bundle
         uses: actions/download-artifact@v4
         with:
           name: frontend-bundle
           path: _site_tmp_frontend
 
+      # Debug: Artefakt-Struktur ausgeben
       - name: "Debug: list downloaded artifact"
         run: |
           echo "== artifact (tree, up to 3 levels) =="
@@ -148,19 +170,19 @@ jobs:
           echo "== ls -la =="
           ls -la _site_tmp_frontend || true
 
+      # Frontend-Dateien in _site/ vorbereiten
       - name: Prepare Frontend output
         run: |
           set -e
           mkdir -p _site
 
-          # Mögliche Layouts des Artefakts nacheinander prüfen:
+          # Verschiedene mögliche Artefakt-Strukturen prüfen
           if   [ -d "_site_tmp_frontend/frontend/frontend_out" ]; then SRC="_site_tmp_frontend/frontend/frontend_out"
           elif [ -d "_site_tmp_frontend/frontend_out" ];         then SRC="_site_tmp_frontend/frontend_out"
           elif [ -d "_site_tmp_frontend/dist" ];                 then SRC="_site_tmp_frontend/dist"
           elif [ -d "_site_tmp_frontend/frontend/dist" ];        then SRC="_site_tmp_frontend/frontend/dist"
           else
-            # Falls keine Unterordner da sind, könnten die Dateien direkt im Root liegen.
-            # Dann prüfen wir auf eine typische Index-Datei.
+            # Fallback: Dateien könnten direkt im Root liegen
             if ls -A _site_tmp_frontend >/dev/null 2>&1; then
               SRC="_site_tmp_frontend"
             else
@@ -172,12 +194,13 @@ jobs:
           echo "Using SRC=$SRC"
           cp -r "$SRC/." _site/
 
-          # SPA-Fallback
+          # SPA-Fallback: 404.html für Client-Side-Routing
           if [ -f "_site/index.html" ]; then cp _site/index.html _site/404.html; fi
 
           echo "== site root =="
           ls -la _site || true
 
+      # Maven Site mit Reports generieren (JaCoCo, Dependencies, etc)
       - name: Build Maven site (Reports)
         uses: actions/setup-java@v4
         with:
@@ -191,9 +214,11 @@ jobs:
           mkdir -p _site/reports
           cp -r backend/target/site/. _site/reports/
 
+      # Jekyll deaktivieren (GitHub Pages würde sonst Dateien mit _ ignorieren)
       - name: Disable Jekyll
         run: touch _site/.nojekyll
 
+      # Ziel-Verzeichnis festlegen: main → root, dev → previews/dev
       - name: Set destination dir (main → root, dev → previews/dev)
         id: dest
         run: |
@@ -205,6 +230,7 @@ jobs:
             echo "keep=true" >> $GITHUB_OUTPUT
           fi
 
+      # Auf gh-pages Branch deployen
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:
