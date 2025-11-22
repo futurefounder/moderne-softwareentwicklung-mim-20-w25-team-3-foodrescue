@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -16,6 +17,15 @@ public class GlobalExceptionHandler {
     Map<String, String> error = new HashMap<>();
     error.put("error", "Validation Error");
     error.put("message", ex.getMessage());
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+  }
+
+  @ExceptionHandler(HttpMessageNotReadableException.class)
+  public ResponseEntity<Map<String, String>> handleHttpMessageNotReadable(
+      HttpMessageNotReadableException ex) {
+    Map<String, String> error = new HashMap<>();
+    error.put("error", "Validation Error");
+    error.put("message", "Ungültige Eingabedaten. Bitte überprüfen Sie Ihre Angaben.");
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
   }
 

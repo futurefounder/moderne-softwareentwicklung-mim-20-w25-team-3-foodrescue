@@ -4,7 +4,7 @@
  */
 
 import { elements } from "./domElements.js";
-import { getIsSignupMode, switchToLoginMode } from "./authModeToggle.js";
+import { getIsSignupMode } from "./authModeToggle.js";
 import { showError, showSuccess } from "./toastNotifications.js";
 
 function handleFormSubmit(event) {
@@ -19,18 +19,6 @@ function handleFormSubmit(event) {
 
 function handleLogin() {
   const email = elements.emailInput.value.trim();
-
-  if (!email) {
-    showError("Bitte E-Mail-Adresse eingeben");
-    return;
-  }
-
-  if (!isValidEmail(email)) {
-    showError(
-      "Bitte eine korrekte E-Mail eingeben (Format z.B. name@email.de)"
-    );
-    return;
-  }
 
   console.log("Login attempt:", { email });
 
@@ -47,30 +35,7 @@ function handleLogin() {
 async function handleSignup() {
   const name = elements.nameInput.value.trim();
   const email = elements.emailInput.value.trim();
-  const role = elements.roleSelect.value;
-
-  // Validate each field individually for better error messages
-  if (!name) {
-    showError("Bitte gib deinen vollständigen Namen ein");
-    return;
-  }
-
-  if (!email) {
-    showError("Bitte gib deine E-Mail-Adresse ein");
-    return;
-  }
-
-  if (!isValidEmail(email)) {
-    showError(
-      "Bitte eine korrekte E-Mail eingeben (Format z.B. name@email.de)"
-    );
-    return;
-  }
-
-  if (!role) {
-    showError("Bitte wähle deine Rolle");
-    return;
-  }
+  const role = elements.roleSelect.value || null;
 
   const requestData = {
     name,
@@ -131,11 +96,6 @@ async function handleSignup() {
     elements.submitBtn.disabled = false;
     elements.submitBtn.textContent = "Konto erstellen";
   }
-}
-
-function isValidEmail(email) {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
 }
 
 export { handleFormSubmit };
