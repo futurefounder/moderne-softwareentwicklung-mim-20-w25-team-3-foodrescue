@@ -13,9 +13,11 @@
 # - Push auf main/dev: Tests, Build und Deployment laufen
 #
 # Permissions:
-# - contents:write für gh-pages Deployment
+# - contents:write für Repository-Zugriff
 # - checks:write für Test-Report-Annotationen
 # - pull-requests:write für PR-Kommentare mit Test-Ergebnissen
+# - pages:write für GitHub Pages Deployment
+# - id-token:write für OIDC Token (sichere Authentifizierung)
 # =============================================================================
 
 name: CI + Pages
@@ -25,6 +27,8 @@ permissions:
   contents: write
   checks: write
   pull-requests: write
+  pages: write
+  id-token: write
 
 # Workflow-Trigger: Läuft bei PRs und Pushes auf main/dev
 on:
@@ -149,56 +153,22 @@ jobs:
     needs: [backend, package-frontend]
     # Nur bei Push auf main oder dev deployen
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev')
+
+    # Deployment-Umgebung für GitHub Pages
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
     steps:
-      # Repository mit vollständiger Git-History auschecken
+      # Repository-Code auschecken
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       # Frontend-Bundle von vorherigem Job herunterladen
       - name: Download Frontend bundle
         uses: actions/download-artifact@v4
         with:
           name: frontend-bundle
-          path: _site_tmp_frontend
-
-      # Debug: Artefakt-Struktur ausgeben
-      - name: "Debug: list downloaded artifact"
-        run: |
-          echo "== artifact (tree, up to 3 levels) =="
-          find _site_tmp_frontend -maxdepth 3 -print
-          echo "== ls -la =="
-          ls -la _site_tmp_frontend || true
-
-      # Frontend-Dateien in _site/ vorbereiten
-      - name: Prepare Frontend output
-        run: |
-          set -e
-          mkdir -p _site
-
-          # Verschiedene mögliche Artefakt-Strukturen prüfen
-          if   [ -d "_site_tmp_frontend/frontend/frontend_out" ]; then SRC="_site_tmp_frontend/frontend/frontend_out"
-          elif [ -d "_site_tmp_frontend/frontend_out" ];         then SRC="_site_tmp_frontend/frontend_out"
-          elif [ -d "_site_tmp_frontend/dist" ];                 then SRC="_site_tmp_frontend/dist"
-          elif [ -d "_site_tmp_frontend/frontend/dist" ];        then SRC="_site_tmp_frontend/frontend/dist"
-          else
-            # Fallback: Dateien könnten direkt im Root liegen
-            if ls -A _site_tmp_frontend >/dev/null 2>&1; then
-              SRC="_site_tmp_frontend"
-            else
-              echo "ERROR: Could not locate frontend output in _site_tmp_frontend" >&2
-              exit 1
-            fi
-          fi
-
-          echo "Using SRC=$SRC"
-          cp -r "$SRC/." _site/
-
-          # SPA-Fallback: 404.html für Client-Side-Routing
-          if [ -f "_site/index.html" ]; then cp _site/index.html _site/404.html; fi
-
-          echo "== site root =="
-          ls -la _site || true
+          path: _site
 
       # Maven Site mit Reports generieren (JaCoCo, Dependencies, etc)
       - name: Build Maven site (Reports)
@@ -207,7 +177,9 @@ jobs:
           distribution: temurin
           java-version: "21"
           cache: maven
-      - run: |
+
+      - name: Generate Maven reports
+        run: |
           cd backend
           mvn -B -DskipTests=false site jacoco:report
           cd ..
@@ -218,25 +190,17 @@ jobs:
       - name: Disable Jekyll
         run: touch _site/.nojekyll
 
-      # Ziel-Verzeichnis festlegen: main → root, dev → previews/dev
-      - name: Set destination dir (main → root, dev → previews/dev)
-        id: dest
-        run: |
-          if [ "${GITHUB_REF##*/}" = "main" ]; then
-            echo "dir=" >> $GITHUB_OUTPUT
-            echo "keep=false" >> $GITHUB_OUTPUT
-          else
-            echo "dir=previews/dev" >> $GITHUB_OUTPUT
-            echo "keep=true" >> $GITHUB_OUTPUT
-          fi
+      # GitHub Pages konfigurieren
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
 
-      # Auf gh-pages Branch deployen
-      - name: Deploy to gh-pages
-        uses: peaceiris/actions-gh-pages@v4
+      # _site als Artefakt für GitHub Pages hochladen
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: _site
-          destination_dir: ${{ steps.dest.outputs.dir }}
-          keep_files: ${{ steps.dest.outputs.keep }}
-          commit_message: "ci: deploy (${{ github.ref_name }}) from ${{ github.sha }}"
+          path: _site
+
+      # Auf GitHub Pages deployen
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
