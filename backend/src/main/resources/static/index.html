@@ -12,18 +12,27 @@
 </head>
 
 <body>
-    <!-- Photo Credit: Photo by Mikhail Nilov: https://www.pexels.com/photo/food-salad-healthy-vegetables-6613047/ -->
+    <!-- Video by Mikhail Nilov: https://www.pexels.com/video/packing-delivery-food-6613037/ -->
 
     <div class="container">
         <!-- Hero Section -->
         <div class="hero-section">
-            <div class="hero-image"></div>
+            <video class="hero-video" autoplay muted loop playsinline>
+                <source src="/video/login-hero.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="video-gradient-overlay"></div>
 
         </div>
 
         <!-- Form Section -->
         <div class="form-section">
             <div class="form-container">
+                <!-- Kawaii Food Icon -->
+                <div class="form-icon">
+                    <img src="/img/kawaii-food.png" alt="Food Rescue Icon">
+                </div>
+
                 <!-- Header -->
                 <div class="form-header">
                     <h2 id="form-title">Save Food, Fight Waste</h2>
@@ -42,7 +51,7 @@
                     <!-- Email field -->
                     <div class="form-group">
                         <label for="email">E-Mail-Adresse</label>
-                        <input type="email" id="email" name="email" placeholder="ihre.email@beispiel.de" required
+                        <input type="email" id="email" name="email" placeholder="deine.email@beispiel.de" required
                             autocomplete="email">
                     </div>
 

@@ -3,6 +3,7 @@ package com.foodrescue.userverwaltung.rest;
 import com.foodrescue.userverwaltung.application.UserApplicationService;
 import com.foodrescue.userverwaltung.commands.RegistriereUserCommand;
 import com.foodrescue.userverwaltung.domain.User;
+import com.foodrescue.userverwaltung.valueobjects.EmailAdresse;
 import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,20 @@ public class UserController {
 
   @PostMapping
   public ResponseEntity<UserResponse> registriereUser(@RequestBody RegistriereUserRequest request) {
+    // Validate request fields in order: name, email (including format), then role
+    if (request.getName() == null || request.getName().trim().isEmpty()) {
+      throw new IllegalArgumentException("Bitte geben Sie einen Namen ein");
+    }
+    if (request.getEmail() == null || request.getEmail().trim().isEmpty()) {
+      throw new IllegalArgumentException("Bitte geben Sie eine E-Mail-Adresse ein");
+    }
+    // Validate email format early by creating EmailAdresse object
+    new EmailAdresse(request.getEmail());
+
+    if (request.getRolle() == null) {
+      throw new IllegalArgumentException("Bitte wählen Sie eine Rolle aus");
+    }
+
     RegistriereUserCommand command =
         new RegistriereUserCommand(request.getName(), request.getEmail(), request.getRolle());
 

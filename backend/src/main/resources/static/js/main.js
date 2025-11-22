@@ -3,8 +3,8 @@
  * Initializes all modules and wires up the application
  */
 
-import { elements } from "./dom.js";
-import { initAuthMode } from "./authMode.js";
+import { elements } from "./domElements.js";
+import { initAuthMode } from "./authModeToggle.js";
 import { handleFormSubmit } from "./authActions.js";
 
 function initEventListeners() {
