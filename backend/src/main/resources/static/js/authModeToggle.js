@@ -3,7 +3,7 @@
  * Handles switching between login and signup modes
  */
 
-import { elements, getToggleLink } from "./dom.js";
+import { elements, getToggleLink } from "./domElements.js";
 
 let isSignupMode = false;
 

@@ -3,9 +3,9 @@
  * Handles form submission, validation, and API calls for login/signup
  */
 
-import { elements } from "./dom.js";
-import { getIsSignupMode, switchToLoginMode } from "./authMode.js";
-import { showError, showSuccess } from "./notifications.js";
+import { elements } from "./domElements.js";
+import { getIsSignupMode, switchToLoginMode } from "./authModeToggle.js";
+import { showError, showSuccess } from "./toastNotifications.js";
 
 function handleFormSubmit(event) {
   event.preventDefault();
