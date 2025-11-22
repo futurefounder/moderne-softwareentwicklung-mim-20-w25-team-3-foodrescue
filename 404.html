@@ -1,56 +1,101 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="de">
 
 <head>
-    <meta charset="utf-8" />
-    <title>FoodRescue</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <style>
-        body {
-            font-family: system-ui, sans-serif;
-            margin: 2rem;
-        }
-
-        .card {
-            border: 1px solid #ddd;
-            border-radius: 12px;
-            padding: 1rem;
-            max-width: 640px;
-        }
-
-        button {
-            padding: .6rem 1rem;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            cursor: pointer;
-        }
-
-        pre {
-            background: #f7f7f7;
-            padding: .75rem;
-            border-radius: 8px;
-            overflow: auto;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodRescue - Lebensmittel retten</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 
 <body>
-    <h1>FoodRescue – Lebensmittel retten</h1>
-    <div class="card" style="visibility: hidden;">
-        <p>Status des Backends:</p>
-        <button id="check">Health check</button>
-        <pre id="out">noch nicht geprüft</pre>
+    <!-- Video by Mikhail Nilov: https://www.pexels.com/video/packing-delivery-food-6613037/ -->
+
+    <div class="container">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <video class="hero-video" autoplay muted loop playsinline>
+                <source src="/video/login-hero.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="video-gradient-overlay"></div>
+
+        </div>
+
+        <!-- Form Section -->
+        <div class="form-section">
+            <div class="form-container">
+                <!-- Kawaii Food Icon -->
+                <div class="form-icon">
+                    <img src="/img/kawaii-food.png" alt="Food Rescue Icon">
+                </div>
+
+                <!-- Header -->
+                <div class="form-header">
+                    <h2 id="form-title">Save Food, Fight Waste</h2>
+                    <p id="form-subtitle">Bitte melde dich an</p>
+                </div>
+
+                <!-- Login/Signup Form -->
+                <form id="auth-form" class="auth-form" novalidate>
+                    <!-- Name field (only for signup) -->
+                    <div class="form-group" id="name-group" style="display: none;">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" placeholder="Ihr vollständiger Name"
+                            autocomplete="name">
+                    </div>
+
+                    <!-- Email field -->
+                    <div class="form-group">
+                        <label for="email">E-Mail-Adresse</label>
+                        <input type="email" id="email" name="email" placeholder="deine.email@beispiel.de" required
+                            autocomplete="email">
+                    </div>
+
+                    <!-- Password field (hidden for now) -->
+                    <div class="form-group" style="display: none;">
+                        <label for="password">Passwort</label>
+                        <input type="password" id="password" name="password" placeholder="Ihr Passwort"
+                            autocomplete="current-password">
+                    </div>
+
+                    <!-- Confirm Password field (hidden for now) -->
+                    <div class="form-group" id="confirm-password-group" style="display: none;">
+                        <label for="confirm-password">Passwort bestätigen</label>
+                        <input type="password" id="confirm-password" name="confirm-password"
+                            placeholder="Passwort wiederholen" autocomplete="new-password">
+                    </div>
+
+                    <!-- Role selector (only for signup) -->
+                    <div class="form-group" id="role-group" style="display: none;">
+                        <label for="role">Rolle</label>
+                        <select id="role" name="role">
+                            <option value="">Bitte wähle deine Rolle</option>
+                            <option value="ABHOLER">Abholer</option>
+                        </select>
+                    </div>
+
+                    <!-- Submit button -->
+                    <button type="submit" class="btn-primary" id="submit-btn">
+                        Anmelden
+                    </button>
+
+                    <!-- Toggle between login/signup -->
+                    <div class="form-footer">
+                        <p id="toggle-text">
+                            Noch kein Konto?
+                            <a href="#" class="link-primary" id="toggle-mode">Registrieren</a>
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 
-    <div class="card" style="margin-top: 1rem;">
-        <h2>Projektdokumentation</h2>
-        <p>Weitere Informationen über das Projekt finden Sie in der automatisch generierten Dokumentation:</p>
-        <a href="docs/index.html"
-            style="display: inline-block; padding: 0.6rem 1rem; background: #007bff; color: white; text-decoration: none; border-radius: 8px;">📚
-            Zur Dokumentation</a>
-    </div>
-
-    <script src="script.js"></script>
+    <script type="module" src="/js/main.js"></script>
 </body>
 
 </html>

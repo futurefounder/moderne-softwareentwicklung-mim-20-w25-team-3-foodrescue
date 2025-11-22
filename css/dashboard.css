@@ -1,0 +1,388 @@
+/* Dashboard Specific Styles */
+
+/* Bright colors for branding */
+:root {
+  --color-bright-orange: #c16200;
+}
+
+/* Dashboard Layout */
+.dashboard-body {
+  position: relative;
+  background-color: var(--color-cream);
+  overflow-x: hidden;
+  max-height: 100vh;
+  overflow-y: hidden;
+}
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  inset: 0;
+  right: auto;
+  background-color: var(--color-white);
+  box-shadow: var(--shadow-md);
+  max-height: 100vh;
+  width: 240px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.sidebar-top {
+  flex-grow: 1;
+}
+
+.sidebar-header {
+  padding: 1.5rem 1rem;
+  text-align: center;
+  border-bottom: 1px solid var(--color-cream);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.sidebar-logo {
+  width: 2.5rem;
+  height: 2.5rem;
+  object-fit: contain;
+}
+
+.sidebar-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1;
+  margin: 0;
+}
+
+.sidebar-title-highlight {
+  color: var(--color-slate);
+}
+
+.sidebar-title-orange {
+  color: var(--color-bright-orange);
+}
+
+.sidebar-nav {
+  padding: 1rem;
+}
+
+.nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.nav-item {
+  margin: 0;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  background-color: var(--color-white);
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--color-text-dark);
+  padding: 0.75rem 1rem;
+  text-decoration: none;
+  transition: all var(--transition-speed) ease;
+}
+
+.nav-link:hover {
+  background-color: var(--color-cream);
+}
+
+.nav-link.active {
+  background-color: var(--color-sage);
+  color: var(--color-slate);
+}
+
+.nav-icon {
+  font-size: 1.125rem;
+  margin-right: 1rem;
+  width: 1.25em;
+  height: 1.25em;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+}
+
+.sidebar-footer {
+  padding: 1rem;
+  border-top: 1px solid var(--color-cream);
+}
+
+.sidebar-footer .nav-link {
+  width: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-primary);
+}
+
+/* Main Content Area */
+.main-content {
+  margin-left: 240px;
+  max-height: 100vh;
+  overflow: auto;
+}
+
+/* Header */
+.main-header {
+  padding: 1.5rem 0;
+  text-align: center;
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-find-donations {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--color-slate);
+  color: var(--color-white);
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: var(--font-primary);
+  cursor: pointer;
+  transition: all var(--transition-speed) ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-find-donations:hover {
+  background-color: #3a4547;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-find-donations:active {
+  transform: translateY(0);
+}
+
+.btn-icon {
+  width: 1.25em;
+  height: 1.25em;
+  margin-right: 0.5rem;
+}
+
+/* Main Content Sections */
+.content-wrapper {
+  padding: 2rem 2rem 1.5rem 2rem;
+}
+
+.content-container {
+  max-width: 64rem;
+  margin: 0 auto;
+}
+
+/* Greeting Card */
+.greeting-card {
+  background-color: var(--color-white);
+  border-radius: 24px;
+  padding: 2rem;
+}
+
+.greeting-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--color-slate);
+}
+
+/* Pickups Section */
+.pickups-section {
+  background-color: var(--color-white);
+  border-radius: 24px;
+  padding: 2rem;
+}
+
+.section-header {
+  margin-bottom: 2.5rem;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-slate);
+  margin: 0 0 0.5rem 0;
+}
+
+.section-subtitle {
+  font-size: 1rem;
+  color: var(--color-text-light);
+  margin: 0;
+}
+
+.pickups-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.pickup-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background-color: var(--color-white);
+  border: 1px solid var(--color-cream);
+  border-radius: 12px;
+  transition: all var(--transition-speed) ease;
+}
+
+.pickup-item:hover {
+  border-color: var(--color-sage);
+  box-shadow: var(--shadow-sm);
+}
+
+.pickup-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.pickup-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  background-color: var(--color-peach);
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.pickup-icon-svg {
+  width: 1.5em;
+  height: 1.5em;
+  stroke: var(--color-slate);
+  fill: none;
+  stroke-width: 2;
+}
+
+.pickup-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.pickup-name {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--color-text-dark);
+  margin: 0 0 0.25rem 0;
+}
+
+.pickup-address {
+  font-size: 0.875rem;
+  color: var(--color-text-light);
+  margin: 0;
+}
+
+.pickup-time {
+  display: inline-flex;
+  padding: 0.5rem 1rem;
+  background-color: var(--color-peach);
+  color: var(--color-slate);
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Scrollbar Styling */
+.main-content::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 0.5rem;
+}
+
+.main-content::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+}
+
+.main-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform var(--transition-speed) ease;
+  }
+
+  .sidebar.mobile-open {
+    transform: translateX(0);
+  }
+
+  .main-content {
+    margin-left: 0;
+  }
+
+  .main-header {
+    left: 0;
+  }
+
+  .content-wrapper {
+    padding: 1rem;
+  }
+
+  .greeting-card,
+  .pickups-section {
+    padding: 1.5rem;
+  }
+
+  .greeting-title {
+    font-size: 1.5rem;
+  }
+
+  .section-title {
+    font-size: 1.25rem;
+  }
+
+  .pickup-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .pickup-time {
+    align-self: flex-start;
+  }
+}
+
+@media (max-width: 640px) {
+  .btn-find-donations {
+    font-size: 0.875rem;
+    padding: 0.625rem 1.25rem;
+  }
+
+  .greeting-title {
+    font-size: 1.25rem;
+  }
+
+  .section-title {
+    font-size: 1.125rem;
+  }
+
+  .pickup-name {
+    font-size: 0.9375rem;
+  }
+
+  .pickup-address {
+    font-size: 0.8125rem;
+  }
+}
