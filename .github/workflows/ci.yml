@@ -79,6 +79,38 @@ jobs:
           path: frontend_out
           if-no-files-found: error
 
+  check-deployment:
+    name: Check Deployment Status
+    # Wählt die Runner-Umgebung (z. B. ubuntu-latest).
+    runs-on: ubuntu-latest
+    # Dieser Job läuft immer, um Deployment-Status zu erklären
+    # Schritte (Steps) dieses Jobs; werden in Reihenfolge ausgeführt.
+    steps:
+      - name: Explain deployment conditions
+        run: |
+          echo "## 🚀 Deployment Status" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [[ "${{ github.event_name }}" == "push" ]] && [[ "${{ github.ref }}" == "refs/heads/main" || "${{ github.ref }}" == "refs/heads/dev" ]]; then
+            echo "✅ **Deployment will proceed**" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Branch: \`${{ github.ref_name }}\`" >> $GITHUB_STEP_SUMMARY
+            echo "Event: \`${{ github.event_name }}\`" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "The 'Publish GitHub Pages' job will deploy to GitHub Pages." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "ℹ️ **Deployment skipped**" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Branch: \`${{ github.ref_name }}\`" >> $GITHUB_STEP_SUMMARY
+            echo "Event: \`${{ github.event_name }}\`" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**Why?** Deployment only happens when:" >> $GITHUB_STEP_SUMMARY
+            echo "- Event is \`push\` (not pull_request)" >> $GITHUB_STEP_SUMMARY
+            echo "- Branch is \`main\` or \`dev\`" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Your current branch (\`${{ github.ref_name }}\`) will deploy automatically after merging to main or dev! 🎉" >> $GITHUB_STEP_SUMMARY
+          fi
+
   publish:
     name: Publish GitHub Pages (Frontend + Reports)
     # Wählt die Runner-Umgebung (z. B. ubuntu-latest).
