@@ -8,7 +8,7 @@ The FoodRescue frontend is a modular JavaScript application that handles user au
 
 ---
 
-## 📁 File Structure
+## File Structure
 
 ### HTML
 
