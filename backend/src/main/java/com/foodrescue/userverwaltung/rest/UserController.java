@@ -30,7 +30,7 @@ public class UserController {
     }
     // Validate email format early by creating EmailAdresse object
     new EmailAdresse(request.getEmail());
-    
+
     if (request.getRolle() == null) {
       throw new IllegalArgumentException("Bitte wählen Sie eine Rolle aus");
     }
