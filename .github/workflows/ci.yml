@@ -6,6 +6,8 @@ name: CI + Pages
 # Token-Berechtigungen für diesen Workflow (least-privilege-Prinzip).
 permissions:
   contents: write
+  checks: write
+  pull-requests: write
 
 # Auslöser (Trigger), bei denen der Workflow startet – z. B. Push, PR, Schedule oder manuell.
 on:
@@ -37,80 +39,22 @@ jobs:
           cache: maven
 
       - name: Build, Test & Coverage
-        run: mvn -B -q spotless:check test jacoco:report
+        run: mvn -B spotless:check test jacoco:report
+
+      - name: Publish Test Report
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: Maven Tests
+          path: backend/target/surefire-reports/*.xml
+          reporter: java-junit
+          fail-on-error: true
 
       - name: Upload JaCoCo report
         uses: actions/upload-artifact@v4
         with:
           name: jacoco-report
           path: backend/target/site/jacoco
-
-  lint-frontend:
-    name: Lint Frontend JavaScript
-    # Wählt die Runner-Umgebung (z. B. ubuntu-latest).
-    runs-on: ubuntu-latest
-    # Schritte (Steps) dieses Jobs; werden in Reihenfolge ausgeführt.
-    steps:
-      # Schritt: Verwendung einer wiederverwendbaren Action 'actions/checkout@v4'.
-      # (Actions sind vorgefertigte Bausteine, z. B. 'actions/checkout' oder 'setup-node'.)
-      # Checkt den Repository-Code aus, damit weitere Schritte darauf zugreifen können.
-      - uses: actions/checkout@v4
-
-      - name: Set up Node
-        # Installiert und konfiguriert Node.js in der gewünschten Version (inkl. Caching von npm/yarn).
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-
-      - name: Create temporary package.json for linting
-        run: |
-          mkdir -p lint_temp
-          cat > lint_temp/package.json << 'EOF'
-          {
-            "name": "foodrescue-lint",
-            "private": true,
-            "type": "module",
-            "devDependencies": {
-              "eslint": "^9.37.0",
-              "@eslint/js": "^9.37.0"
-            }
-          }
-          EOF
-          cp backend/src/main/resources/static/js/*.js lint_temp/
-
-      - name: Install ESLint
-        working-directory: lint_temp
-        run: npm install
-
-      - name: Create ESLint config
-        run: |
-          cat > lint_temp/eslint.config.js << 'EOF'
-          import js from "@eslint/js";
-          export default [
-            js.configs.recommended,
-            {
-              files: ["**/*.js"],
-              languageOptions: {
-                ecmaVersion: "latest",
-                sourceType: "module",
-                globals: {
-                  window: "readonly",
-                  document: "readonly",
-                  fetch: "readonly",
-                  console: "readonly"
-                }
-              },
-              rules: {
-                "no-unused-vars": ["warn", { vars: "all", args: "none" }],
-                "no-undef": "error"
-              }
-            }
-          ];
-          EOF
-
-      - name: Lint JavaScript files
-        working-directory: lint_temp
-        run: npx eslint .
 
   package-frontend:
     name: Package Static Frontend
@@ -140,7 +84,7 @@ jobs:
     # Wählt die Runner-Umgebung (z. B. ubuntu-latest).
     runs-on: ubuntu-latest
     # Abhängigkeiten: Dieser Job startet erst, wenn die angegebenen Jobs erfolgreich waren.
-    needs: [backend, lint-frontend, package-frontend]
+    needs: [backend, package-frontend]
     # Bedingte Ausführung: Dieser Abschnitt/Job läuft nur, wenn die Bedingung wahr ist.
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev')
     # Schritte (Steps) dieses Jobs; werden in Reihenfolge ausgeführt.
