@@ -12,7 +12,13 @@ permissions:
 # Auslöser (Trigger), bei denen der Workflow startet – z. B. Push, PR, Schedule oder manuell.
 on:
   push:
+    branches:
+      - main
+      - dev
   pull_request:
+    branches:
+      - main
+      - dev
 
 # Sammlung aller Jobs. Jeder Job läuft standardmäßig isoliert in einer eigenen VM/Container.
 
