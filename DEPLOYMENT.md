@@ -19,10 +19,13 @@ The project uses GitHub Actions to automatically deploy both the frontend applic
 
 ```
 GitHub Pages Site Root
-├── index.html              # Frontend application
-├── script.js               # Frontend JavaScript
-├── package.json            # Frontend package info
-└── docs/                   # Maven-generated documentation
+├── index.html              # Frontend login page
+├── dashboard.html          # Frontend dashboard
+├── css/                    # Stylesheets
+├── js/                     # JavaScript modules
+├── img/                    # Images
+├── video/                  # Video assets
+└── reports/                # Maven-generated documentation
     ├── index.html          # Project documentation home
     ├── dependencies.html   # Dependencies report
     ├── jacoco/            # Test coverage reports
@@ -31,13 +34,14 @@ GitHub Pages Site Root
 
 ## GitHub Actions Workflow
 
-The deployment is handled by `.github/workflows/deploy.yml` which:
+The deployment is handled by `.github/workflows/ci.yml` which:
 
-1. **Builds the backend** with Maven
-2. **Lints the frontend** with ESLint
-3. **Generates Maven site documentation**
-4. **Combines everything** into a single deployment package
-5. **Deploys to GitHub Pages** automatically
+1. **Builds and tests the backend** with Maven including Spotless checks and JaCoCo coverage
+2. **Lints the frontend JavaScript** from `backend/src/main/resources/static/js/`
+3. **Packages the static frontend** from `backend/src/main/resources/static/`
+4. **Generates Maven site documentation** with reports
+5. **Combines everything** into a single deployment package
+6. **Deploys to GitHub Pages** automatically on push to main or dev branches
 
 ## Setup Requirements
 
@@ -72,7 +76,9 @@ mvn clean site
 Once deployed, your site will be available at:
 
 - **Main Application**: `https://[username].github.io/[repository-name]/`
-- **Documentation**: `https://[username].github.io/[repository-name]/docs/`
+- **Maven Reports & Documentation**: `https://[username].github.io/[repository-name]/reports/`
+  - Test Coverage: `https://[username].github.io/[repository-name]/reports/jacoco/`
+  - Project Information: `https://[username].github.io/[repository-name]/reports/project-info.html`
 
 ## Troubleshooting
 
