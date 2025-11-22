@@ -29,7 +29,7 @@ function handleLogin() {
   localStorage.setItem("userRole", "ABHOLER"); // Default role
 
   // Redirect to dashboard
-  window.location.href = "/dashboard.html";
+  window.location.href = "./dashboard.html";
 }
 
 async function handleSignup() {
@@ -70,7 +70,7 @@ async function handleSignup() {
 
       // Redirect to dashboard after success
       setTimeout(() => {
-        window.location.href = "/dashboard.html";
+        window.location.href = "./dashboard.html";
       }, 1500);
     } else {
       // Handle backend validation errors

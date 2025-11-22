@@ -8,7 +8,7 @@ function checkAuth() {
   const isLoggedIn = localStorage.getItem("isLoggedIn");
   if (!isLoggedIn || isLoggedIn !== "true") {
     // Redirect to login page if not logged in
-    window.location.href = "/index.html";
+    window.location.href = "./index.html";
     return false;
   }
   return true;
