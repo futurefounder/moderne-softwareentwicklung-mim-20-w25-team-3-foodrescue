@@ -86,6 +86,15 @@ jobs:
           name: jacoco-report
           path: backend/target/site/jacoco
 
+      # Test-Ergebnisse und Coverage-Daten für Maven Site speichern
+      - name: Upload test results and coverage data
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: |
+            backend/target/surefire-reports/
+            backend/target/jacoco.exec
+
   # ---------------------------------------------------------------------------
   # Frontend: Statische Dateien aus backend/static packen
   # ---------------------------------------------------------------------------
@@ -170,6 +179,13 @@ jobs:
           name: frontend-bundle
           path: _site
 
+      # Test-Ergebnisse und Coverage-Daten herunterladen (um Tests nicht neu zu laufen)
+      - name: Download test results and coverage data
+        uses: actions/download-artifact@v4
+        with:
+          name: test-results
+          path: backend/target
+
       # Maven Site mit Reports generieren (JaCoCo, Dependencies, etc)
       - name: Build Maven site (Reports)
         uses: actions/setup-java@v4
@@ -181,10 +197,9 @@ jobs:
       - name: Generate Maven reports
         run: |
           cd backend
-          # Run tests first to generate JaCoCo data
-          mvn -B clean test
-          # Then generate the site with all reports including JaCoCo
-          mvn -B site
+          # Keine Tests laufen lassen - verwende bereits generierte Daten
+          # Nur Maven Site mit Reports generieren
+          mvn -B site -DskipTests=true
           cd ..
           mkdir -p _site/reports
           cp -r backend/target/site/. _site/reports/
@@ -195,11 +210,11 @@ jobs:
           echo "=== Maven Site Structure ==="
           ls -la _site/reports/ || echo "No reports"
           echo ""
+          echo "=== Top-level HTML files ==="
+          find _site/reports -maxdepth 1 -name "*.html" -type f
+          echo ""
           echo "=== JaCoCo Report ==="
           ls -la _site/reports/jacoco/ || echo "No JaCoCo report"
-          echo ""
-          echo "=== All HTML files ==="
-          find _site/reports -name "*.html" -type f | head -20
 
       # Jekyll deaktivieren (GitHub Pages würde sonst Dateien mit _ ignorieren)
       - name: Disable Jekyll
