@@ -67,7 +67,7 @@ jobs:
 
       # Backend bauen, formatieren prüfen, testen und Coverage generieren
       - name: Build, Test & Coverage
-        run: mvn -B spotless:check test jacoco:report
+        run: mvn -B spotless:check test
 
       # Test-Ergebnisse als PR-Kommentar und Check veröffentlichen
       - name: Publish Test Report
@@ -78,22 +78,6 @@ jobs:
           path: backend/target/surefire-reports/*.xml
           reporter: java-junit
           fail-on-error: true
-
-      # JaCoCo Coverage-Report als Artefakt hochladen
-      - name: Upload JaCoCo report
-        uses: actions/upload-artifact@v4
-        with:
-          name: jacoco-report
-          path: backend/target/site/jacoco
-
-      # Test-Ergebnisse und Coverage-Daten für Maven Site speichern
-      - name: Upload test results and coverage data
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-results
-          path: |
-            backend/target/surefire-reports/
-            backend/target/jacoco.exec
 
   # ---------------------------------------------------------------------------
   # Frontend: Statische Dateien aus backend/static packen
@@ -179,14 +163,7 @@ jobs:
           name: frontend-bundle
           path: _site
 
-      # Test-Ergebnisse und Coverage-Daten herunterladen (um Tests nicht neu zu laufen)
-      - name: Download test results and coverage data
-        uses: actions/download-artifact@v4
-        with:
-          name: test-results
-          path: backend/target
-
-      # Maven Site mit Reports generieren (JaCoCo, Dependencies, etc)
+      # Maven Site generieren (Project Info)
       - name: Build Maven site (Reports)
         uses: actions/setup-java@v4
         with:
@@ -197,24 +174,12 @@ jobs:
       - name: Generate Maven reports
         run: |
           cd backend
-          # Keine Tests laufen lassen - verwende bereits generierte Daten
+          # Keine Tests laufen lassen - Tests wurden bereits im Backend-Job ausgeführt
           # Nur Maven Site mit Reports generieren
           mvn -B site -DskipTests=true
           cd ..
           mkdir -p _site/reports
           cp -r backend/target/site/. _site/reports/
-
-      # Debug: Zeige generierte Reports
-      - name: Debug Maven reports
-        run: |
-          echo "=== Maven Site Structure ==="
-          ls -la _site/reports/ || echo "No reports"
-          echo ""
-          echo "=== Top-level HTML files ==="
-          find _site/reports -maxdepth 1 -name "*.html" -type f
-          echo ""
-          echo "=== JaCoCo Report ==="
-          ls -la _site/reports/jacoco/ || echo "No JaCoCo report"
 
       # Jekyll deaktivieren (GitHub Pages würde sonst Dateien mit _ ignorieren)
       - name: Disable Jekyll

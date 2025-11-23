@@ -15,14 +15,16 @@
   <body>
     <menu name="Project Information">
       <item name="About" href="index.html"/>
-      <item name="Project Summary" href="project-summary.html"/>
+      <item name="Project Summary" href="summary.html"/>
       <item name="Dependencies" href="dependencies.html"/>
       <item name="Plugins" href="plugins.html"/>
     </menu>
 
+    <!--
     <menu name="Project Reports">
       <item name="Test Coverage" href="jacoco/index.html"/>
     </menu>
+    -->
 
     <menu name="Application">
       <item name="Frontend" href="../index.html"/>
