@@ -181,10 +181,25 @@ jobs:
       - name: Generate Maven reports
         run: |
           cd backend
-          mvn -B -DskipTests=false site jacoco:report
+          # Run tests first to generate JaCoCo data
+          mvn -B clean test
+          # Then generate the site with all reports including JaCoCo
+          mvn -B site
           cd ..
           mkdir -p _site/reports
           cp -r backend/target/site/. _site/reports/
+
+      # Debug: Zeige generierte Reports
+      - name: Debug Maven reports
+        run: |
+          echo "=== Maven Site Structure ==="
+          ls -la _site/reports/ || echo "No reports"
+          echo ""
+          echo "=== JaCoCo Report ==="
+          ls -la _site/reports/jacoco/ || echo "No JaCoCo report"
+          echo ""
+          echo "=== All HTML files ==="
+          find _site/reports -name "*.html" -type f | head -20
 
       # Jekyll deaktivieren (GitHub Pages würde sonst Dateien mit _ ignorieren)
       - name: Disable Jekyll
