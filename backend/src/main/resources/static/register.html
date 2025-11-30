@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FoodRescue – Registrieren</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap"
+          rel="stylesheet" />
+    <link rel="stylesheet" href="./css/styles.css" />
+</head>
+
+<body>
+<div class="container">
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <video class="hero-video" autoplay muted loop playsinline>
+            <source src="./video/login-hero.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+        </video>
+        <div class="video-gradient-overlay"></div>
+    </div>
+
+    <!-- Form Section -->
+    <div class="form-section">
+        <div class="form-container">
+            <div class="form-icon">
+                <img src="./img/kawaii-food.png" alt="Food Rescue Icon" />
+            </div>
+
+            <div class="form-header">
+                <h2>Werde FoodRescuer/in!</h2>
+                <p>Erstelle dein FoodRescue Konto</p>
+            </div>
+
+            <form id="register-form" class="auth-form" novalidate>
+                <!-- Name -->
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name"
+                           placeholder="Ihr vollständiger Name" required />
+                </div>
+
+                <!-- Email -->
+                <div class="form-group">
+                    <label for="email">E-Mail-Adresse</label>
+                    <input type="email" id="email" name="email"
+                           placeholder="deine.email@beispiel.de" required />
+                </div>
+
+                <!-- Rolle -->
+                <div class="form-group">
+                    <label for="role">Rolle</label>
+                    <select id="role" name="role" required>
+                        <option value="">Bitte wähle deine Rolle</option>
+                        <option value="ABHOLER">Abholer</option>
+                        <option value="ANBIETER">Anbieter (mit Profil)</option>
+                    </select>
+                </div>
+
+                <!-- Zusätzliche Felder für Anbieter -->
+                <div class="anbieter-fields" id="anbieter-fields" style="display: none;">
+                    <div class="form-group">
+                        <label for="business-name">Geschäftsname</label>
+                        <input type="text" id="business-name" name="business-name"
+                               placeholder="z. B. Bäckerei Müller" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="business-type">Geschäftstyp</label>
+                        <select id="business-type" name="business-type">
+                            <option value="">Bitte wählen</option>
+                            <option value="BAECKEREI">Bäckerei</option>
+                            <option value="SUPERMARKT">Supermarkt</option>
+                            <option value="RESTAURANT">Restaurant</option>
+                            <option value="IMBISS">Imbiss</option>
+                            <option value="SONSTIGES">Sonstiges</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Adresse</label>
+                        <input type="text" id="address" name="address"
+                               placeholder="Straße Hausnr., PLZ Ort" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="latitude">Breitengrad (optional)</label>
+                        <input type="number" step="0.000001" id="latitude" name="latitude"
+                               placeholder="z. B. 48.137" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="longitude">Längengrad (optional)</label>
+                        <input type="number" step="0.000001" id="longitude" name="longitude"
+                               placeholder="z. B. 11.575" />
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary" id="register-submit-btn">
+                    Konto erstellen
+                </button>
+
+                <div class="form-footer">
+                    <p>
+                        Bereits ein Konto?
+                        <a href="./index.html" class="link-primary">Zur Anmeldung</a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="module" src="./js/register.js"></script>
+</body>
+</html>
