@@ -2,12 +2,12 @@ package com.foodrescue;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-import com.foodrescue.anbieterverwaltung.repositories.AnbieterProfilRepository;
-import com.foodrescue.userverwaltung.repositories.UserRepository;
+import com.foodrescue.userverwaltung.infrastructure.repositories.AnbieterProfilRepository;
+import com.foodrescue.userverwaltung.infrastructure.repositories.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-public class FoodRescueApplicationTest {
+class FoodRescueApplicationTest {
 
   @MockBean AnbieterProfilRepository anbieterProfilRepository;
 

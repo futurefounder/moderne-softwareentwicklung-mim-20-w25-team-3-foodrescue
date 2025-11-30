@@ -2,10 +2,11 @@ package com.foodrescue.userverwaltung.domain;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.foodrescue.userverwaltung.valueobjects.EmailAdresse;
-import com.foodrescue.userverwaltung.valueobjects.Name;
-import com.foodrescue.userverwaltung.valueobjects.Rolle;
-import com.foodrescue.userverwaltung.valueobjects.UserId;
+import com.foodrescue.userverwaltung.domain.model.User;
+import com.foodrescue.userverwaltung.domain.valueobjects.EmailAdresse;
+import com.foodrescue.userverwaltung.domain.valueobjects.Name;
+import com.foodrescue.userverwaltung.domain.valueobjects.Rolle;
+import com.foodrescue.userverwaltung.domain.valueobjects.UserId;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 

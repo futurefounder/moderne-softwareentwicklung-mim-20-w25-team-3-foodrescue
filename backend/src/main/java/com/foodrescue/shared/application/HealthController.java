@@ -1,6 +1,6 @@
 package com.foodrescue.shared.application;
 
-import com.foodrescue.reservierungsmanagement.services.RescueService;
+import com.foodrescue.reservierungsmanagement.application.services.RescueService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

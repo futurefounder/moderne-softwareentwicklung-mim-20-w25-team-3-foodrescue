@@ -7,12 +7,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.foodrescue.userverwaltung.application.UserApplicationService;
-import com.foodrescue.userverwaltung.domain.User;
-import com.foodrescue.userverwaltung.valueobjects.EmailAdresse;
-import com.foodrescue.userverwaltung.valueobjects.Name;
-import com.foodrescue.userverwaltung.valueobjects.Rolle;
-import com.foodrescue.userverwaltung.valueobjects.UserId;
+import com.foodrescue.userverwaltung.application.services.UserApplicationService;
+import com.foodrescue.userverwaltung.infrastructure.web.rest.RegistriereUserRequest;
+import com.foodrescue.userverwaltung.infrastructure.web.rest.UserController;
+import com.foodrescue.userverwaltung.domain.model.User;
+import com.foodrescue.userverwaltung.domain.valueobjects.EmailAdresse;
+import com.foodrescue.userverwaltung.domain.valueobjects.Name;
+import com.foodrescue.userverwaltung.domain.valueobjects.Rolle;
+import com.foodrescue.userverwaltung.domain.valueobjects.UserId;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +27,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 @ExtendWith(MockitoExtension.class)
-public class UserControllerTest {
+public class
+
+UserControllerTest {
 
   @Mock private UserApplicationService userApplicationService;
 
