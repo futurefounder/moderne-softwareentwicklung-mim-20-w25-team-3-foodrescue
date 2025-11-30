@@ -4,8 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.foodrescue.shared.exception.DomainException;
 import java.util.UUID;
-
-import com.foodrescue.userverwaltung.domain.valueobjects.UserId;
 import org.junit.jupiter.api.Test;
 
 public class UserIdTest {

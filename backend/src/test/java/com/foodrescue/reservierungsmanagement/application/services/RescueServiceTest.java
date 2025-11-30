@@ -3,8 +3,6 @@ package com.foodrescue.reservierungsmanagement.application.services;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-
-import com.foodrescue.reservierungsmanagement.application.services.RescueService;
 import org.junit.jupiter.api.Test;
 
 public class RescueServiceTest {

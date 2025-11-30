@@ -3,8 +3,6 @@ package com.foodrescue.reservierungsmanagement.domain.events;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.Instant;
-
-import com.foodrescue.reservierungsmanagement.domain.events.ReservierungErstellt;
 import org.junit.jupiter.api.Test;
 
 public class ReservierungErstelltTest {

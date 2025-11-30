@@ -3,8 +3,6 @@ package com.foodrescue.abholungsmanagement.domain.model;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.foodrescue.abholungsmanagement.domain.events.AbholungAbgeschlossen;
-import com.foodrescue.abholungsmanagement.domain.model.Abholcode;
-import com.foodrescue.abholungsmanagement.domain.model.Abholung;
 import com.foodrescue.shared.domain.DomainEvent;
 import com.foodrescue.shared.exception.DomainException;
 import java.time.Instant;

@@ -7,31 +7,31 @@ import com.foodrescue.userverwaltung.domain.valueobjects.UserId;
 
 public class UserRegistriertEvent {
 
-    private final UserId userId;
-    private final Name name;
-    private final EmailAdresse email;
-    private final Rolle rolle;
+  private final UserId userId;
+  private final Name name;
+  private final EmailAdresse email;
+  private final Rolle rolle;
 
-    public UserRegistriertEvent(UserId userId, Name name, EmailAdresse email, Rolle rolle) {
-        this.userId = userId;
-        this.name = name;
-        this.email = email;
-        this.rolle = rolle;
-    }
+  public UserRegistriertEvent(UserId userId, Name name, EmailAdresse email, Rolle rolle) {
+    this.userId = userId;
+    this.name = name;
+    this.email = email;
+    this.rolle = rolle;
+  }
 
-    public UserId getUserId() {
-        return userId;
-    }
+  public UserId getUserId() {
+    return userId;
+  }
 
-    public Name getName() {
-        return name;
-    }
+  public Name getName() {
+    return name;
+  }
 
-    public EmailAdresse getEmail() {
-        return email;
-    }
+  public EmailAdresse getEmail() {
+    return email;
+  }
 
-    public Rolle getRolle() {
-        return rolle;
-    }
+  public Rolle getRolle() {
+    return rolle;
+  }
 }

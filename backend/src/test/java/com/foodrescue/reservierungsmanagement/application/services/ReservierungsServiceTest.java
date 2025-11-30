@@ -6,7 +6,6 @@ import static org.mockito.Mockito.*;
 
 import com.foodrescue.abholungsmanagement.domain.model.Abholcode;
 import com.foodrescue.angebotsmanagement.domain.model.Angebot;
-import com.foodrescue.reservierungsmanagement.application.services.ReservierungsService;
 import com.foodrescue.reservierungsmanagement.domain.model.Reservierung;
 import com.foodrescue.shared.exception.DomainException;
 import org.junit.jupiter.api.Test;

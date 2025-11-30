@@ -12,27 +12,27 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class InMemoryAnbieterProfilRepository implements AnbieterProfilRepository {
 
-    private final Map<AnbieterProfilId, AnbieterProfil> profilStore = new ConcurrentHashMap<>();
-    private final Map<UserId, AnbieterProfilId> userIndex = new ConcurrentHashMap<>();
+  private final Map<AnbieterProfilId, AnbieterProfil> profilStore = new ConcurrentHashMap<>();
+  private final Map<UserId, AnbieterProfilId> userIndex = new ConcurrentHashMap<>();
 
-    @Override
-    public AnbieterProfil speichern(AnbieterProfil profil) {
-        profilStore.put(profil.getId(), profil);
-        userIndex.put(profil.getUserId(), profil.getId());
-        return profil;
-    }
+  @Override
+  public AnbieterProfil speichern(AnbieterProfil profil) {
+    profilStore.put(profil.getId(), profil);
+    userIndex.put(profil.getUserId(), profil.getId());
+    return profil;
+  }
 
-    @Override
-    public Optional<AnbieterProfil> findeMitId(AnbieterProfilId id) {
-        return Optional.ofNullable(profilStore.get(id));
-    }
+  @Override
+  public Optional<AnbieterProfil> findeMitId(AnbieterProfilId id) {
+    return Optional.ofNullable(profilStore.get(id));
+  }
 
-    @Override
-    public Optional<AnbieterProfil> findeFuerUser(UserId userId) {
-        AnbieterProfilId profilId = userIndex.get(userId);
-        if (profilId == null) {
-            return Optional.empty();
-        }
-        return findeMitId(profilId);
+  @Override
+  public Optional<AnbieterProfil> findeFuerUser(UserId userId) {
+    AnbieterProfilId profilId = userIndex.get(userId);
+    if (profilId == null) {
+      return Optional.empty();
     }
+    return findeMitId(profilId);
+  }
 }

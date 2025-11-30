@@ -2,7 +2,6 @@ package com.foodrescue.angebotsmanagement.domain.valueobjects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.foodrescue.angebotsmanagement.domain.valueobjects.AngebotsId;
 import com.foodrescue.shared.exception.DomainException;
 import org.junit.jupiter.api.Test;
 

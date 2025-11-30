@@ -3,7 +3,6 @@ package com.foodrescue.reservierungsmanagement.domain.model;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.foodrescue.abholungsmanagement.domain.model.Abholcode;
-import com.foodrescue.reservierungsmanagement.domain.model.Reservierung;
 import com.foodrescue.shared.exception.DomainException;
 import org.junit.jupiter.api.Test;
 

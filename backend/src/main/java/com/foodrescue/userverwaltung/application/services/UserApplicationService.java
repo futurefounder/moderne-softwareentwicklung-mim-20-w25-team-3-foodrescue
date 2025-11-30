@@ -8,54 +8,53 @@ import com.foodrescue.userverwaltung.domain.valueobjects.EmailAdresse;
 import com.foodrescue.userverwaltung.domain.valueobjects.Name;
 import com.foodrescue.userverwaltung.domain.valueobjects.UserId;
 import com.foodrescue.userverwaltung.infrastructure.repositories.UserRepository;
-import java.util.UUID;
-
 import jakarta.transaction.Transactional;
+import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 @Service
 @Transactional
 public class UserApplicationService {
 
-    private final UserRepository userRepository;
-    private final UserDomainService userDomainService;
+  private final UserRepository userRepository;
+  private final UserDomainService userDomainService;
 
-    public UserApplicationService(UserRepository userRepository, UserDomainService userDomainService) {
-        this.userRepository = userRepository;
-        this.userDomainService = userDomainService;
-    }
+  public UserApplicationService(
+      UserRepository userRepository, UserDomainService userDomainService) {
+    this.userRepository = userRepository;
+    this.userDomainService = userDomainService;
+  }
 
-    public UserDetailsQuery registriereUser(RegistriereUserCommand command) {
-        EmailAdresse email = new EmailAdresse(command.getEmail().toString());
+  public UserDetailsQuery registriereUser(RegistriereUserCommand command) {
+    EmailAdresse email = new EmailAdresse(command.getEmail().toString());
 
-        userRepository
-                .findeMitEmail(email)
-                .ifPresent(
-                        u -> {
-                            throw new IllegalArgumentException("E-Mail ist bereits vergeben");
-                        });
+    userRepository
+        .findeMitEmail(email)
+        .ifPresent(
+            u -> {
+              throw new IllegalArgumentException("E-Mail ist bereits vergeben");
+            });
 
-        // Korrektur: UserId mit UUID erstellen
-        UserId userId = new UserId(UUID.randomUUID());
-        Name name = new Name(command.getName().toString());
+    // Korrektur: UserId mit UUID erstellen
+    UserId userId = new UserId(UUID.randomUUID());
+    Name name = new Name(command.getName().toString());
 
-        User user =
-                userDomainService.registriereUser(userId, name, email, command.getRolle());
+    User user = userDomainService.registriereUser(userId, name, email, command.getRolle());
 
-        User gespeicherterUser = userRepository.speichern(user);
+    User gespeicherterUser = userRepository.speichern(user);
 
-        UserRegistriertEvent event =
-                new UserRegistriertEvent(
-                        gespeicherterUser.getId(),
-                        gespeicherterUser.getName(),
-                        gespeicherterUser.getEmail(),
-                        gespeicherterUser.getRolle());
-        // z.B. domainEventPublisher.publish(event);
+    UserRegistriertEvent event =
+        new UserRegistriertEvent(
+            gespeicherterUser.getId(),
+            gespeicherterUser.getName(),
+            gespeicherterUser.getEmail(),
+            gespeicherterUser.getRolle());
+    // z.B. domainEventPublisher.publish(event);
 
-        return new UserDetailsQuery(
-                gespeicherterUser.getId(),
-                gespeicherterUser.getName(),
-                gespeicherterUser.getEmail(),
-                gespeicherterUser.getRolle());
-    }
+    return new UserDetailsQuery(
+        gespeicherterUser.getId(),
+        gespeicherterUser.getName(),
+        gespeicherterUser.getEmail(),
+        gespeicherterUser.getRolle());
+  }
 }

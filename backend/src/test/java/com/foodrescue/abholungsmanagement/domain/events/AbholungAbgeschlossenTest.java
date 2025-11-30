@@ -3,8 +3,6 @@ package com.foodrescue.abholungsmanagement.domain.events;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.Instant;
-
-import com.foodrescue.abholungsmanagement.domain.events.AbholungAbgeschlossen;
 import org.junit.jupiter.api.Test;
 
 public class AbholungAbgeschlossenTest {

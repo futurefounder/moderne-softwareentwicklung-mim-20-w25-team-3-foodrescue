@@ -15,83 +15,84 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/anbieter-profile")
 public class AnbieterProfilController {
 
-    private final AnbieterProfilApplicationService anbieterProfilApplicationService;
+  private final AnbieterProfilApplicationService anbieterProfilApplicationService;
 
-    public AnbieterProfilController(
-            AnbieterProfilApplicationService anbieterProfilApplicationService) {
-        this.anbieterProfilApplicationService = anbieterProfilApplicationService;
+  public AnbieterProfilController(
+      AnbieterProfilApplicationService anbieterProfilApplicationService) {
+    this.anbieterProfilApplicationService = anbieterProfilApplicationService;
+  }
+
+  // POST: direkt das Command als RequestBody akzeptieren (Command enthält Value-Objects)
+  @PostMapping
+  public ResponseEntity<AnbieterProfilResponse> erstelleAnbieterProfil(
+      @RequestBody ErstelleAnbieterProfilCommand command) {
+
+    AnbieterProfilDetailsQuery result =
+        anbieterProfilApplicationService.erstelleAnbieterProfil(command);
+
+    // Adresse und GeoStandort entpacken und korrekte Parameter an den Response-Konstruktor
+    // übergeben
+    String strasse = result.getAdresse().getStrasse();
+    String plz = result.getAdresse().getPlz();
+    String ort = result.getAdresse().getOrt();
+    String land = result.getAdresse().getLand();
+
+    Double lat = null;
+    Double lon = null;
+    if (result.getGeoStandort() != null) {
+      lat = result.getGeoStandort().getBreitengrad();
+      lon = result.getGeoStandort().getLaengengrad();
     }
 
-    // POST: direkt das Command als RequestBody akzeptieren (Command enthält Value-Objects)
-    @PostMapping
-    public ResponseEntity<AnbieterProfilResponse> erstelleAnbieterProfil(
-            @RequestBody ErstelleAnbieterProfilCommand command) {
+    AnbieterProfilResponse response =
+        new AnbieterProfilResponse(
+            result.getId().getValue(),
+            result.getUserId().getValue(),
+            result.getGeschaeftsname().getValue(),
+            result.getGeschaeftstyp(),
+            strasse,
+            plz,
+            ort,
+            land,
+            lat,
+            lon);
 
-        AnbieterProfilDetailsQuery result =
-                anbieterProfilApplicationService.erstelleAnbieterProfil(command);
+    return ResponseEntity.status(HttpStatus.CREATED).body(response);
+  }
 
-        // Adresse und GeoStandort entpacken und korrekte Parameter an den Response-Konstruktor übergeben
-        String strasse = result.getAdresse().getStrasse();
-        String plz = result.getAdresse().getPlz();
-        String ort = result.getAdresse().getOrt();
-        String land = result.getAdresse().getLand();
+  // GET: userId aus Pfad als UUID parsen und Service korrekt nutzen
+  @GetMapping("/user/{userId}")
+  public ResponseEntity<AnbieterProfilResponse> holeProfilFuerUser(@PathVariable String userId) {
 
-        Double lat = null;
-        Double lon = null;
-        if (result.getGeoStandort() != null) {
-            lat = result.getGeoStandort().getBreitengrad();
-            lon = result.getGeoStandort().getLaengengrad();
-        }
+    UserId uid = new UserId(UUID.fromString(userId));
 
-        AnbieterProfilResponse response =
-                new AnbieterProfilResponse(
-                        result.getId().getValue(),
-                        result.getUserId().getValue(),
-                        result.getGeschaeftsname().getValue(),
-                        result.getGeschaeftstyp(),
-                        strasse,
-                        plz,
-                        ort,
-                        land,
-                        lat,
-                        lon);
+    AnbieterProfilFuerUserQuery query =
+        anbieterProfilApplicationService.findeAnbieterProfilFuerUser(uid);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
+    // Korrektur: getAnbieterProfil() liefert ein Domain-Model (AnbieterProfil)
+    AnbieterProfil profil = query.getAnbieterProfil();
 
-    // GET: userId aus Pfad als UUID parsen und Service korrekt nutzen
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<AnbieterProfilResponse> holeProfilFuerUser(@PathVariable String userId) {
+    String strasse = profil.getAdresse().getStrasse();
+    String plz = profil.getAdresse().getPlz();
+    String ort = profil.getAdresse().getOrt();
+    String land = profil.getAdresse().getLand();
 
-        UserId uid = new UserId(UUID.fromString(userId));
+    Double lat = profil.getGeoStandort().map(g -> g.getBreitengrad()).orElse(null);
+    Double lon = profil.getGeoStandort().map(g -> g.getLaengengrad()).orElse(null);
 
-        AnbieterProfilFuerUserQuery query =
-                anbieterProfilApplicationService.findeAnbieterProfilFuerUser(uid);
+    AnbieterProfilResponse response =
+        new AnbieterProfilResponse(
+            profil.getId().getValue(),
+            profil.getUserId().getValue(),
+            profil.getGeschaeftsname().getValue(),
+            profil.getGeschaeftstyp(),
+            strasse,
+            plz,
+            ort,
+            land,
+            lat,
+            lon);
 
-        // Korrektur: getAnbieterProfil() liefert ein Domain-Model (AnbieterProfil)
-        AnbieterProfil profil = query.getAnbieterProfil();
-
-        String strasse = profil.getAdresse().getStrasse();
-        String plz = profil.getAdresse().getPlz();
-        String ort = profil.getAdresse().getOrt();
-        String land = profil.getAdresse().getLand();
-
-        Double lat = profil.getGeoStandort().map(g -> g.getBreitengrad()).orElse(null);
-        Double lon = profil.getGeoStandort().map(g -> g.getLaengengrad()).orElse(null);
-
-        AnbieterProfilResponse response =
-                new AnbieterProfilResponse(
-                        profil.getId().getValue(),
-                        profil.getUserId().getValue(),
-                        profil.getGeschaeftsname().getValue(),
-                        profil.getGeschaeftstyp(),
-                        strasse,
-                        plz,
-                        ort,
-                        land,
-                        lat,
-                        lon);
-
-        return ResponseEntity.ok(response);
-    }
+    return ResponseEntity.ok(response);
+  }
 }

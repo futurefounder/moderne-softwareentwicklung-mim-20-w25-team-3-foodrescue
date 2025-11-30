@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserDomainService {
 
-    public User registriereUser(UserId id, Name name, EmailAdresse email, Rolle rolle) {
-        // hier ggf. weitere fachliche Regeln
-        return User.registrieren(id, name, email, rolle);
-    }
+  public User registriereUser(UserId id, Name name, EmailAdresse email, Rolle rolle) {
+    // hier ggf. weitere fachliche Regeln
+    return User.registrieren(id, name, email, rolle);
+  }
 }

@@ -7,9 +7,9 @@ import java.util.Optional;
 
 public interface UserRepository {
 
-    User speichern(User user);
+  User speichern(User user);
 
-    Optional<User> findeMitId(UserId id);
+  Optional<User> findeMitId(UserId id);
 
-    Optional<User> findeMitEmail(EmailAdresse email);
+  Optional<User> findeMitEmail(EmailAdresse email);
 }

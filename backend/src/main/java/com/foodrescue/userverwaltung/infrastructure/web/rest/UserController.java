@@ -14,31 +14,30 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/users")
 public class UserController {
 
-    private final UserApplicationService userApplicationService;
+  private final UserApplicationService userApplicationService;
 
-    public UserController(UserApplicationService userApplicationService) {
-        this.userApplicationService = userApplicationService;
-    }
+  public UserController(UserApplicationService userApplicationService) {
+    this.userApplicationService = userApplicationService;
+  }
 
-    @PostMapping("/registrierung")
-    public ResponseEntity<UserResponse> registriereUser(
-            @RequestBody RegistriereUserRequest request) {
+  @PostMapping("/registrierung")
+  public ResponseEntity<UserResponse> registriereUser(@RequestBody RegistriereUserRequest request) {
 
-        RegistriereUserCommand command =
-                new RegistriereUserCommand(
-                        new Name(request.getName()),
-                        new EmailAdresse(request.getEmail()),
-                        Rolle.valueOf(request.getRolle()));
+    RegistriereUserCommand command =
+        new RegistriereUserCommand(
+            new Name(request.getName()),
+            new EmailAdresse(request.getEmail()),
+            Rolle.valueOf(request.getRolle()));
 
-        UserDetailsQuery result = userApplicationService.registriereUser(command);
+    UserDetailsQuery result = userApplicationService.registriereUser(command);
 
-        UserResponse response =
-                new UserResponse(
-                        result.getUserId().getValue(),
-                        result.getName().toString(),
-                        result.getEmail().toString(),
-                        result.getRolle());
+    UserResponse response =
+        new UserResponse(
+            result.getUserId().getValue(),
+            result.getName().toString(),
+            result.getEmail().toString(),
+            result.getRolle());
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
+    return ResponseEntity.status(HttpStatus.CREATED).body(response);
+  }
 }

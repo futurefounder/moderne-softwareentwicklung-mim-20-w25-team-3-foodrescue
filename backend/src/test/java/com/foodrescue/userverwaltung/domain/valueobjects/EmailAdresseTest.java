@@ -2,7 +2,6 @@ package com.foodrescue.userverwaltung.domain.valueobjects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.foodrescue.userverwaltung.domain.valueobjects.EmailAdresse;
 import org.junit.jupiter.api.Test;
 
 public class EmailAdresseTest {

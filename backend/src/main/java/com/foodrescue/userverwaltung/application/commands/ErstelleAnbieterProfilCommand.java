@@ -8,43 +8,44 @@ import com.foodrescue.userverwaltung.domain.valueobjects.UserId;
 
 public class ErstelleAnbieterProfilCommand {
 
-    private final UserId userId;
-    private final Geschaeftsname geschaeftsname;
-    private final Geschaeftstyp geschaeftstyp;
-    private final Adresse adresse;
-    /** darf null sein, wenn kein GeoStandort gesetzt werden soll */
-    private final GeoStandort geoStandort;
+  private final UserId userId;
+  private final Geschaeftsname geschaeftsname;
+  private final Geschaeftstyp geschaeftstyp;
+  private final Adresse adresse;
 
-    public ErstelleAnbieterProfilCommand(
-            UserId userId,
-            Geschaeftsname geschaeftsname,
-            Geschaeftstyp geschaeftstyp,
-            Adresse adresse,
-            GeoStandort geoStandort) {
-        this.userId = userId;
-        this.geschaeftsname = geschaeftsname;
-        this.geschaeftstyp = geschaeftstyp;
-        this.adresse = adresse;
-        this.geoStandort = geoStandort;
-    }
+  /** darf null sein, wenn kein GeoStandort gesetzt werden soll */
+  private final GeoStandort geoStandort;
 
-    public UserId getUserId() {
-        return userId;
-    }
+  public ErstelleAnbieterProfilCommand(
+      UserId userId,
+      Geschaeftsname geschaeftsname,
+      Geschaeftstyp geschaeftstyp,
+      Adresse adresse,
+      GeoStandort geoStandort) {
+    this.userId = userId;
+    this.geschaeftsname = geschaeftsname;
+    this.geschaeftstyp = geschaeftstyp;
+    this.adresse = adresse;
+    this.geoStandort = geoStandort;
+  }
 
-    public Geschaeftsname getGeschaeftsname() {
-        return geschaeftsname;
-    }
+  public UserId getUserId() {
+    return userId;
+  }
 
-    public Geschaeftstyp getGeschaeftstyp() {
-        return geschaeftstyp;
-    }
+  public Geschaeftsname getGeschaeftsname() {
+    return geschaeftsname;
+  }
 
-    public Adresse getAdresse() {
-        return adresse;
-    }
+  public Geschaeftstyp getGeschaeftstyp() {
+    return geschaeftstyp;
+  }
 
-    public GeoStandort getGeoStandort() {
-        return geoStandort;
-    }
+  public Adresse getAdresse() {
+    return adresse;
+  }
+
+  public GeoStandort getGeoStandort() {
+    return geoStandort;
+  }
 }

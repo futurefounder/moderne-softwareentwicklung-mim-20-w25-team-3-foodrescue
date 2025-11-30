@@ -5,19 +5,19 @@ import com.foodrescue.userverwaltung.domain.model.User;
 
 public class AnbieterProfilFuerUserQuery {
 
-    private final User user;
-    private final AnbieterProfil anbieterProfil;
+  private final User user;
+  private final AnbieterProfil anbieterProfil;
 
-    public AnbieterProfilFuerUserQuery(User user, AnbieterProfil anbieterProfil) {
-        this.user = user;
-        this.anbieterProfil = anbieterProfil;
-    }
+  public AnbieterProfilFuerUserQuery(User user, AnbieterProfil anbieterProfil) {
+    this.user = user;
+    this.anbieterProfil = anbieterProfil;
+  }
 
-    public User getUser() {
-        return user;
-    }
+  public User getUser() {
+    return user;
+  }
 
-    public AnbieterProfil getAnbieterProfil() {
-        return anbieterProfil;
-    }
+  public AnbieterProfil getAnbieterProfil() {
+    return anbieterProfil;
+  }
 }

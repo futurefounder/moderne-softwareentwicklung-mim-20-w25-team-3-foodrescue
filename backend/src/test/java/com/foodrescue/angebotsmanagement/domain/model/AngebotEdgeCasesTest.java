@@ -3,7 +3,6 @@ package com.foodrescue.angebotsmanagement.domain.model;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.foodrescue.abholungsmanagement.domain.model.AbholZeitfenster;
-import com.foodrescue.angebotsmanagement.domain.model.Angebot;
 import com.foodrescue.shared.exception.DomainException;
 import java.time.LocalDateTime;
 import java.util.Set;

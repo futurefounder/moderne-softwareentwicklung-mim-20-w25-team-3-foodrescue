@@ -9,49 +9,49 @@ import com.foodrescue.userverwaltung.domain.valueobjects.UserId;
 
 public class AnbieterProfilDetailsQuery {
 
-    private final AnbieterProfilId id;
-    private final UserId userId;
-    private final Geschaeftsname geschaeftsname;
-    private final Geschaeftstyp geschaeftstyp;
-    private final Adresse adresse;
-    private final GeoStandort geoStandort; // darf null sein
+  private final AnbieterProfilId id;
+  private final UserId userId;
+  private final Geschaeftsname geschaeftsname;
+  private final Geschaeftstyp geschaeftstyp;
+  private final Adresse adresse;
+  private final GeoStandort geoStandort; // darf null sein
 
-    public AnbieterProfilDetailsQuery(
-            AnbieterProfilId id,
-            UserId userId,
-            Geschaeftsname geschaeftsname,
-            Geschaeftstyp geschaeftstyp,
-            Adresse adresse,
-            GeoStandort geoStandort) {
-        this.id = id;
-        this.userId = userId;
-        this.geschaeftsname = geschaeftsname;
-        this.geschaeftstyp = geschaeftstyp;
-        this.adresse = adresse;
-        this.geoStandort = geoStandort;
-    }
+  public AnbieterProfilDetailsQuery(
+      AnbieterProfilId id,
+      UserId userId,
+      Geschaeftsname geschaeftsname,
+      Geschaeftstyp geschaeftstyp,
+      Adresse adresse,
+      GeoStandort geoStandort) {
+    this.id = id;
+    this.userId = userId;
+    this.geschaeftsname = geschaeftsname;
+    this.geschaeftstyp = geschaeftstyp;
+    this.adresse = adresse;
+    this.geoStandort = geoStandort;
+  }
 
-    public AnbieterProfilId getId() {
-        return id;
-    }
+  public AnbieterProfilId getId() {
+    return id;
+  }
 
-    public UserId getUserId() {
-        return userId;
-    }
+  public UserId getUserId() {
+    return userId;
+  }
 
-    public Geschaeftsname getGeschaeftsname() {
-        return geschaeftsname;
-    }
+  public Geschaeftsname getGeschaeftsname() {
+    return geschaeftsname;
+  }
 
-    public Geschaeftstyp getGeschaeftstyp() {
-        return geschaeftstyp;
-    }
+  public Geschaeftstyp getGeschaeftstyp() {
+    return geschaeftstyp;
+  }
 
-    public Adresse getAdresse() {
-        return adresse;
-    }
+  public Adresse getAdresse() {
+    return adresse;
+  }
 
-    public GeoStandort getGeoStandort() {
-        return geoStandort;
-    }
+  public GeoStandort getGeoStandort() {
+    return geoStandort;
+  }
 }

@@ -12,27 +12,27 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class InMemoryUserRepository implements UserRepository {
 
-    private final Map<UserId, User> userStore = new ConcurrentHashMap<>();
-    private final Map<EmailAdresse, UserId> emailIndex = new ConcurrentHashMap<>();
+  private final Map<UserId, User> userStore = new ConcurrentHashMap<>();
+  private final Map<EmailAdresse, UserId> emailIndex = new ConcurrentHashMap<>();
 
-    @Override
-    public User speichern(User user) {
-        userStore.put(user.getId(), user);
-        emailIndex.put(user.getEmail(), user.getId());
-        return user;
-    }
+  @Override
+  public User speichern(User user) {
+    userStore.put(user.getId(), user);
+    emailIndex.put(user.getEmail(), user.getId());
+    return user;
+  }
 
-    @Override
-    public Optional<User> findeMitId(UserId id) {
-        return Optional.ofNullable(userStore.get(id));
-    }
+  @Override
+  public Optional<User> findeMitId(UserId id) {
+    return Optional.ofNullable(userStore.get(id));
+  }
 
-    @Override
-    public Optional<User> findeMitEmail(EmailAdresse email) {
-        UserId id = emailIndex.get(email);
-        if (id == null) {
-            return Optional.empty();
-        }
-        return findeMitId(id);
+  @Override
+  public Optional<User> findeMitEmail(EmailAdresse email) {
+    UserId id = emailIndex.get(email);
+    if (id == null) {
+      return Optional.empty();
     }
+    return findeMitId(id);
+  }
 }

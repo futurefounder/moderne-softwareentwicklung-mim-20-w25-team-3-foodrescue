@@ -3,8 +3,6 @@ package com.foodrescue.angebotsmanagement.domain.events;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.Instant;
-
-import com.foodrescue.angebotsmanagement.domain.events.AngebotVeroeffentlicht;
 import org.junit.jupiter.api.Test;
 
 public class AngebotVeroeffentlichtTest {

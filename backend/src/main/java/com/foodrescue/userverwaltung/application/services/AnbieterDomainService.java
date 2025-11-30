@@ -13,16 +13,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class AnbieterDomainService {
 
-    public AnbieterProfil erstelleAnbieterProfil(
-            AnbieterProfilId id,
-            UserId userId,
-            Rolle userRolle,
-            Geschaeftsname geschaeftsname,
-            Geschaeftstyp geschaeftstyp,
-            Adresse adresse,
-            GeoStandort geoStandort) {
+  public AnbieterProfil erstelleAnbieterProfil(
+      AnbieterProfilId id,
+      UserId userId,
+      Rolle userRolle,
+      Geschaeftsname geschaeftsname,
+      Geschaeftstyp geschaeftstyp,
+      Adresse adresse,
+      GeoStandort geoStandort) {
 
-        return AnbieterProfil.erstellenFuerAnbieter(
-                id, userId, userRolle, geschaeftsname, geschaeftstyp, adresse, geoStandort);
-    }
+    return AnbieterProfil.erstellenFuerAnbieter(
+        id, userId, userRolle, geschaeftsname, geschaeftstyp, adresse, geoStandort);
+  }
 }

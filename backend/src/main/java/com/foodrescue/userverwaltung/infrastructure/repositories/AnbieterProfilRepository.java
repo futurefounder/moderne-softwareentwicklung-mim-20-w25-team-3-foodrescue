@@ -7,9 +7,9 @@ import java.util.Optional;
 
 public interface AnbieterProfilRepository {
 
-    AnbieterProfil speichern(AnbieterProfil profil);
+  AnbieterProfil speichern(AnbieterProfil profil);
 
-    Optional<AnbieterProfil> findeMitId(AnbieterProfilId id);
+  Optional<AnbieterProfil> findeMitId(AnbieterProfilId id);
 
-    Optional<AnbieterProfil> findeFuerUser(UserId userId);
+  Optional<AnbieterProfil> findeFuerUser(UserId userId);
 }

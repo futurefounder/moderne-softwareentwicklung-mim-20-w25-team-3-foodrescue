@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.foodrescue.abholungsmanagement.domain.events.AbholungAbgeschlossen;
 import com.foodrescue.abholungsmanagement.domain.model.Abholcode;
 import com.foodrescue.reservierungsmanagement.domain.events.ReservierungErstellt;
-import com.foodrescue.reservierungsmanagement.domain.model.Reservierung;
 import com.foodrescue.reservierungsmanagement.domain.valueobjects.ReservierungsId;
 import com.foodrescue.shared.exception.DomainException;
 import org.junit.jupiter.api.Test;
@@ -20,18 +19,18 @@ public class ReservierungTest {
     assertTrue(r.getDomainEvents().stream().anyMatch(e -> e instanceof ReservierungErstellt));
   }
 
-    @Test
-    void getId_gibtUrspruenglicheReservierungsIdZurueck() {
-        // Arrange: Eine Reservierung mit bekannter ID anlegen
-        var reservierung =
-                Reservierung.erstelle("reserv-99", "angebot-1", "user-1", Abholcode.of("AB12"));
+  @Test
+  void getId_gibtUrspruenglicheReservierungsIdZurueck() {
+    // Arrange: Eine Reservierung mit bekannter ID anlegen
+    var reservierung =
+        Reservierung.erstelle("reserv-99", "angebot-1", "user-1", Abholcode.of("AB12"));
 
-        // Act: ID auslesen
-        var id = reservierung.getId();
+    // Act: ID auslesen
+    var id = reservierung.getId();
 
-        // Assert: Die ID stimmt exakt mit der übergebenen überein
-        assertEquals("reserv-99", id);
-    }
+    // Assert: Die ID stimmt exakt mit der übergebenen überein
+    assertEquals("reserv-99", id);
+  }
 
   @Test
   void bestaetigeAbholung_mitKorrektCode_setztStatusAbgeholt_und_emittiertEvent() {
@@ -97,35 +96,34 @@ public class ReservierungTest {
     assertEquals(2, r.getDomainEvents().size()); // ReservierungErstellt + AbholungAbgeschlossen
   }
 
-    @Test
-    void createsValidId() {
-      ReservierungsId id = ReservierungsId.of("res-99");
+  @Test
+  void createsValidId() {
+    ReservierungsId id = ReservierungsId.of("res-99");
 
-      assertEquals("res-99", id.value());
-      assertEquals("res-99", id.toString());
-    }
+    assertEquals("res-99", id.value());
+    assertEquals("res-99", id.toString());
+  }
 
-    @Test
-    void equalIdsAreEqualAndHaveSameHashCode() {
-      ReservierungsId id1 = ReservierungsId.of("res-99");
-      ReservierungsId id2 = ReservierungsId.of("res-99");
-      ReservierungsId idOther = ReservierungsId.of("res-100");
+  @Test
+  void equalIdsAreEqualAndHaveSameHashCode() {
+    ReservierungsId id1 = ReservierungsId.of("res-99");
+    ReservierungsId id2 = ReservierungsId.of("res-99");
+    ReservierungsId idOther = ReservierungsId.of("res-100");
 
-      assertEquals(id1, id2);
-      assertEquals(id1.hashCode(), id2.hashCode());
-      assertNotEquals(id1, idOther);
-      assertNotEquals(null, id1);
-      assertNotEquals("x", id1);
-    }
+    assertEquals(id1, id2);
+    assertEquals(id1.hashCode(), id2.hashCode());
+    assertNotEquals(id1, idOther);
+    assertNotEquals(null, id1);
+    assertNotEquals("x", id1);
+  }
 
-    @Test
-    void nullValueIsRejected() {
-      assertThrows(DomainException.class, () -> ReservierungsId.of(null));
-    }
+  @Test
+  void nullValueIsRejected() {
+    assertThrows(DomainException.class, () -> ReservierungsId.of(null));
+  }
 
-    @Test
-    void blankValueIsRejected() {
-      assertThrows(DomainException.class, () -> ReservierungsId.of("   "));
-    }
-
+  @Test
+  void blankValueIsRejected() {
+    assertThrows(DomainException.class, () -> ReservierungsId.of("   "));
+  }
 }

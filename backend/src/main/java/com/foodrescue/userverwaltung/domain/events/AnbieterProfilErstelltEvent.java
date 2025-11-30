@@ -5,19 +5,19 @@ import com.foodrescue.userverwaltung.domain.valueobjects.UserId;
 
 public class AnbieterProfilErstelltEvent {
 
-    private final AnbieterProfilId anbieterProfilId;
-    private final UserId userId;
+  private final AnbieterProfilId anbieterProfilId;
+  private final UserId userId;
 
-    public AnbieterProfilErstelltEvent(AnbieterProfilId anbieterProfilId, UserId userId) {
-        this.anbieterProfilId = anbieterProfilId;
-        this.userId = userId;
-    }
+  public AnbieterProfilErstelltEvent(AnbieterProfilId anbieterProfilId, UserId userId) {
+    this.anbieterProfilId = anbieterProfilId;
+    this.userId = userId;
+  }
 
-    public AnbieterProfilId getAnbieterProfilId() {
-        return anbieterProfilId;
-    }
+  public AnbieterProfilId getAnbieterProfilId() {
+    return anbieterProfilId;
+  }
 
-    public UserId getUserId() {
-        return userId;
-    }
+  public UserId getUserId() {
+    return userId;
+  }
 }
