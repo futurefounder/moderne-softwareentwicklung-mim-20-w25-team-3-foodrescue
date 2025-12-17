@@ -12,23 +12,23 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class InMemoryReservierungRepository implements ReservierungRepository {
 
-    private final Map<String, Reservierung> store = new ConcurrentHashMap<>();
+  private final Map<String, Reservierung> store = new ConcurrentHashMap<>();
 
-    @Override
-    public Reservierung speichern(Reservierung reservierung) {
-        store.put(reservierung.getId(), reservierung);
-        return reservierung;
-    }
+  @Override
+  public Reservierung speichern(Reservierung reservierung) {
+    store.put(reservierung.getId(), reservierung);
+    return reservierung;
+  }
 
-    @Override
-    public Optional<Reservierung> findeMitId(String id) {
-        return Optional.ofNullable(store.get(id));
-    }
+  @Override
+  public Optional<Reservierung> findeMitId(String id) {
+    return Optional.ofNullable(store.get(id));
+  }
 
-    @Override
-    public List<Reservierung> findeFuerAbholer(String abholerId) {
-        return store.values().stream()
-                .filter(r -> r.getAbholerId().equals(abholerId))
-                .collect(Collectors.toList());
-    }
+  @Override
+  public List<Reservierung> findeFuerAbholer(String abholerId) {
+    return store.values().stream()
+        .filter(r -> r.getAbholerId().equals(abholerId))
+        .collect(Collectors.toList());
+  }
 }

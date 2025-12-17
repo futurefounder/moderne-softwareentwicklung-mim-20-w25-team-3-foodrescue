@@ -9,15 +9,15 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/abholungen")
 public class AbholungController {
 
-    private final AbholungApplicationService service;
+  private final AbholungApplicationService service;
 
-    public AbholungController(AbholungApplicationService service) {
-        this.service = service;
-    }
+  public AbholungController(AbholungApplicationService service) {
+    this.service = service;
+  }
 
-    @PostMapping("/bestaetigen")
-    public ResponseEntity<Void> bestaetigeAbholung(@RequestBody BestaetigeAbholungCommand command) {
-        service.bestaetigeAbholung(command);
-        return ResponseEntity.ok().build();
-    }
+  @PostMapping("/bestaetigen")
+  public ResponseEntity<Void> bestaetigeAbholung(@RequestBody BestaetigeAbholungCommand command) {
+    service.bestaetigeAbholung(command);
+    return ResponseEntity.ok().build();
+  }
 }

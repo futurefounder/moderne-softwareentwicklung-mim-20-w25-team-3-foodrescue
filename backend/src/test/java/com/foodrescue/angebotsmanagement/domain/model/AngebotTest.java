@@ -63,8 +63,7 @@ public class AngebotTest {
 
     assertEquals(Angebot.Status.VERFUEGBAR, angebot.getStatus());
     assertTrue(events.stream().anyMatch(e -> e instanceof AngebotErstelltEvent));
-    assertTrue(
-        angebot.getDomainEvents().stream().anyMatch(e -> e instanceof AngebotErstelltEvent));
+    assertTrue(angebot.getDomainEvents().stream().anyMatch(e -> e instanceof AngebotErstelltEvent));
   }
 
   @Test

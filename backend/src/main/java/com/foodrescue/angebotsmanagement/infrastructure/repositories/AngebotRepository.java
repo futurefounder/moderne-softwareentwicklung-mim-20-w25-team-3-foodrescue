@@ -6,8 +6,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AngebotRepository {
-    Angebot speichern(Angebot angebot);
-    Optional<Angebot> findeMitId(AngebotsId id);
-    List<Angebot> findeAlleVerfuegbar();
-    List<Angebot> findeFuerAnbieter(String anbieterId);
+  Angebot speichern(Angebot angebot);
+
+  Optional<Angebot> findeMitId(AngebotsId id);
+
+  List<Angebot> findeAlleVerfuegbar();
+
+  List<Angebot> findeFuerAnbieter(String anbieterId);
 }

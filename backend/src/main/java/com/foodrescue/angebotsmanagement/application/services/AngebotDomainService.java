@@ -10,7 +10,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class AngebotDomainService {
 
-    public Angebot erstelleAngebot(AngebotsId id, UserId anbieterId, String titel, String beschreibung, Set<String> tags, AbholZeitfenster zeitfenster) {
-        return Angebot.erstelle(id, anbieterId, titel, beschreibung, tags, zeitfenster);
-    }
+  public Angebot erstelleAngebot(
+      AngebotsId id,
+      UserId anbieterId,
+      String titel,
+      String beschreibung,
+      Set<String> tags,
+      AbholZeitfenster zeitfenster) {
+    return Angebot.erstelle(id, anbieterId, titel, beschreibung, tags, zeitfenster);
+  }
 }

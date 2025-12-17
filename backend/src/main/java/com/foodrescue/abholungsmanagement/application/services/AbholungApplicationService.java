@@ -15,23 +15,31 @@ import org.springframework.stereotype.Service;
 @Transactional
 public class AbholungApplicationService {
 
-    private final AbholungRepository abholungRepository;
-    private final ReservierungRepository reservierungRepository;
+  private final AbholungRepository abholungRepository;
+  private final ReservierungRepository reservierungRepository;
 
-    public AbholungApplicationService(AbholungRepository abholungRepository, ReservierungRepository reservierungRepository) {
-        this.abholungRepository = abholungRepository;
-        this.reservierungRepository = reservierungRepository;
-    }
+  public AbholungApplicationService(
+      AbholungRepository abholungRepository, ReservierungRepository reservierungRepository) {
+    this.abholungRepository = abholungRepository;
+    this.reservierungRepository = reservierungRepository;
+  }
 
-    public void bestaetigeAbholung(BestaetigeAbholungCommand command) {
-        Optional<Reservierung> optionalReservierung = reservierungRepository.findeMitId(command.getReservierungsId().value());
-        Reservierung reservierung = optionalReservierung.orElseThrow(() -> new IllegalArgumentException("Reservierung nicht gefunden"));
+  public void bestaetigeAbholung(BestaetigeAbholungCommand command) {
+    Optional<Reservierung> optionalReservierung =
+        reservierungRepository.findeMitId(command.getReservierungsId().value());
+    Reservierung reservierung =
+        optionalReservierung.orElseThrow(
+            () -> new IllegalArgumentException("Reservierung nicht gefunden"));
 
-        Abholung abholung = new Abholung(java.util.UUID.randomUUID().toString(), reservierung.getId(), reservierung.getAbholcode());
-        List<DomainEvent> events = abholung.bestaetigen(command.getCode());
-        abholungRepository.speichern(abholung);
-        reservierung.bestaetigeAbholung(command.getCode());
-        reservierungRepository.speichern(reservierung);
-        // Publish events
-    }
+    Abholung abholung =
+        new Abholung(
+            java.util.UUID.randomUUID().toString(),
+            reservierung.getId(),
+            reservierung.getAbholcode());
+    List<DomainEvent> events = abholung.bestaetigen(command.getCode());
+    abholungRepository.speichern(abholung);
+    reservierung.bestaetigeAbholung(command.getCode());
+    reservierungRepository.speichern(reservierung);
+    // Publish events
+  }
 }

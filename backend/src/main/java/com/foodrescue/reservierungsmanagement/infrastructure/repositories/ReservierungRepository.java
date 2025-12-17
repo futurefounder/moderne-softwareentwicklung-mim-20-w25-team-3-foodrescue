@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ReservierungRepository {
-    Reservierung speichern(Reservierung reservierung);
-    Optional<Reservierung> findeMitId(String id);
-    List<Reservierung> findeFuerAbholer(String abholerId);
+  Reservierung speichern(Reservierung reservierung);
+
+  Optional<Reservierung> findeMitId(String id);
+
+  List<Reservierung> findeFuerAbholer(String abholerId);
 }

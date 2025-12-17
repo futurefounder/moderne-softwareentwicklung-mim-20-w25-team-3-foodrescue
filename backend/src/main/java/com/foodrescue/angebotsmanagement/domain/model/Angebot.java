@@ -15,14 +15,13 @@ import com.foodrescue.reservierungsmanagement.domain.model.Reservierung;
 import com.foodrescue.shared.domain.DomainEvent;
 import com.foodrescue.shared.exception.DomainException;
 import com.foodrescue.userverwaltung.domain.valueobjects.UserId;
-
 import java.util.*;
 
 public class Angebot {
 
   public enum Status {
     ENTWURF,
-      VERFUEGBAR,
+    VERFUEGBAR,
     RESERVIERT,
     ABGEHOLT,
     ENTFERNT
@@ -55,29 +54,35 @@ public class Angebot {
     this.zeitfenster = zeitfenster;
   }
 
-    // Neue Fabrikmethode für Erstellung mit Event
-    public static Angebot erstelle(
-            AngebotsId id,
-            UserId anbieterId,
-            String titel,
-            String beschreibung,
-            Set<String> tags,
-            AbholZeitfenster zeitfenster) {
-        var angebot = new Angebot(id.value(), anbieterId.getValue().toString(), titel, beschreibung, tags, zeitfenster);
-        angebot.domainEvents.add(new AngebotErstelltEvent(id.value()));
-        return angebot;
-    }
+  // Neue Fabrikmethode für Erstellung mit Event
+  public static Angebot erstelle(
+      AngebotsId id,
+      UserId anbieterId,
+      String titel,
+      String beschreibung,
+      Set<String> tags,
+      AbholZeitfenster zeitfenster) {
+    var angebot =
+        new Angebot(
+            id.value(), anbieterId.getValue().toString(), titel, beschreibung, tags, zeitfenster);
+    angebot.domainEvents.add(new AngebotErstelltEvent(id.value()));
+    return angebot;
+  }
 
-    // Methode zum Aktualisieren (z. B. für Anbieter)
-    public void aktualisiere(String neuerTitel, String neueBeschreibung, Set<String> neueTags, AbholZeitfenster neuesFenster) {
-        if (status != Status.ENTWURF && status != Status.VERFUEGBAR) {
-            throw new DomainException("Angebot kann nur im Entwurf oder verfügbar aktualisiert werden");
-        }
-        this.titel = neuerTitel;
-        this.beschreibung = neueBeschreibung;
-        this.tags = neueTags;
-        this.zeitfenster = neuesFenster;
+  // Methode zum Aktualisieren (z. B. für Anbieter)
+  public void aktualisiere(
+      String neuerTitel,
+      String neueBeschreibung,
+      Set<String> neueTags,
+      AbholZeitfenster neuesFenster) {
+    if (status != Status.ENTWURF && status != Status.VERFUEGBAR) {
+      throw new DomainException("Angebot kann nur im Entwurf oder verfügbar aktualisiert werden");
     }
+    this.titel = neuerTitel;
+    this.beschreibung = neueBeschreibung;
+    this.tags = neueTags;
+    this.zeitfenster = neuesFenster;
+  }
 
   public List<DomainEvent> veroeffentlichen() {
     if (status != Status.ENTWURF) {
@@ -114,23 +119,21 @@ public class Angebot {
     return List.copyOf(domainEvents);
   }
 
-    public String getTitel() {
-        return titel;
-    }
+  public String getTitel() {
+    return titel;
+  }
 
-    public String getBeschreibung() {
-        return beschreibung;
-    }
+  public String getBeschreibung() {
+    return beschreibung;
+  }
 
-    public Set<String> getTags() {
-        return Set.copyOf(tags);
-    }
+  public Set<String> getTags() {
+    return Set.copyOf(tags);
+  }
 
-    public String getAnbieterId() {
-        return anbieterId;
-    }
-
-
+  public String getAnbieterId() {
+    return anbieterId;
+  }
 }
 
   // Geplante Regex-Patterns für zukünftige Validierung (TDD Schritt 2):

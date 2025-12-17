@@ -66,20 +66,17 @@ public class Reservierung {
     return List.of(evt);
   }
 
-
-    public List<DomainEvent> stornieren() {
-        if (status != Status.AKTIV) {
-            throw new DomainException("Nur aktive Reservierungen können storniert werden");
-        }
-        status = Status.STORNIERT;
-        domainEvents.add(new ReservierungStorniertEvent(id));
-        return List.of(new ReservierungStorniertEvent(id));
+  public List<DomainEvent> stornieren() {
+    if (status != Status.AKTIV) {
+      throw new DomainException("Nur aktive Reservierungen können storniert werden");
     }
+    status = Status.STORNIERT;
+    domainEvents.add(new ReservierungStorniertEvent(id));
+    return List.of(new ReservierungStorniertEvent(id));
+  }
 
-    // Getter
-    
-    
-    
+  // Getter
+
   public String getId() {
     return id;
   }
@@ -96,11 +93,11 @@ public class Reservierung {
     return List.copyOf(domainEvents);
   }
 
-    public String getAbholerId() {
-        return abholerId;
-    }
+  public String getAbholerId() {
+    return abholerId;
+  }
 
-    public Abholcode getAbholcode() {
-        return abholcode;
-    }
+  public Abholcode getAbholcode() {
+    return abholcode;
+  }
 }

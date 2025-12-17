@@ -55,14 +55,14 @@ public class Abholung {
     return List.of(new AbholungAbgeschlossen(reservierungsId));
   }
 
-    // Erweiterung: Methode für Fehlschlag mit Event
-    public List<DomainEvent> fehlschlagen() {
-        if (status != Status.ANGELEGT) {
-            throw new DomainException("Abholung wurde bereits verarbeitet");
-        }
-        status = Status.FEHLGESCHLAGEN;
-        return List.of(new AbholungFehlgeschlagenEvent(reservierungsId));
+  // Erweiterung: Methode für Fehlschlag mit Event
+  public List<DomainEvent> fehlschlagen() {
+    if (status != Status.ANGELEGT) {
+      throw new DomainException("Abholung wurde bereits verarbeitet");
     }
+    status = Status.FEHLGESCHLAGEN;
+    return List.of(new AbholungFehlgeschlagenEvent(reservierungsId));
+  }
 
   // Getter
   public String getId() {

@@ -58,13 +58,11 @@ public class UserApplicationService {
         gespeicherterUser.getRolle());
   }
 
-    public UserDetailsQuery findeUserByEmail(EmailAdresse emailAdresse) {
-        User user = userRepository.findeMitEmail(emailAdresse)
-                .orElseThrow(() -> new IllegalArgumentException("User nicht gefunden"));
-        return new UserDetailsQuery(
-                user.getId(),
-                user.getName(),
-                user.getEmail(),
-                user.getRolle());
-    }
+  public UserDetailsQuery findeUserByEmail(EmailAdresse emailAdresse) {
+    User user =
+        userRepository
+            .findeMitEmail(emailAdresse)
+            .orElseThrow(() -> new IllegalArgumentException("User nicht gefunden"));
+    return new UserDetailsQuery(user.getId(), user.getName(), user.getEmail(), user.getRolle());
+  }
 }

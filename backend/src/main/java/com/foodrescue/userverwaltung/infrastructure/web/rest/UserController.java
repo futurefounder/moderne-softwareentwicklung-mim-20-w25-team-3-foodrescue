@@ -14,44 +14,44 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/users")
 public class UserController {
 
-    private final UserApplicationService userApplicationService;
+  private final UserApplicationService userApplicationService;
 
-    public UserController(UserApplicationService userApplicationService) {
-        this.userApplicationService = userApplicationService;
-    }
+  public UserController(UserApplicationService userApplicationService) {
+    this.userApplicationService = userApplicationService;
+  }
 
-    @PostMapping("")
-    public ResponseEntity<UserResponse> registriereUser(@RequestBody RegistriereUserRequest request) {
-        RegistriereUserCommand command =
-                new RegistriereUserCommand(
-                        new Name(request.getName()),
-                        new EmailAdresse(request.getEmail()),
-                        Rolle.valueOf(request.getRolle()));
+  @PostMapping("")
+  public ResponseEntity<UserResponse> registriereUser(@RequestBody RegistriereUserRequest request) {
+    RegistriereUserCommand command =
+        new RegistriereUserCommand(
+            new Name(request.getName()),
+            new EmailAdresse(request.getEmail()),
+            Rolle.valueOf(request.getRolle()));
 
-        UserDetailsQuery result = userApplicationService.registriereUser(command);
+    UserDetailsQuery result = userApplicationService.registriereUser(command);
 
-        UserResponse response =
-                new UserResponse(
-                        result.getUserId().getValue(),
-                        result.getName().toString(),
-                        result.getEmail().toString(),
-                        result.getRolle());
+    UserResponse response =
+        new UserResponse(
+            result.getUserId().getValue(),
+            result.getName().toString(),
+            result.getEmail().toString(),
+            result.getRolle());
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
+    return ResponseEntity.status(HttpStatus.CREATED).body(response);
+  }
 
-    // NEU: Login-Unterstützung – User anhand Email laden
-    @GetMapping("/by-email")
-    public ResponseEntity<UserResponse> findeUserByEmail(@RequestParam("email") String email) {
-        UserDetailsQuery result = userApplicationService.findeUserByEmail(new EmailAdresse(email));
+  // NEU: Login-Unterstützung – User anhand Email laden
+  @GetMapping("/by-email")
+  public ResponseEntity<UserResponse> findeUserByEmail(@RequestParam("email") String email) {
+    UserDetailsQuery result = userApplicationService.findeUserByEmail(new EmailAdresse(email));
 
-        UserResponse response =
-                new UserResponse(
-                        result.getUserId().getValue(),
-                        result.getName().toString(),
-                        result.getEmail().toString(),
-                        result.getRolle());
+    UserResponse response =
+        new UserResponse(
+            result.getUserId().getValue(),
+            result.getName().toString(),
+            result.getEmail().toString(),
+            result.getRolle());
 
-        return ResponseEntity.ok(response);
-    }
+    return ResponseEntity.ok(response);
+  }
 }
