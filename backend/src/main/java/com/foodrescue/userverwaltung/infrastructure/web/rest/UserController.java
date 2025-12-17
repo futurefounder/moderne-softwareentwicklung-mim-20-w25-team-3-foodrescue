@@ -20,9 +20,8 @@ public class UserController {
     this.userApplicationService = userApplicationService;
   }
 
-  @PostMapping("/registrierung")
+  @PostMapping("")
   public ResponseEntity<UserResponse> registriereUser(@RequestBody RegistriereUserRequest request) {
-
     RegistriereUserCommand command =
         new RegistriereUserCommand(
             new Name(request.getName()),
@@ -39,5 +38,20 @@ public class UserController {
             result.getRolle());
 
     return ResponseEntity.status(HttpStatus.CREATED).body(response);
+  }
+
+  // NEU: Login-Unterstützung – User anhand Email laden
+  @GetMapping("/by-email")
+  public ResponseEntity<UserResponse> findeUserByEmail(@RequestParam("email") String email) {
+    UserDetailsQuery result = userApplicationService.findeUserByEmail(new EmailAdresse(email));
+
+    UserResponse response =
+        new UserResponse(
+            result.getUserId().getValue(),
+            result.getName().toString(),
+            result.getEmail().toString(),
+            result.getRolle());
+
+    return ResponseEntity.ok(response);
   }
 }

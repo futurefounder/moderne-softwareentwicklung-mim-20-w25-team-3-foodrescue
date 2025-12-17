@@ -5,8 +5,14 @@ import com.foodrescue.userverwaltung.application.services.AnbieterProfilApplicat
 import com.foodrescue.userverwaltung.domain.model.AnbieterProfil;
 import com.foodrescue.userverwaltung.domain.queries.AnbieterProfilDetailsQuery;
 import com.foodrescue.userverwaltung.domain.queries.AnbieterProfilFuerUserQuery;
+import com.foodrescue.userverwaltung.domain.valueobjects.Adresse;
+import com.foodrescue.userverwaltung.domain.valueobjects.GeoStandort;
+import com.foodrescue.userverwaltung.domain.valueobjects.Geschaeftsname;
+import com.foodrescue.userverwaltung.domain.valueobjects.Geschaeftstyp;
 import com.foodrescue.userverwaltung.domain.valueobjects.UserId;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,10 +28,32 @@ public class AnbieterProfilController {
     this.anbieterProfilApplicationService = anbieterProfilApplicationService;
   }
 
-  // POST: direkt das Command als RequestBody akzeptieren (Command enthält Value-Objects)
+  /**
+   * FIX: Wir akzeptieren nicht das Command als JSON (enthält ValueObjects), sondern ein Request-DTO
+   * und mappen im Controller auf das Command.
+   */
   @PostMapping
   public ResponseEntity<AnbieterProfilResponse> erstelleAnbieterProfil(
-      @RequestBody ErstelleAnbieterProfilCommand command) {
+      @RequestBody ErstelleAnbieterProfilRequest request) {
+
+    UserId userId = new UserId(UUID.fromString(request.getUserId()));
+    Geschaeftsname geschaeftsname = new Geschaeftsname(request.getGeschaeftsname());
+    Geschaeftstyp geschaeftstyp = Geschaeftstyp.valueOf(request.getGeschaeftstyp());
+
+    Adresse adresse = baueAdresse(request);
+
+    GeoStandort geoStandort = null;
+    if (request.getBreitengrad() != null || request.getLaengengrad() != null) {
+      if (request.getBreitengrad() == null || request.getLaengengrad() == null) {
+        throw new IllegalArgumentException(
+            "GeoStandort: Bitte Breitengrad und Längengrad entweder beide setzen oder beide leer lassen.");
+      }
+      geoStandort = new GeoStandort(request.getBreitengrad(), request.getLaengengrad());
+    }
+
+    ErstelleAnbieterProfilCommand command =
+        new ErstelleAnbieterProfilCommand(
+            userId, geschaeftsname, geschaeftstyp, adresse, geoStandort);
 
     AnbieterProfilDetailsQuery result =
         anbieterProfilApplicationService.erstelleAnbieterProfil(command);
@@ -69,7 +97,6 @@ public class AnbieterProfilController {
     AnbieterProfilFuerUserQuery query =
         anbieterProfilApplicationService.findeAnbieterProfilFuerUser(uid);
 
-    // Korrektur: getAnbieterProfil() liefert ein Domain-Model (AnbieterProfil)
     AnbieterProfil profil = query.getAnbieterProfil();
 
     String strasse = profil.getAdresse().getStrasse();
@@ -94,5 +121,45 @@ public class AnbieterProfilController {
             lon);
 
     return ResponseEntity.ok(response);
+  }
+
+  private Adresse baueAdresse(ErstelleAnbieterProfilRequest request) {
+    // Bevorzugt: strukturierte Felder (empfohlen)
+    if (notBlank(request.getStrasse())
+        && notBlank(request.getPlz())
+        && notBlank(request.getOrt())
+        && notBlank(request.getLand())) {
+
+      return new Adresse(
+          request.getStrasse(), request.getPlz(), request.getOrt(), request.getLand());
+    }
+
+    // Fallback: legacy "adresse" String parsen.
+    // Erwartetes Format: "Straße Hausnr, PLZ Ort, Land"
+    // Beispiel: "Ahornstraße 11, 12345 Berlin, DE"
+    String raw = request.getAdresse();
+    if (!notBlank(raw)) {
+      throw new IllegalArgumentException(
+          "Adresse fehlt. Bitte entweder strasse/plz/ort/land setzen oder adresse im Format 'Straße Hausnr, PLZ Ort, Land' senden.");
+    }
+
+    Pattern p =
+        Pattern.compile("^\\s*(.+?)\\s*,\\s*(\\d{4,6})\\s+(.+?)\\s*,\\s*([A-Za-z]{2,})\\s*$");
+    Matcher m = p.matcher(raw);
+    if (!m.matches()) {
+      throw new IllegalArgumentException(
+          "Adresse-Format ungültig. Erwartet: 'Straße Hausnr, PLZ Ort, Land' (z.B. 'Ahornstraße 11, 12345 Berlin, DE').");
+    }
+
+    String strasse = m.group(1);
+    String plz = m.group(2);
+    String ort = m.group(3);
+    String land = m.group(4);
+
+    return new Adresse(strasse, plz, ort, land);
+  }
+
+  private boolean notBlank(String s) {
+    return s != null && !s.trim().isEmpty();
   }
 }

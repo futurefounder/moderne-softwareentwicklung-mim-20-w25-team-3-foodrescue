@@ -27,7 +27,7 @@
                 <!-- Icons by Heroicons: https://heroicons.com/ -->
                 <ul class="nav-list">
                     <li class="nav-item">
-                        <a href="javascript:void(0)" class="nav-link active">
+                        <a href="javascript:void(0)" class="nav-link active" id="nav-overview-link">
                             <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -37,13 +37,13 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="javascript:void(0)" class="nav-link">
+                        <a href="javascript:void(0)" class="nav-link" id="nav-action-link">
                             <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                stroke-width="1.5" stroke="currentColor">
+                                 stroke-width="1.5" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0 1 18 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3 1.5 1.5 3-3.75" />
+                                      d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0 1 18 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3 1.5 1.5 3-3.75" />
                             </svg>
-                            Buchungen
+                            <span id="nav-action-text">Buchungen</span>
                         </a>
                     </li>
                 </ul>
@@ -75,7 +75,7 @@
                 <!-- Header -->
                 <header class="main-header">
                     <div class="header-container">
-                        <button class="btn-find-donations">
+                        <button class="btn-find-donations" id="btn-find-donations">
                             <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"
                                 fill="currentColor">
                                 <path
@@ -85,74 +85,80 @@
                         </button>
                     </div>
                 </header>
+                <!-- Angebote (Anbieter) -->
+                <section class="angebote-section" id="angebote-section">
+                    <div class="section-header">
+                        <h2 class="section-title" id="angebote-title">Meine Angebote</h2>
+                        <p class="section-subtitle" id="angebote-subtitle">Ihre veröffentlichten und gespeicherten Angebote</p>
+                    </div>
+
+                    <!-- LISTE: im Überblick sichtbar -->
+                    <div id="angebote-list" class="pickups-list"></div>
+
+                    <!-- CREATE PANEL: nur bei "Neues Angebot anlegen" sichtbar -->
+                    <div id="angebot-create-panel" style="display:none; margin-top: 20px;">
+
+                        <form id="angebot-form" class="auth-form" style="display:none;">
+                            <div class="form-group">
+                                <label for="angebot-titel">Titel</label>
+                                <input id="angebot-titel" type="text" required />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="angebot-beschreibung">Beschreibung</label>
+                                <input id="angebot-beschreibung" required />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="angebot-tags">Tags (kommagetrennt)</label>
+                                <input id="angebot-tags" type="text" />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="abhol-von">Abholfenster von</label>
+                                <input id="abhol-von" type="datetime-local" required />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="abhol-bis">Abholfenster bis</label>
+                                <input id="abhol-bis" type="datetime-local" required />
+                            </div>
+
+                            <button type="submit" class="btn-primary">Angebot speichern</button>
+                        </form>
+                    </div>
+
+                </section>
+
+
                 <!-- Geplante Abholungen Section -->
-                <div class="pickups-section">
+                <div class="pickups-section" id="pickups-section">
                     <div class="section-header">
                         <h2 class="section-title">Geplante Abholungen</h2>
                         <p class="section-subtitle">Ihre nächsten geplanten Abholtermine</p>
                     </div>
 
-                    <div class="pickups-list">
-                        <!-- Pickup Item 1 -->
-                        <div class="pickup-item">
-                            <div class="pickup-left">
-                                <div class="pickup-icon">
-                                    <svg class="pickup-icon-svg" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M13.5 21v-7.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349M3.75 21V9.349m0 0a3.001 3.001 0 0 0 3.75-.615A2.993 2.993 0 0 0 9.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 0 0 2.25 1.016c.896 0 1.7-.393 2.25-1.015a3.001 3.001 0 0 0 3.75.614m-16.5 0a3.004 3.004 0 0 1-.621-4.72l1.189-1.19A1.5 1.5 0 0 1 5.378 3h13.243a1.5 1.5 0 0 1 1.06.44l1.19 1.189a3 3 0 0 1-.621 4.72M6.75 18h3.75a.75.75 0 0 0 .75-.75V13.5a.75.75 0 0 0-.75-.75H6.75a.75.75 0 0 0-.75.75v3.75c0 .414.336.75.75.75Z" />
-                                    </svg>
-                                </div>
-                                <div class="pickup-info">
-                                    <h3 class="pickup-name">Bäckerei Schmidt</h3>
-                                    <p class="pickup-address">Hauptstraße 42</p>
-                                </div>
-                            </div>
-                            <div class="pickup-time">Heute um 16:00 Uhr</div>
-                        </div>
-
-                        <!-- Pickup Item 2 -->
-                        <div class="pickup-item">
-                            <div class="pickup-left">
-                                <div class="pickup-icon">
-                                    <svg class="pickup-icon-svg" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M13.5 21v-7.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349M3.75 21V9.349m0 0a3.001 3.001 0 0 0 3.75-.615A2.993 2.993 0 0 0 9.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 0 0 2.25 1.016c.896 0 1.7-.393 2.25-1.015a3.001 3.001 0 0 0 3.75.614m-16.5 0a3.004 3.004 0 0 1-.621-4.72l1.189-1.19A1.5 1.5 0 0 1 5.378 3h13.243a1.5 1.5 0 0 1 1.06.44l1.19 1.189a3 3 0 0 1-.621 4.72M6.75 18h3.75a.75.75 0 0 0 .75-.75V13.5a.75.75 0 0 0-.75-.75H6.75a.75.75 0 0 0-.75.75v3.75c0 .414.336.75.75.75Z" />
-                                    </svg>
-                                </div>
-                                <div class="pickup-info">
-                                    <h3 class="pickup-name">Lokaler Hofladen</h3>
-                                    <p class="pickup-address">Dorfweg 15</p>
-                                </div>
-                            </div>
-                            <div class="pickup-time">Morgen um 10:00 Uhr</div>
-                        </div>
-
-                        <!-- Pickup Item 3 -->
-                        <div class="pickup-item">
-                            <div class="pickup-left">
-                                <div class="pickup-icon">
-                                    <svg class="pickup-icon-svg" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M13.5 21v-7.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349M3.75 21V9.349m0 0a3.001 3.001 0 0 0 3.75-.615A2.993 2.993 0 0 0 9.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 0 0 2.25 1.016c.896 0 1.7-.393 2.25-1.015a3.001 3.001 0 0 0 3.75.614m-16.5 0a3.004 3.004 0 0 1-.621-4.72l1.189-1.19A1.5 1.5 0 0 1 5.378 3h13.243a1.5 1.5 0 0 1 1.06.44l1.19 1.189a3 3 0 0 1-.621 4.72M6.75 18h3.75a.75.75 0 0 0 .75-.75V13.5a.75.75 0 0 0-.75-.75H6.75a.75.75 0 0 0-.75.75v3.75c0 .414.336.75.75.75Z" />
-                                    </svg>
-                                </div>
-                                <div class="pickup-info">
-                                    <h3 class="pickup-name">Restaurant Bella Italia</h3>
-                                    <p class="pickup-address">Marktplatz 8</p>
-                                </div>
-                            </div>
-                            <div class="pickup-time">Samstag um 14:30 Uhr</div>
-                        </div>
+                    <div class="pickups-list" id="pickups-list">
+                        <div class="pickup-item">Noch keine Abholungen geladen.</div>
                     </div>
+
                 </div>
             </div>
         </div>
     </main>
 
     <script type="module" src="./js/dashboardInit.js"></script>
+    <div id="angebot-modal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <button id="angebot-modal-close" class="btn-primary" type="button">Schließen</button>
+            <h2 id="angebot-modal-title"></h2>
+            <p id="angebot-modal-desc"></p>
+            <p id="angebot-modal-tags"></p>
+            <p id="angebot-modal-zeitfenster"></p>
+            <div id="angebot-modal-actions"></div>
+        </div>
+    </div>
+
 </body>
 
 </html>

@@ -3,6 +3,7 @@ package com.foodrescue.reservierungsmanagement.domain.model;
 import com.foodrescue.abholungsmanagement.domain.events.AbholungAbgeschlossen;
 import com.foodrescue.abholungsmanagement.domain.model.Abholcode;
 import com.foodrescue.reservierungsmanagement.domain.events.ReservierungErstellt;
+import com.foodrescue.reservierungsmanagement.domain.events.ReservierungStorniertEvent;
 import com.foodrescue.shared.domain.DomainEvent;
 import com.foodrescue.shared.exception.DomainException;
 import java.time.Instant;
@@ -65,14 +66,17 @@ public class Reservierung {
     return List.of(evt);
   }
 
-  public void stornieren() {
+  public List<DomainEvent> stornieren() {
     if (status != Status.AKTIV) {
       throw new DomainException("Nur aktive Reservierungen können storniert werden");
     }
     status = Status.STORNIERT;
+    domainEvents.add(new ReservierungStorniertEvent(id));
+    return List.of(new ReservierungStorniertEvent(id));
   }
 
   // Getter
+
   public String getId() {
     return id;
   }
@@ -87,5 +91,13 @@ public class Reservierung {
 
   public List<DomainEvent> getDomainEvents() {
     return List.copyOf(domainEvents);
+  }
+
+  public String getAbholerId() {
+    return abholerId;
+  }
+
+  public Abholcode getAbholcode() {
+    return abholcode;
   }
 }

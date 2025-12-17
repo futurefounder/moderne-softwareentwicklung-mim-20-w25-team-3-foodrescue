@@ -5,7 +5,7 @@ import com.foodrescue.shared.exception.DomainException;
 public final class AngebotsId {
   private final String value;
 
-  private AngebotsId(String value) {
+  public AngebotsId(String value) {
     if (value == null || value.isBlank()) throw DomainException.raiseIdInvalid("AngebotsId");
     this.value = value;
   }

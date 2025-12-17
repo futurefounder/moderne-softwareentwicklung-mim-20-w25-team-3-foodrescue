@@ -8,7 +8,7 @@ public final class AbholZeitfenster {
   private final LocalDateTime von;
   private final LocalDateTime bis;
 
-  private AbholZeitfenster(LocalDateTime von, LocalDateTime bis) {
+  public AbholZeitfenster(LocalDateTime von, LocalDateTime bis) {
     if (von == null || bis == null || !bis.isAfter(von)) {
       throw new DomainException("Ungültiges Zeitfenster");
     }

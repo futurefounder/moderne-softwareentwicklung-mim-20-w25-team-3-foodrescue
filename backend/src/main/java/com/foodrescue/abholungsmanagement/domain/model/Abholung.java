@@ -1,6 +1,7 @@
 package com.foodrescue.abholungsmanagement.domain.model;
 
 import com.foodrescue.abholungsmanagement.domain.events.AbholungAbgeschlossen;
+import com.foodrescue.abholungsmanagement.domain.events.AbholungFehlgeschlagenEvent;
 import com.foodrescue.shared.domain.DomainEvent;
 import com.foodrescue.shared.exception.DomainException;
 import java.time.Instant;
@@ -52,6 +53,15 @@ public class Abholung {
     status = Status.ABGESCHLOSSEN;
     abgeschlossenAm = Instant.now();
     return List.of(new AbholungAbgeschlossen(reservierungsId));
+  }
+
+  // Erweiterung: Methode für Fehlschlag mit Event
+  public List<DomainEvent> fehlschlagen() {
+    if (status != Status.ANGELEGT) {
+      throw new DomainException("Abholung wurde bereits verarbeitet");
+    }
+    status = Status.FEHLGESCHLAGEN;
+    return List.of(new AbholungFehlgeschlagenEvent(reservierungsId));
   }
 
   // Getter
