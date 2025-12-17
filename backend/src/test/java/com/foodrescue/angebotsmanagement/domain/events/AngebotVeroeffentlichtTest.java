@@ -9,7 +9,7 @@ public class AngebotVeroeffentlichtTest {
 
   @Test
   void speichertAngebotsIdUndZeitpunkt() {
-    AngebotVeroeffentlicht event = new AngebotVeroeffentlicht("a1");
+    AngebotErstelltEvent event = new AngebotErstelltEvent("a1");
 
     // nutzt getAngebotsId()
     assertEquals("a1", event.getAngebotsId());

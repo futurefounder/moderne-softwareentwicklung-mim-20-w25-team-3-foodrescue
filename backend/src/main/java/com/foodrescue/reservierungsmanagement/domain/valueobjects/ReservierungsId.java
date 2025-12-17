@@ -5,7 +5,7 @@ import com.foodrescue.shared.exception.DomainException;
 public final class ReservierungsId {
   private final String value;
 
-  private ReservierungsId(String value) {
+  public ReservierungsId(String value) {
     if (value == null || value.isBlank()) {
       throw DomainException.raiseIdInvalid("ReservierungsId");
     }

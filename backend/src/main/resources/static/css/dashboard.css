@@ -317,6 +317,66 @@
   background: rgba(0, 0, 0, 0.3);
 }
 
+/* ---------- Modal (Angebot Details) ---------- */
+.modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+
+    /* wird per JS auf "flex" gesetzt */
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+    padding: 24px;
+    background: rgba(0, 0, 0, 0.35);
+}
+
+.modal .modal-content {
+    width: min(720px, 100%);
+    background: var(--color-white);
+    border-radius: 16px;
+    padding: 20px 20px 16px;
+    box-shadow: var(--shadow-lg);
+}
+
+/* Close Button: nicht volle Breite */
+#angebot-modal-close.btn-primary {
+    width: auto;
+    margin: 0 0 12px auto; /* rechts oben */
+    padding: 0.65rem 1rem;
+}
+
+/* Text spacing */
+#angebot-modal-title {
+    margin: 0 0 8px 0;
+    color: var(--color-slate);
+}
+
+#angebot-modal-desc,
+#angebot-modal-tags,
+#angebot-modal-zeitfenster {
+    margin: 6px 0;
+    color: var(--color-text-dark);
+}
+
+/* Actions unten rechts */
+#angebot-modal-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 16px;
+}
+
+/* Modal Buttons: im Modal nicht 100% */
+#angebot-modal-actions .btn-primary,
+#angebot-modal-actions .btn-secondary {
+    width: auto;
+    margin-top: 0;
+    padding: 0.65rem 1rem;
+}
+
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .sidebar {

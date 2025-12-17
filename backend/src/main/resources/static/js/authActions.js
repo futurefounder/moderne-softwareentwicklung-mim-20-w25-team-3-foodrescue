@@ -7,30 +7,62 @@ import { elements } from "./domElements.js";
 import { getIsSignupMode } from "./authModeToggle.js";
 import { showError, showSuccess } from "./toastNotifications.js";
 
-function handleFormSubmit(event) {
-  event.preventDefault();
+async function handleFormSubmit(event) {
+    event.preventDefault();
 
-  if (getIsSignupMode()) {
-    handleSignup();
-  } else {
-    handleLogin();
-  }
+    if (getIsSignupMode()) {
+        await handleSignup();
+    } else {
+        await handleLogin();
+    }
 }
 
-function handleLogin() {
-  const email = elements.emailInput.value.trim();
 
-  console.log("Login attempt:", { email });
+async function handleLogin() {
+    const email = elements.emailInput.value.trim();
+    if (!email) {
+        showError("Bitte E-Mail eingeben.");
+        return;
+    }
 
-  // Store login state in localStorage (simplified login without backend validation)
-  localStorage.setItem("isLoggedIn", "true");
-  localStorage.setItem("userEmail", email);
-  localStorage.setItem("userName", "Benutzer"); // Default name for login
-  localStorage.setItem("userRole", "ABHOLER"); // Default role
+    try {
+        // 1) Übliche Endpunkte ausprobieren
+        const candidates = [
+            `/api/users/by-email?email=${encodeURIComponent(email)}`,
+            `/api/users?email=${encodeURIComponent(email)}`
+        ];
 
-  // Redirect to dashboard
-  window.location.href = "./dashboard.html";
+        let userData = null;
+
+        for (const url of candidates) {
+            const res = await fetch(url);
+            if (res.ok) {
+                userData = await res.json();
+                break;
+            }
+        }
+
+        if (!userData || !userData.id) {
+            showError("Login fehlgeschlagen: Nutzer nicht gefunden (E-Mail unbekannt).");
+            return;
+        }
+
+        // 2) Login-State setzen
+        localStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("userEmail", userData.email);
+        localStorage.setItem("userName", userData.name);
+        localStorage.setItem("userRole", userData.rolle);
+        localStorage.setItem("userId", userData.id);
+
+        showSuccess(`Willkommen zurück, ${userData.name}!`);
+
+        window.location.href = "./dashboard.html";
+    } catch (e) {
+        console.error(e);
+        showError("Verbindungsfehler beim Login.");
+    }
 }
+
 
 async function handleSignup() {
   const name = elements.nameInput.value.trim();

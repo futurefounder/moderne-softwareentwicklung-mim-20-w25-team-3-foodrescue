@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.foodrescue.abholungsmanagement.domain.model.AbholZeitfenster;
 import com.foodrescue.abholungsmanagement.domain.model.Abholcode;
-import com.foodrescue.angebotsmanagement.domain.events.AngebotVeroeffentlicht;
+import com.foodrescue.angebotsmanagement.domain.events.AngebotErstelltEvent;
 import com.foodrescue.reservierungsmanagement.domain.model.Reservierung;
 import com.foodrescue.shared.exception.DomainException;
 import java.time.LocalDateTime;
@@ -62,9 +62,9 @@ public class AngebotTest {
     var events = angebot.veroeffentlichen();
 
     assertEquals(Angebot.Status.VERFUEGBAR, angebot.getStatus());
-    assertTrue(events.stream().anyMatch(e -> e instanceof AngebotVeroeffentlicht));
+    assertTrue(events.stream().anyMatch(e -> e instanceof AngebotErstelltEvent));
     assertTrue(
-        angebot.getDomainEvents().stream().anyMatch(e -> e instanceof AngebotVeroeffentlicht));
+        angebot.getDomainEvents().stream().anyMatch(e -> e instanceof AngebotErstelltEvent));
   }
 
   @Test

@@ -2,60 +2,104 @@ package com.foodrescue.userverwaltung.infrastructure.web.rest;
 
 public class ErstelleAnbieterProfilRequest {
 
-  private String userId;
-  private String geschaeftsname;
-  private String geschaeftstyp;
-  private String adresse;
-  private Double breitengrad; // optional
-  private Double laengengrad; // optional
+    private String userId;
+    private String geschaeftsname;
+    private String geschaeftstyp;
 
-  public ErstelleAnbieterProfilRequest() {}
+    /**
+     * Legacy/Ein-Feld-Adresse (z.B. "Ahornstraße 11, 12345 Berlin, DE").
+     * Wenn die strukturierten Felder (strasse/plz/ort/land) befüllt sind, werden diese bevorzugt.
+     */
+    private String adresse;
 
-  public String getUserId() {
-    return userId;
-  }
+    // Empfohlen: strukturierte Adresse (passt zu Domain-VO Adresse)
+    private String strasse;
+    private String plz;
+    private String ort;
+    private String land;
 
-  public void setUserId(String userId) {
-    this.userId = userId;
-  }
+    private Double breitengrad; // optional
+    private Double laengengrad; // optional
 
-  public String getGeschaeftsname() {
-    return geschaeftsname;
-  }
+    public ErstelleAnbieterProfilRequest() {}
 
-  public void setGeschaeftsname(String geschaeftsname) {
-    this.geschaeftsname = geschaeftsname;
-  }
+    public String getUserId() {
+        return userId;
+    }
 
-  public String getGeschaeftstyp() {
-    return geschaeftstyp;
-  }
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
-  public void setGeschaeftstyp(String geschaeftstyp) {
-    this.geschaeftstyp = geschaeftstyp;
-  }
+    public String getGeschaeftsname() {
+        return geschaeftsname;
+    }
 
-  public String getAdresse() {
-    return adresse;
-  }
+    public void setGeschaeftsname(String geschaeftsname) {
+        this.geschaeftsname = geschaeftsname;
+    }
 
-  public void setAdresse(String adresse) {
-    this.adresse = adresse;
-  }
+    public String getGeschaeftstyp() {
+        return geschaeftstyp;
+    }
 
-  public Double getBreitengrad() {
-    return breitengrad;
-  }
+    public void setGeschaeftstyp(String geschaeftstyp) {
+        this.geschaeftstyp = geschaeftstyp;
+    }
 
-  public void setBreitengrad(Double breitengrad) {
-    this.breitengrad = breitengrad;
-  }
+    public String getAdresse() {
+        return adresse;
+    }
 
-  public Double getLaengengrad() {
-    return laengengrad;
-  }
+    public void setAdresse(String adresse) {
+        this.adresse = adresse;
+    }
 
-  public void setLaengengrad(Double laengengrad) {
-    this.laengengrad = laengengrad;
-  }
+    public String getStrasse() {
+        return strasse;
+    }
+
+    public void setStrasse(String strasse) {
+        this.strasse = strasse;
+    }
+
+    public String getPlz() {
+        return plz;
+    }
+
+    public void setPlz(String plz) {
+        this.plz = plz;
+    }
+
+    public String getOrt() {
+        return ort;
+    }
+
+    public void setOrt(String ort) {
+        this.ort = ort;
+    }
+
+    public String getLand() {
+        return land;
+    }
+
+    public void setLand(String land) {
+        this.land = land;
+    }
+
+    public Double getBreitengrad() {
+        return breitengrad;
+    }
+
+    public void setBreitengrad(Double breitengrad) {
+        this.breitengrad = breitengrad;
+    }
+
+    public Double getLaengengrad() {
+        return laengengrad;
+    }
+
+    public void setLaengengrad(Double laengengrad) {
+        this.laengengrad = laengengrad;
+    }
 }
