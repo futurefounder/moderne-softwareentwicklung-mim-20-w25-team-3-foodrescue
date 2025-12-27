@@ -90,7 +90,8 @@ public class AnbieterProfilController {
 
   // GET: userId aus Pfad als UUID parsen und Service korrekt nutzen
   @GetMapping("/user/{userId}")
-  public ResponseEntity<AnbieterProfilResponse> holeProfilFuerUser(@PathVariable String userId) {
+  public ResponseEntity<AnbieterProfilResponse> holeProfilFuerUser(
+      @PathVariable("userId") String userId) {
 
     UserId uid = new UserId(UUID.fromString(userId));
 
