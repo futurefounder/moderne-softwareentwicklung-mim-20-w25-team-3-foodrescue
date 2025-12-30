@@ -107,7 +107,7 @@ public class AngebotMapper {
 
     return new AngebotResponse(
         angebot.getId(),
-        angebot.getAnbieterId(),
+        angebot.getAnbieterId().toString(),
         angebot.getTitel(),
         angebot.getBeschreibung(),
         angebot.getTags(),

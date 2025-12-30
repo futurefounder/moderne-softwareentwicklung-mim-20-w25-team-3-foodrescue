@@ -5,11 +5,6 @@ public class ErstelleAnbieterProfilRequest {
   private String userId;
   private String geschaeftsname;
   private String geschaeftstyp;
-
-  /**
-   * Legacy/Ein-Feld-Adresse (z.B. "Ahornstraße 11, 12345 Berlin, DE"). Wenn die strukturierten
-   * Felder (strasse/plz/ort/land) befüllt sind, werden diese bevorzugt.
-   */
   private String adresse;
 
   // Empfohlen: strukturierte Adresse (passt zu Domain-VO Adresse)
