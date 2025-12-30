@@ -1,23 +1,20 @@
 package com.foodrescue.angebotsmanagement.domain.model;
 
-/**
- * Aggregate Root: Angebot
- *
- * <p>Repräsentiert ein Lebensmittelangebot, das von einem Anbieter zur Rettung bereitgestellt wird.
- *
- * <p>Diese Klasse ist als Platzhalter für zukünftige Use-Case-driven Implementierung vorgesehen.
- */
 import com.foodrescue.abholungsmanagement.domain.model.AbholZeitfenster;
 import com.foodrescue.abholungsmanagement.domain.model.Abholcode;
 import com.foodrescue.angebotsmanagement.domain.events.AngebotErstelltEvent;
+import com.foodrescue.angebotsmanagement.domain.events.AngebotReserviertEvent;
 import com.foodrescue.angebotsmanagement.domain.valueobjects.AngebotsId;
-import com.foodrescue.reservierungsmanagement.domain.model.Reservierung;
+import com.foodrescue.shared.domain.AggregateRoot;
 import com.foodrescue.shared.domain.DomainEvent;
 import com.foodrescue.shared.exception.DomainException;
 import com.foodrescue.userverwaltung.domain.valueobjects.UserId;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.*;
 
-public class Angebot {
+/** Aggregate Root: Angebot */
+public class Angebot implements AggregateRoot {
 
   public enum Status {
     ENTWURF,
@@ -27,34 +24,44 @@ public class Angebot {
     ENTFERNT
   }
 
-  private final String id;
-  private final String anbieterId;
+  private final AngebotsId id;
+  private final UserId anbieterId;
   private String titel;
   private String beschreibung;
   private Set<String> tags;
   private AbholZeitfenster zeitfenster;
-  private Status status = Status.ENTWURF; // noch nicht veröffentlicht
+  private Status status = Status.ENTWURF;
   private final List<DomainEvent> domainEvents = new ArrayList<>();
 
   private Angebot(
-      String id,
-      String anbieterId,
+      AngebotsId id,
+      UserId anbieterId,
       String titel,
       String beschreibung,
       Set<String> tags,
       AbholZeitfenster zeitfenster) {
-    if (id == null || anbieterId == null || titel == null || zeitfenster == null) {
-      throw new DomainException("Angebot unvollständig");
+
+    // Invarianten-Schutz
+    this.id = Objects.requireNonNull(id, "AngebotsId darf nicht null sein");
+    this.anbieterId = Objects.requireNonNull(anbieterId, "AnbieterId darf nicht null sein");
+    this.zeitfenster = Objects.requireNonNull(zeitfenster, "Zeitfenster darf nicht null sein");
+
+    if (titel == null || titel.trim().isEmpty()) {
+      throw new DomainException("Titel darf nicht leer sein");
     }
-    this.id = id;
-    this.anbieterId = anbieterId;
-    this.titel = titel;
-    this.beschreibung = beschreibung == null ? "" : beschreibung;
+    if (titel.length() > 100) {
+      throw new DomainException("Titel darf maximal 100 Zeichen lang sein");
+    }
+
+    this.titel = titel.trim();
+    this.beschreibung = beschreibung == null ? "" : beschreibung.trim();
     this.tags = tags == null ? Set.of() : Set.copyOf(tags);
-    this.zeitfenster = zeitfenster;
   }
 
-  // Neue Fabrikmethode für Erstellung mit Event
+  /**
+   * Factory-Methode zum Erstellen eines neuen Angebots. Erzeugt das Angebot im Status ENTWURF und
+   * löst ein AngebotErstelltEvent aus.
+   */
   public static Angebot erstelle(
       AngebotsId id,
       UserId anbieterId,
@@ -62,61 +69,164 @@ public class Angebot {
       String beschreibung,
       Set<String> tags,
       AbholZeitfenster zeitfenster) {
-    var angebot =
-        new Angebot(
-            id.value(), anbieterId.getValue().toString(), titel, beschreibung, tags, zeitfenster);
+
+    var angebot = new Angebot(id, anbieterId, titel, beschreibung, tags, zeitfenster);
     angebot.domainEvents.add(new AngebotErstelltEvent(id.value()));
     return angebot;
   }
 
-  // Methode zum Aktualisieren (z. B. für Anbieter)
+  /** Aktualisiert die Angebotsdetails. Nur möglich im Status ENTWURF oder VERFUEGBAR. */
   public void aktualisiere(
       String neuerTitel,
       String neueBeschreibung,
       Set<String> neueTags,
       AbholZeitfenster neuesFenster) {
+
+    // Invariante: Nur in bestimmten Status änderbar
     if (status != Status.ENTWURF && status != Status.VERFUEGBAR) {
       throw new DomainException("Angebot kann nur im Entwurf oder verfügbar aktualisiert werden");
     }
-    this.titel = neuerTitel;
-    this.beschreibung = neueBeschreibung;
-    this.tags = neueTags;
+
+    // Invariante: Titel darf nicht leer sein
+    if (neuerTitel == null || neuerTitel.trim().isEmpty()) {
+      throw new DomainException("Titel darf nicht leer sein");
+    }
+    if (neuerTitel.length() > 100) {
+      throw new DomainException("Titel darf maximal 100 Zeichen lang sein");
+    }
+
+    Objects.requireNonNull(neuesFenster, "Zeitfenster darf nicht null sein");
+
+    this.titel = neuerTitel.trim();
+    this.beschreibung = neueBeschreibung == null ? "" : neueBeschreibung.trim();
+    this.tags = neueTags == null ? Set.of() : Set.copyOf(neueTags);
     this.zeitfenster = neuesFenster;
   }
 
+  /**
+   * Veröffentlicht das Angebot. Ändert den Status von ENTWURF zu VERFUEGBAR.
+   *
+   * @return Liste der erzeugten Domain Events
+   * @throws DomainException wenn das Angebot nicht im Status ENTWURF ist
+   */
   public List<DomainEvent> veroeffentlichen() {
     if (status != Status.ENTWURF) {
       throw new DomainException("Angebot ist bereits veröffentlicht oder aktiv");
     }
     status = Status.VERFUEGBAR;
-    var evt = new AngebotErstelltEvent(id);
-    domainEvents.add(evt);
-    return List.of(evt);
+
+    // Event wird NICHT erneut hinzugefügt, da es bereits bei erstelle() hinzugefügt wurde
+    // Alternativ: Eigenes "AngebotVeroeffentlichtEvent" wenn gewünscht
+    return List.copyOf(domainEvents);
   }
 
-  public Reservierung reservieren(String abholerId, Abholcode code) {
+  /**
+   * Reserviert das Angebot für einen Abholer.
+   *
+   * <p>WICHTIG: Diese Methode erstellt KEIN Reservierungs-Aggregate mehr! Stattdessen wird ein
+   * AngebotReserviertEvent erzeugt, auf das der Reservierungsmanagement Bounded Context reagiert.
+   *
+   * <p>Dies respektiert die Aggregate Boundaries und vermeidet tight coupling.
+   *
+   * @param abholerId ID des Abholers
+   * @param abholcode Der generierte Abholcode
+   * @return Das erzeugte Domain Event
+   * @throws DomainException wenn das Angebot nicht verfügbar ist
+   */
+  public AngebotReserviertEvent reservieren(String abholerId, Abholcode abholcode) {
+    // Invariante: Nur verfügbare Angebote können reserviert werden
     if (status != Status.VERFUEGBAR) {
       throw new DomainException("Angebot ist nicht verfügbar");
     }
+
+    // Business Rule: Anbieter kann nicht sein eigenes Angebot abholen
+    if (this.anbieterId.getValue().toString().equals(abholerId)) {
+      throw new DomainException("Anbieter kann sein eigenes Angebot nicht reservieren");
+    }
+
     status = Status.RESERVIERT;
-    return Reservierung.erstelle(UUID.randomUUID().toString(), id, abholerId, code);
+
+    var event = new AngebotReserviertEvent(id.value(), abholerId, abholcode.value());
+    domainEvents.add(event);
+
+    return event;
   }
 
-  // Getter
+  /**
+   * Markiert das Angebot als abgeholt. Dies sollte aufgerufen werden, wenn die Abholung bestätigt
+   * wurde.
+   */
+  public void markiereAlsAbgeholt() {
+    if (status != Status.RESERVIERT) {
+      throw new DomainException("Nur reservierte Angebote können als abgeholt markiert werden");
+    }
+    status = Status.ABGEHOLT;
+  }
+
+  /**
+   * Entfernt das Angebot (Soft Delete). Ein entferntes Angebot kann nicht mehr verändert werden.
+   */
+  public void entfernen() {
+    if (status == Status.ABGEHOLT) {
+      throw new DomainException("Abgeholte Angebote können nicht entfernt werden");
+    }
+    status = Status.ENTFERNT;
+  }
+
+  // ========== Domain Logic (Rich Domain Model) ==========
+
+  /** Prüft, ob das Angebot aktuell verfügbar ist. */
+  public boolean istVerfuegbar() {
+    return status == Status.VERFUEGBAR && zeitfenster.istNochAktuell(LocalDateTime.now());
+  }
+
+  /** Prüft, ob das Angebot von einem bestimmten User reserviert werden kann. */
+  public boolean kannReserviertWerdenVon(UserId userId) {
+    return istVerfuegbar() && !anbieterId.equals(userId);
+  }
+
+  /** Berechnet die verbleibende Zeit bis zum Beginn des Abholzeitfensters. */
+  public Duration verbleibendeZeitBisAbholung() {
+    return Duration.between(LocalDateTime.now(), zeitfenster.von());
+  }
+
+  /** Prüft, ob das Angebot im Suchbegriff vorkommt. */
+  public boolean passztZuSuchbegriff(String suchbegriff) {
+    if (suchbegriff == null || suchbegriff.trim().isEmpty()) {
+      return true;
+    }
+
+    String search = suchbegriff.toLowerCase();
+    return titel.toLowerCase().contains(search)
+        || beschreibung.toLowerCase().contains(search)
+        || tags.stream().anyMatch(tag -> tag.toLowerCase().contains(search));
+  }
+
+  // ========== AggregateRoot Interface ==========
+
+  @Override
   public String getId() {
+    return id.value();
+  }
+
+  @Override
+  public List<DomainEvent> getDomainEvents() {
+    return List.copyOf(domainEvents);
+  }
+
+  @Override
+  public void clearDomainEvents() {
+    domainEvents.clear();
+  }
+
+  // ========== Getter ==========
+
+  public AngebotsId getAngebotsId() {
     return id;
   }
 
-  public Status getStatus() {
-    return status;
-  }
-
-  public AbholZeitfenster getZeitfenster() {
-    return zeitfenster;
-  }
-
-  public List<DomainEvent> getDomainEvents() {
-    return List.copyOf(domainEvents);
+  public UserId getAnbieterId() {
+    return anbieterId;
   }
 
   public String getTitel() {
@@ -131,28 +241,28 @@ public class Angebot {
     return Set.copyOf(tags);
   }
 
-  public String getAnbieterId() {
-    return anbieterId;
+  public AbholZeitfenster getZeitfenster() {
+    return zeitfenster;
+  }
+
+  public Status getStatus() {
+    return status;
+  }
+
+  @Override
+  public String toString() {
+    return "Angebot{"
+        + "id="
+        + id
+        + ", anbieterId="
+        + anbieterId
+        + ", titel='"
+        + titel
+        + '\''
+        + ", status="
+        + status
+        + ", zeitfenster="
+        + zeitfenster
+        + '}';
   }
 }
-
-  // Geplante Regex-Patterns für zukünftige Validierung (TDD Schritt 2):
-  //
-  // EMAIL_PATTERN: ^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$
-  // - Lokalteil mit Buchstaben, Zahlen, +, _, ., -
-  // - @ Symbol
-  // - Domain mit Buchstaben, Zahlen, ., -
-  // - TLD mit mindestens 2 Buchstaben
-  //
-  // NAME_PATTERN: ^[A-Za-zÄÖÜäöüß]+([ -][A-Za-zÄÖÜäöüß]+)*$
-  // - Mindestens 2 Zeichen
-  // - Buchstaben (inkl. Umlaute)
-  // - Leerzeichen und Bindestriche erlaubt (nicht am Anfang/Ende)
-  //
-  // TELEFON_PATTERN: ^(\+49|0)[1-9](?=(?:[^\d]*\d){4})[0-9\s\-/]+$
-  // - Startet mit +49 oder 0
-  // - Gefolgt von Ziffer 1-9
-  // - Stellt sicher (per Lookahead), dass mindestens 4 weitere Ziffern im Rest der Nummer vorkommen
-  // - Erlaubt, dass diese Ziffern von Leerzeichen, - oder / durchsetzt sein können
-  //
-// }

@@ -31,7 +31,7 @@ class AngebotMapperTest {
     AngebotMapper.AngebotResponse dto = mapper.toResponse(angebot);
 
     assertEquals("a1", dto.id());
-    assertEquals(angebot.getAnbieterId(), dto.anbieterId());
+    assertEquals(angebot.getAnbieterId().toString(), dto.anbieterId());
     assertEquals("Titel", dto.titel());
     assertEquals("Beschr", dto.beschreibung());
     assertEquals(Set.of("t1"), dto.tags());

@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.foodrescue.abholungsmanagement.domain.events.AbholungAbgeschlossen;
 import com.foodrescue.abholungsmanagement.domain.model.Abholcode;
 import com.foodrescue.reservierungsmanagement.domain.events.ReservierungErstellt;
+import com.foodrescue.reservierungsmanagement.domain.valueobjects.ReservierungsId;
 import com.foodrescue.shared.domain.DomainEvent;
 import com.foodrescue.shared.exception.DomainException;
 import java.util.List;
@@ -14,8 +15,9 @@ class ReservierungTest {
 
   @Test
   void erstelle_emitsReservierungErstelltEvent_andInitialStatusAktiv() {
+    // GEÄNDERT: Abholcode.of() statt Abholcode.of()
     Abholcode code = Abholcode.of("AB12");
-    Reservierung r = Reservierung.erstelle("r1", "a1", "u1", code);
+    Reservierung r = Reservierung.erstelle(new ReservierungsId("r1"), "a1", "u1", code);
 
     assertEquals("r1", r.getId());
     assertEquals("a1", r.getAngebotId());
@@ -33,26 +35,38 @@ class ReservierungTest {
 
   @Test
   void erstelle_rejectsNulls() {
+    // GEÄNDERT: Abholcode.of() statt Abholcode.of()
     Abholcode code = Abholcode.of("AB12");
+
+    // GEÄNDERT: NullPointerException statt DomainException erwartet
     assertAll(
         () ->
             assertThrows(
-                DomainException.class, () -> Reservierung.erstelle(null, "a1", "u1", code)),
+                NullPointerException.class,
+                () -> Reservierung.erstelle(null, "a1", "u1", code),
+                "ReservierungsId darf nicht null sein"),
         () ->
             assertThrows(
-                DomainException.class, () -> Reservierung.erstelle("r1", null, "u1", code)),
+                NullPointerException.class,
+                () -> Reservierung.erstelle(new ReservierungsId("r1"), null, "u1", code),
+                "AngebotId darf nicht null sein"),
         () ->
             assertThrows(
-                DomainException.class, () -> Reservierung.erstelle("r1", "a1", null, code)),
+                NullPointerException.class,
+                () -> Reservierung.erstelle(new ReservierungsId("r1"), "a1", null, code),
+                "AbholerId darf nicht null sein"),
         () ->
             assertThrows(
-                DomainException.class, () -> Reservierung.erstelle("r1", "a1", "u1", null)));
+                NullPointerException.class,
+                () -> Reservierung.erstelle(new ReservierungsId("r1"), "a1", "u1", null),
+                "Abholcode darf nicht null sein"));
   }
 
   @Test
   void bestaetigeAbholung_happyPath_setsStatusAbgeholt_andReturnsEvent() {
+    // GEÄNDERT: Abholcode.of() statt Abholcode.of()
     Abholcode code = Abholcode.of("AB12");
-    Reservierung r = Reservierung.erstelle("r1", "a1", "u1", code);
+    Reservierung r = Reservierung.erstelle(new ReservierungsId("r1"), "a1", "u1", code);
 
     List<DomainEvent> events = r.bestaetigeAbholung(Abholcode.of("AB12"));
 
@@ -66,29 +80,34 @@ class ReservierungTest {
 
   @Test
   void bestaetigeAbholung_wrongCode_throws_andDoesNotChangeStatus() {
+    // GEÄNDERT: Abholcode.of() statt Abholcode.of()
     Abholcode code = Abholcode.of("AB12");
-    Reservierung r = Reservierung.erstelle("r1", "a1", "u1", code);
+    Reservierung r = Reservierung.erstelle(new ReservierungsId("r1"), "a1", "u1", code);
 
+    // GEÄNDERT: Fehlermeldung angepasst an die verbesserte Implementierung
     DomainException ex =
         assertThrows(DomainException.class, () -> r.bestaetigeAbholung(Abholcode.of("CD34")));
-    assertEquals("Abholcode falsch", ex.getMessage());
+    assertEquals("Abholcode ist ungültig", ex.getMessage());
     assertEquals(Reservierung.Status.AKTIV, r.getStatus());
   }
 
   @Test
   void bestaetigeAbholung_whenNotActive_throws() {
+    // GEÄNDERT: Abholcode.of() statt Abholcode.of()
     Abholcode code = Abholcode.of("AB12");
-    Reservierung r = Reservierung.erstelle("r1", "a1", "u1", code);
+    Reservierung r = Reservierung.erstelle(new ReservierungsId("r1"), "a1", "u1", code);
     r.stornieren();
 
+    // GEÄNDERT: Fehlermeldung enthält jetzt den Status
     DomainException ex = assertThrows(DomainException.class, () -> r.bestaetigeAbholung(code));
-    assertEquals("Reservierung ist nicht aktiv", ex.getMessage());
+    assertEquals("Reservierung ist nicht aktiv (Status: STORNIERT)", ex.getMessage());
   }
 
   @Test
   void stornieren_happyPath_setsStatusStorniert_andReturnsEvent() {
+    // GEÄNDERT: Abholcode.of() statt Abholcode.of()
     Abholcode code = Abholcode.of("AB12");
-    Reservierung r = Reservierung.erstelle("r1", "a1", "u1", code);
+    Reservierung r = Reservierung.erstelle(new ReservierungsId("r1"), "a1", "u1", code);
 
     List<DomainEvent> events = r.stornieren();
 
@@ -103,11 +122,81 @@ class ReservierungTest {
 
   @Test
   void stornieren_whenNotActive_throws() {
+    // GEÄNDERT: Abholcode.of() statt Abholcode.of()
     Abholcode code = Abholcode.of("AB12");
-    Reservierung r = Reservierung.erstelle("r1", "a1", "u1", code);
+    Reservierung r = Reservierung.erstelle(new ReservierungsId("r1"), "a1", "u1", code);
     r.bestaetigeAbholung(code);
 
+    // GEÄNDERT: Fehlermeldung enthält jetzt den Status
     DomainException ex = assertThrows(DomainException.class, r::stornieren);
-    assertEquals("Nur aktive Reservierungen können storniert werden", ex.getMessage());
+    assertEquals(
+        "Nur aktive Reservierungen können storniert werden (Status: ABGEHOLT)", ex.getMessage());
+  }
+
+  // NEUE TESTS für die zusätzlichen Domain-Methoden
+
+  @Test
+  void istAktiv_returnsTrueForNewReservierung() {
+    Abholcode code = Abholcode.of("AB12");
+    Reservierung r = Reservierung.erstelle(new ReservierungsId("r1"), "a1", "u1", code);
+
+    assertTrue(r.istAktiv());
+    assertFalse(r.istAbgeschlossen());
+    assertFalse(r.istStorniert());
+  }
+
+  @Test
+  void istAbgeschlossen_returnsTrueAfterAbholung() {
+    Abholcode code = Abholcode.of("AB12");
+    Reservierung r = Reservierung.erstelle(new ReservierungsId("r1"), "a1", "u1", code);
+    r.bestaetigeAbholung(code);
+
+    assertFalse(r.istAktiv());
+    assertTrue(r.istAbgeschlossen());
+    assertFalse(r.istStorniert());
+  }
+
+  @Test
+  void istStorniert_returnsTrueAfterStornierung() {
+    Abholcode code = Abholcode.of("AB12");
+    Reservierung r = Reservierung.erstelle(new ReservierungsId("r1"), "a1", "u1", code);
+    r.stornieren();
+
+    assertFalse(r.istAktiv());
+    assertFalse(r.istAbgeschlossen());
+    assertTrue(r.istStorniert());
+  }
+
+  @Test
+  void codeIstKorrekt_checksAbholcode() {
+    Abholcode code = Abholcode.of("AB12");
+    Reservierung r = Reservierung.erstelle(new ReservierungsId("r1"), "a1", "u1", code);
+
+    assertTrue(r.codeIstKorrekt(Abholcode.of("AB12")));
+    assertFalse(r.codeIstKorrekt(Abholcode.of("CD34")));
+  }
+
+  @Test
+  void reservierungsdauer_returnsPositiveDuration() throws InterruptedException {
+    Abholcode code = Abholcode.of("AB12");
+    Reservierung r = Reservierung.erstelle(new ReservierungsId("r1"), "a1", "u1", code);
+
+    Thread.sleep(10); // Kurz warten
+
+    var dauer = r.reservierungsdauer();
+    assertNotNull(dauer);
+    assertTrue(dauer.toMillis() >= 10);
+  }
+
+  @Test
+  void clearDomainEvents_removesAllEvents() {
+    Abholcode code = Abholcode.of("AB12");
+    Reservierung r = Reservierung.erstelle(new ReservierungsId("r1"), "a1", "u1", code);
+
+    assertFalse(r.getDomainEvents().isEmpty());
+
+    r.clearDomainEvents();
+
+    assertTrue(r.getDomainEvents().isEmpty());
   }
 }

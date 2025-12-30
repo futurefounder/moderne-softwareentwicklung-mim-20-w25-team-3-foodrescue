@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.foodrescue.abholungsmanagement.domain.model.Abholcode;
 import com.foodrescue.reservierungsmanagement.domain.model.Reservierung;
+import com.foodrescue.reservierungsmanagement.domain.valueobjects.ReservierungsId;
 import org.junit.jupiter.api.Test;
 
 class InMemoryReservierungRepositoryTest {
@@ -11,7 +12,8 @@ class InMemoryReservierungRepositoryTest {
   @Test
   void speichernAndFindeMitId_roundTrip() {
     InMemoryReservierungRepository repo = new InMemoryReservierungRepository();
-    Reservierung r = Reservierung.erstelle("r1", "a1", "u1", Abholcode.of("AB12"));
+    Reservierung r =
+        Reservierung.erstelle(new ReservierungsId("r1"), "a1", "u1", Abholcode.of("AB12"));
 
     repo.speichern(r);
 
@@ -28,8 +30,10 @@ class InMemoryReservierungRepositoryTest {
   @Test
   void speichern_overwritesSameId_lastWins() {
     InMemoryReservierungRepository repo = new InMemoryReservierungRepository();
-    Reservierung r1 = Reservierung.erstelle("r1", "a1", "u1", Abholcode.of("AB12"));
-    Reservierung r2 = Reservierung.erstelle("r1", "a2", "u2", Abholcode.of("CD34"));
+    Reservierung r1 =
+        Reservierung.erstelle(new ReservierungsId("r1"), "a1", "u1", Abholcode.of("AB12"));
+    Reservierung r2 =
+        Reservierung.erstelle(new ReservierungsId("r1"), "a2", "u2", Abholcode.of("CD34"));
 
     repo.speichern(r1);
     repo.speichern(r2);
@@ -44,9 +48,12 @@ class InMemoryReservierungRepositoryTest {
   void findeFuerAbholer_filtersByAbholerId() {
     InMemoryReservierungRepository repo = new InMemoryReservierungRepository();
 
-    Reservierung u1r1 = Reservierung.erstelle("r1", "a1", "u1", Abholcode.of("AB12"));
-    Reservierung u1r2 = Reservierung.erstelle("r2", "a2", "u1", Abholcode.of("CD34"));
-    Reservierung u2r1 = Reservierung.erstelle("r3", "a3", "u2", Abholcode.of("EF56"));
+    Reservierung u1r1 =
+        Reservierung.erstelle(new ReservierungsId("r1"), "a1", "u1", Abholcode.of("AB12"));
+    Reservierung u1r2 =
+        Reservierung.erstelle(new ReservierungsId("r2"), "a2", "u1", Abholcode.of("CD34"));
+    Reservierung u2r1 =
+        Reservierung.erstelle(new ReservierungsId("r3"), "a3", "u2", Abholcode.of("EF56"));
 
     repo.speichern(u1r1);
     repo.speichern(u1r2);

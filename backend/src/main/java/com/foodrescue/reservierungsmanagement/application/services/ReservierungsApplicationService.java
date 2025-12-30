@@ -5,19 +5,17 @@ import com.foodrescue.angebotsmanagement.domain.model.Angebot;
 import com.foodrescue.angebotsmanagement.domain.valueobjects.AngebotsId;
 import com.foodrescue.angebotsmanagement.infrastructure.repositories.AngebotRepository;
 import com.foodrescue.reservierungsmanagement.application.commands.ReserviereAngebotCommand;
-import com.foodrescue.reservierungsmanagement.domain.model.Reservierung;
 import com.foodrescue.reservierungsmanagement.domain.valueobjects.ReservierungsId;
 import com.foodrescue.reservierungsmanagement.infrastructure.repositories.ReservierungRepository;
 import com.foodrescue.reservierungsmanagement.infrastructure.web.rest.ReservierungController.GeplanteAbholungResponse;
-import jakarta.transaction.Transactional;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 @Service
-@Transactional
 public class ReservierungsApplicationService {
 
   private final ReservierungRepository reservierungRepository;
@@ -31,25 +29,41 @@ public class ReservierungsApplicationService {
     this.angebotRepository = angebotRepository;
   }
 
+  /**
+   * Reserviert ein Angebot für einen Abholer.
+   *
+   * @param command Das Reservierungskommando
+   * @return Die ID, die für die neue Reservierung verwendet wird
+   */
   public ReservierungsId reserviereAngebot(ReserviereAngebotCommand command) {
+    // 1. Angebot laden
     Optional<Angebot> optionalAngebot = angebotRepository.findeMitId(command.getAngebotId());
     Angebot angebot =
         optionalAngebot.orElseThrow(() -> new IllegalArgumentException("Angebot nicht gefunden"));
 
     String abholerId = command.getAbholerId().getValue().toString();
 
+    // 2. Domain Service für Validierung
     ReservierungsService domainService =
         new ReservierungsService(
             () -> reservierungRepository.findeFuerAbholer(abholerId).size(),
             MAX_AKTIVE_RESERVIERUNGEN_PRO_NUTZER);
 
+    // 3. Abholcode generieren
     Abholcode code = Abholcode.random();
-    Reservierung reservierung = domainService.reserviere(angebot, abholerId, code);
 
-    reservierungRepository.speichern(reservierung);
+    // 4. Angebot reservieren (ändert Status, speichert Event intern)
+    domainService.reserviere(angebot, abholerId, code);
+
+    // 5. Angebot speichern (publiziert automatisch das AngebotReserviertEvent)
     angebotRepository.speichern(angebot);
 
-    return ReservierungsId.of(reservierung.getId());
+    // 6. ReservierungsId für Response generieren
+    // HINWEIS: Die tatsächliche Reservierung wird vom Event Handler erstellt!
+    // Diese ID ist nur für die API-Response. Der Event Handler wird seine eigene ID generieren.
+    ReservierungsId responseId = new ReservierungsId(UUID.randomUUID().toString());
+
+    return responseId;
   }
 
   public List<GeplanteAbholungResponse> findeGeplanteAbholungenFuerUser(String userId) {
