@@ -19,6 +19,7 @@ import org.springframework.stereotype.Repository;
  * <p>In Produktion würde dies durch eine JPA-Implementierung ersetzt werden.
  */
 @Repository
+@Deprecated
 public class InMemoryAngebotRepository implements AngebotRepository {
 
   private final Map<String, Angebot> angebote = new ConcurrentHashMap<>();
