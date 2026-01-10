@@ -44,6 +44,9 @@ import java.util.Objects;
  *     .and(verfuegbarInZeitfenster(heute, morgen));
  * }</pre>
  */
+
+// wird nirgends verwendet, für funktionale Programmierkonzepte
+
 public final class AngebotPredicates {
 
   // Utility class - private constructor

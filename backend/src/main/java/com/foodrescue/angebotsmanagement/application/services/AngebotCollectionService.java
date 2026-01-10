@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
  *   <li>Filtering mit mehreren Kriterien (findeMitKomplexenKriterien)
  * </ol>
  */
+
+// wird nicht verwendet
 @Service
 public class AngebotCollectionService {
 

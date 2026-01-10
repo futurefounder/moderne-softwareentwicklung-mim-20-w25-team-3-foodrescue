@@ -1,113 +1,122 @@
-# Frontend Documentation - FoodRescue Authentication System
+# Frontend-Dokumentation - FoodRescue
 
-## 📋 Overview
+## Übersicht
 
-The FoodRescue frontend is a modular JavaScript application that handles user authentication (login and signup). The architecture follows a clean separation of concerns with ES6 modules, backend-driven validation, and user-friendly error feedback via toast notifications.
+Das FoodRescue-Frontend ist eine modulare JavaScript-Anwendung, die Benutzerauthentifizierung (Login und Registrierung) sowie die Hauptfunktionen der Lebensmittelrettungs-Plattform handhabt. Die Architektur folgt einer klaren Trennung der Verantwortlichkeiten mit ES6-Modulen, Backend-gesteuerter Validierung und benutzerfreundlichem Fehler-Feedback über Toast-Benachrichtigungen.
 
-**Key Principle**: Validation happens on the **backend**, ensuring data integrity and security. The frontend's role is to capture, transmit, and display results.
-
----
-
-## 📁 File Structure
-
-### HTML
-
-```
-backend/src/main/resources/static/
-├── index.html              # Main authentication page (login/signup form)
-└── dashboard.html          # Post-login dashboard
-```
-
-### JavaScript Modules
-
-```
-backend/src/main/resources/static/js/
-├── main.js                 # Entry point - initializes app and event listeners
-├── domElements.js          # Caches DOM element references
-├── authModeToggle.js       # Handles login ↔ signup mode switching
-├── authActions.js          # Form submission & API communication ⭐
-├── toastNotifications.js   # Error/success message display
-└── dashboardInit.js        # Dashboard initialization logic
-```
-
-### CSS
-
-```
-backend/src/main/resources/static/css/
-├── styles.css              # Authentication page styles
-└── dashboard.css           # Dashboard styles
-```
-
-### Module Responsibilities
-
-| Module                  | Purpose                                                         |
-| ----------------------- | --------------------------------------------------------------- |
-| `main.js`               | Application bootstrapper - wires up all modules                 |
-| `domElements.js`        | Centralized DOM element cache (performance optimization)        |
-| `authModeToggle.js`     | Manages UI state between login and signup modes                 |
-| **`authActions.js`**    | **Core logic: captures data, calls backend, handles responses** |
-| `toastNotifications.js` | Creates animated toast notifications for user feedback          |
+**Kernprinzip**: Die Validierung erfolgt im **Backend**, um Datenintegrität und Sicherheit zu gewährleisten. Die Rolle des Frontends ist es, Daten zu erfassen, zu übertragen und Ergebnisse anzuzeigen.
 
 ---
 
-## Data Flow: From User Input to Backend Validation
+## Dateistruktur
 
-### High-Level Flow
+### HTML-Dateien
 
 ```
-User Input (Form)
+resources/static/
+├── index.html              # Hauptseite (Login/Registrierung)
+├── dashboard.html          # Dashboard nach Login
+└── register.html           # Anbieter-Registrierung
+```
+
+### JavaScript-Module
+
+```
+resources/static/js/
+├── main.js                 # Einstiegspunkt - initialisiert App und Event-Listener
+├── domElements.js          # Speichert DOM-Element-Referenzen
+├── authModeToggle.js       # Wechsel zwischen Login ↔ Registrierung
+├── authActions.js          # Formular-Übermittlung & API-Kommunikation ⭐
+├── toastNotifications.js   # Anzeige von Fehler-/Erfolgsmeldungen
+├── dashboardInit.js        # Dashboard-Initialisierungslogik
+├── loadAngebot.js          # Laden und Anzeigen von Angeboten
+├── handleCreateAngebot.js  # Angebotserstellung für Anbieter
+└── register.js             # Anbieter-Registrierungslogik
+```
+
+### CSS-Dateien
+
+```
+resources/static/css/
+├── styles.css              # Styles für Authentifizierungsseiten
+└── dashboard.css           # Dashboard-Styles
+```
+
+### Modul-Verantwortlichkeiten
+
+| Modul                     | Zweck                                                             |
+|---------------------------| ----------------------------------------------------------------- |
+| `main.js`                 | Application Bootstrapper - verbindet alle Module                  |
+| `domElements.js`          | Zentraler DOM-Element-Cache (Performance-Optimierung)             |
+| `authModeToggle.js`       | Verwaltet UI-Zustand zwischen Login- und Registrierungsmodus      |
+| `authActions.js`          | Kernlogik: erfasst Daten, ruft Backend auf, verarbeitet Antworten |
+| `toastNotifications.js`   | Erstellt animierte Toast-Benachrichtigungen für Benutzer-Feedback |
+| `dashboardInit.js`        | Dashboard-Initialisierung mit rollenbasierter UI                  |
+| `loadAngebot.js`          | Lädt und zeigt verfügbare Angebote an                             |
+| `handleCreateAngebot.js`  | Erstellt neue Angebote (nur für Anbieter)                         |
+| `register.js`             | Erweiterte Anbieter-Registrierung mit Profilinformationen         |
+
+---
+
+## Datenfluss: Von Benutzereingabe zur Backend-Validierung
+
+### High-Level-Flow
+
+```
+Benutzereingabe (Formular)
     ↓
-Frontend Collects Data (authActions.js)
+Frontend sammelt Daten (authActions.js)
     ↓
-HTTP POST to /api/users
+HTTP POST zu /api/users
     ↓
-Backend Validates (UserController.java)
+Backend validiert (UserController.java)
     ↓
-Success Response (201) OR Error Response (400)
+Erfolgsantwort (201) ODER Fehlerantwort (400)
     ↓
-Frontend Displays Result (Toast Notification)
+Frontend zeigt Ergebnis (Toast-Benachrichtigung)
     ↓
-Redirect to Dashboard OR Stay on Form
+Weiterleitung zum Dashboard ODER Verbleib im Formular
 ```
 
 ---
 
-## Detailed Data Capture & Transmission
+## Detaillierte Datenerfassung & -übertragung
 
-### 1. User Fills Form
+### 1. Benutzer füllt Formular aus
 
-When a user is in **signup mode**, the form displays:
+Im **Registrierungsmodus** zeigt das Formular:
 
-- **Name field** (text input)
-- **Email field** (email input)
-- **Role field** (dropdown: ABHOLER or ANBIETER)
+- **Namensfeld** (Texteingabe)
+- **E-Mail-Feld** (E-Mail-Eingabe)
+- **Rollenfeld** (Dropdown: ABHOLER oder ANBIETER)
+- **weitere Felder** (nur für Anbieter, z.B. Firmenname, Adresse)
 
-### 2. Frontend Captures Data
+### 2. Frontend erfasst Daten
 
-When the form is submitted, `authActions.js` collects the values:
+Bei Formularübermittlung sammelt `authActions.js` die Werte:
 
 ```javascript
-// From authActions.js - handleSignup() function
+// Aus authActions.js - handleSignup() Funktion
 async function handleSignup() {
-  const name = elements.nameInput.value.trim(); // Gets name, removes whitespace
-  const email = elements.emailInput.value.trim(); // Gets email, removes whitespace
-  const role = elements.roleSelect.value || null; // Gets role, converts "" to null
+  const name = elements.nameInput.value.trim(); // Holt Namen, entfernt Whitespace
+  const email = elements.emailInput.value.trim(); // Holt E-Mail, entfernt Whitespace
+  const role = elements.roleSelect.value || null; // Holt Rolle, konvertiert "" zu null
 
   const requestData = {
     name,
     email,
-    rolle: role, // Note: Backend expects 'rolle' (German)
+    rolle: role, // Hinweis: Backend erwartet 'rolle' (deutsch)
   };
 
-  // ... continues to send data
+  // ... sendet Daten weiter
 }
 ```
 
-**Key Detail**: Empty role (`""`) is converted to `null` to match backend expectations.
+**Wichtiges Detail**: Leere Rolle (`""`) wird zu `null` konvertiert, um Backend-Erwartungen zu entsprechen.
 
-### 3. HTTP Request to Backend
+### 3. HTTP-Request zum Backend
 
-The frontend sends a POST request to the backend API:
+Das Frontend sendet einen POST-Request zur Backend-API:
 
 ```javascript
 const response = await fetch("/api/users", {
@@ -119,60 +128,60 @@ const response = await fetch("/api/users", {
 });
 ```
 
-**Request Example**:
+**Request-Beispiel**:
 
 ```json
 POST /api/users
 Content-Type: application/json
 
 {
-  "name": "John Doe",
-  "email": "john@example.com",
+  "name": "Max Mustermann",
+  "email": "max@example.com",
   "rolle": "ABHOLER"
 }
 ```
 
 ---
 
-## Backend Validation Process
+## Backend-Validierungsprozess
 
-### Validation Order
+### Validierungsreihenfolge
 
-The backend (`UserController.java`) validates fields in this specific order:
+Das Backend (`UserController.java`) validiert Felder in dieser spezifischen Reihenfolge:
 
-1. **Name validation** - Check if empty
-2. **Email validation** - Check if empty, then validate format
-3. **Role validation** - Check if null
+1. **Namensvalidierung** - Prüft, ob leer
+2. **E-Mail-Validierung** - Prüft, ob leer, dann Formatvalidierung
+3. **Rollenvalidierung** - Prüft, ob null
 
 ```java
-// From UserController.java
+// Aus UserController.java
 @PostMapping
 public ResponseEntity<UserResponse> registriereUser(@RequestBody RegistriereUserRequest request) {
-  // 1. Validate name
+  // 1. Name validieren
   if (request.getName() == null || request.getName().trim().isEmpty()) {
     throw new IllegalArgumentException("Bitte geben Sie einen Namen ein");
   }
 
-  // 2. Validate email (empty check)
+  // 2. E-Mail validieren (Leer-Prüfung)
   if (request.getEmail() == null || request.getEmail().trim().isEmpty()) {
     throw new IllegalArgumentException("Bitte geben Sie eine E-Mail-Adresse ein");
   }
 
-  // 3. Validate email format
-  new EmailAdresse(request.getEmail());  // Throws if invalid format
+  // 3. E-Mail-Format validieren
+  new EmailAdresse(request.getEmail());  // Wirft Exception bei ungültigem Format
 
-  // 4. Validate role
+  // 4. Rolle validieren
   if (request.getRolle() == null) {
     throw new IllegalArgumentException("Bitte wählen Sie eine Rolle aus");
   }
 
-  // Continue with registration...
+  // Registrierung fortsetzen...
 }
 ```
 
-### Error Response Format
+### Fehlerantwort-Format
 
-When validation fails, the backend returns:
+Wenn Validierung fehlschlägt, gibt das Backend zurück:
 
 ```json
 HTTP 400 Bad Request
@@ -184,9 +193,9 @@ Content-Type: application/json
 }
 ```
 
-### Success Response Format
+### Erfolgsantwort-Format
 
-When validation passes and user is created:
+Wenn Validierung erfolgreich ist und Benutzer erstellt wurde:
 
 ```json
 HTTP 201 Created
@@ -194,28 +203,28 @@ Content-Type: application/json
 
 {
   "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-  "name": "John Doe",
-  "email": "john@example.com",
+  "name": "Max Mustermann",
+  "email": "max@example.com",
   "rolle": "ABHOLER"
 }
 ```
 
 ---
 
-## Error Display on Frontend
+## Fehleranzeige im Frontend
 
-### Response Handling
+### Antwortverarbeitung
 
-The frontend checks the HTTP response status:
+Das Frontend prüft den HTTP-Antwortstatus:
 
 ```javascript
-// From authActions.js
+// Aus authActions.js
 if (response.ok) {
-  // SUCCESS PATH (status 200-299)
+  // ERFOLGSPFAD (Status 200-299)
   const userData = await response.json();
   showSuccess(`Registrierung erfolgreich! Willkommen ${userData.name}!`);
 
-  // Store user data and redirect
+  // Benutzerdaten speichern und weiterleiten
   localStorage.setItem("isLoggedIn", "true");
   localStorage.setItem("userName", userData.name);
   localStorage.setItem("userEmail", userData.email);
@@ -226,12 +235,12 @@ if (response.ok) {
     window.location.href = "/dashboard.html";
   }, 1500);
 } else {
-  // ERROR PATH (status 400, 500, etc.)
+  // FEHLERPFAD (Status 400, 500, etc.)
   let errorMessage = "Registrierung fehlgeschlagen.";
 
   try {
     const errorData = await response.json();
-    errorMessage = errorData.message || errorMessage; // Extract 'message' field
+    errorMessage = errorData.message || errorMessage; // Extrahiere 'message' Feld
   } catch (parseError) {
     const errorText = await response.text();
     if (errorText) {
@@ -239,22 +248,22 @@ if (response.ok) {
     }
   }
 
-  showError(errorMessage); // Display red toast notification
+  showError(errorMessage); // Zeige rote Toast-Benachrichtigung
 }
 ```
 
-### Toast Notification System
+### Toast-Benachrichtigungssystem
 
-Errors are displayed using animated toast notifications:
+Fehler werden über animierte Toast-Benachrichtigungen angezeigt:
 
 ```javascript
-// From toastNotifications.js
+// Aus toastNotifications.js
 function showError(message) {
-  createToast(message, "#ef4444"); // Red background
+  createToast(message, "#ef4444"); // Roter Hintergrund
 }
 
 function showSuccess(message) {
-  createToast(message, "#10b981"); // Green background
+  createToast(message, "#10b981"); // Grüner Hintergrund
 }
 
 function createToast(message, backgroundColor) {
@@ -274,7 +283,7 @@ function createToast(message, backgroundColor) {
   toast.textContent = message;
   document.body.appendChild(toast);
 
-  // Auto-dismiss after 4 seconds
+  // Automatisches Ausblenden nach 4 Sekunden
   setTimeout(() => {
     toast.style.animation = "fadeOut 0.3s ease";
     setTimeout(() => toast.remove(), 300);
@@ -282,181 +291,386 @@ function createToast(message, backgroundColor) {
 }
 ```
 
-**Visual Result**:
+**Visuelles Ergebnis**:
 
-- **Red toast** appears at top-right corner with error message
-- Slides in from right with smooth animation
-- Auto-disappears after 4 seconds
-- User remains on form to correct the error
-
----
-
-## 📝 Example Scenarios
-
-### Scenario 1: Empty Name Field
-
-**User Input**:
-
-- Name: `""` (empty)
-- Email: `john@example.com`
-- Role: `ABHOLER`
-
-**Flow**:
-
-1. Frontend sends request with empty name
-2. Backend validates name first → fails
-3. Returns: `{"error": "Validation Error", "message": "Bitte geben Sie einen Namen ein"}`
-4. Frontend displays **red toast**: "Bitte geben Sie einen Namen ein"
-5. User stays on form
+- **Roter Toast** erscheint in der oberen rechten Ecke mit Fehlermeldung
+- Gleitet von rechts mit sanfter Animation ein
+- Verschwindet automatisch nach 4 Sekunden
+- Benutzer bleibt im Formular, um Fehler zu korrigieren
 
 ---
 
-### Scenario 2: Invalid Email Format
+## Beispiel-Szenarien
 
-**User Input**:
+### Szenario 1: Leeres Namensfeld
 
-- Name: `John Doe`
-- Email: `test` (no @ or domain)
-- Role: `ABHOLER`
+**Benutzereingabe**:
 
-**Flow**:
+- Name: `""` (leer)
+- E-Mail: `max@example.com`
+- Rolle: `ABHOLER`
 
-1. Frontend sends request
-2. Backend validates name → passes
-3. Backend validates email empty → passes
-4. Backend validates email format → **fails**
-5. Returns: `{"error": "Validation Error", "message": "Email hat ein ungültiges Format: test"}`
-6. Frontend displays **red toast**: "Email hat ein ungültiges Format: test"
-7. User stays on form
+**Ablauf**:
 
----
-
-### Scenario 3: No Role Selected
-
-**User Input**:
-
-- Name: `John Doe`
-- Email: `john@example.com`
-- Role: `null` (not selected)
-
-**Flow**:
-
-1. Frontend sends request with `rolle: null`
-2. Backend validates name → passes
-3. Backend validates email → passes
-4. Backend validates role → **fails**
-5. Returns: `{"error": "Validation Error", "message": "Bitte wählen Sie eine Rolle aus"}`
-6. Frontend displays **red toast**: "Bitte wählen Sie eine Rolle aus"
-7. User stays on form
+1. Frontend sendet Request mit leerem Namen
+2. Backend validiert Namen zuerst → schlägt fehl
+3. Gibt zurück: `{"error": "Validation Error", "message": "Bitte geben Sie einen Namen ein"}`
+4. Frontend zeigt **roten Toast**: "Bitte geben Sie einen Namen ein"
+5. Benutzer bleibt im Formular
 
 ---
 
-### Scenario 4: All Valid Data
+### Szenario 2: Ungültiges E-Mail-Format
 
-**User Input**:
+**Benutzereingabe**:
 
-- Name: `John Doe`
-- Email: `john@example.com`
-- Role: `ABHOLER`
+- Name: `Max Mustermann`
+- E-Mail: `test` (kein @ oder Domain)
+- Rolle: `ABHOLER`
 
-**Flow**:
+**Ablauf**:
 
-1. Frontend sends request
-2. Backend validates all fields → **all pass**
-3. User is created with UUID
-4. Returns: `{"id": "...", "name": "John Doe", "email": "john@example.com", "rolle": "ABHOLER"}`
-5. Frontend displays **green toast**: "Registrierung erfolgreich! Willkommen John Doe!"
-6. User data stored in localStorage
-7. After 1.5 seconds → **redirect to `/dashboard.html`**
+1. Frontend sendet Request
+2. Backend validiert Name → erfolgreich
+3. Backend validiert E-Mail leer → erfolgreich
+4. Backend validiert E-Mail-Format → **schlägt fehl**
+5. Gibt zurück: `{"error": "Validation Error", "message": "Email hat ein ungültiges Format: test"}`
+6. Frontend zeigt **roten Toast**: "Email hat ein ungültiges Format: test"
+7. Benutzer bleibt im Formular
 
 ---
 
-## Backend Integration Points
+### Szenario 3: Keine Rolle ausgewählt
 
-### Backend Files
+**Benutzereingabe**:
 
-| File                          | Purpose                                            |
-| ----------------------------- | -------------------------------------------------- |
-| `UserController.java`         | REST endpoint `/api/users` - handles POST requests |
-| `RegistriereUserRequest.java` | DTO for incoming JSON data                         |
-| `EmailAdresse.java`           | Value object with email format validation          |
-| `Name.java`                   | Value object with name validation                  |
-| `User.java`                   | Domain entity                                      |
-| `GlobalExceptionHandler.java` | Catches exceptions and formats error responses     |
+- Name: `Max Mustermann`
+- E-Mail: `max@example.com`
+- Rolle: `null` (nicht ausgewählt)
 
-### Validation Layer
+**Ablauf**:
 
-The validation happens in multiple layers:
+1. Frontend sendet Request mit `rolle: null`
+2. Backend validiert Name → erfolgreich
+3. Backend validiert E-Mail → erfolgreich
+4. Backend validiert Rolle → **schlägt fehl**
+5. Gibt zurück: `{"error": "Validation Error", "message": "Bitte wählen Sie eine Rolle aus"}`
+6. Frontend zeigt **roten Toast**: "Bitte wählen Sie eine Rolle aus"
+7. Benutzer bleibt im Formular
 
-1. **Controller Layer** (`UserController.java`):
+---
 
-   - Null/empty checks
-   - Field presence validation
-   - Email format validation (via `EmailAdresse` constructor)
+### Szenario 4: Alle Daten gültig
+
+**Benutzereingabe**:
+
+- Name: `Max Mustermann`
+- E-Mail: `max@example.com`
+- Rolle: `ABHOLER`
+
+**Ablauf**:
+
+1. Frontend sendet Request
+2. Backend validiert alle Felder → **alle erfolgreich**
+3. Benutzer wird mit UUID erstellt
+4. Gibt zurück: `{"id": "...", "name": "Max Mustermann", "email": "max@example.com", "rolle": "ABHOLER"}`
+5. Frontend zeigt **grünen Toast**: "Registrierung erfolgreich! Willkommen Max Mustermann!"
+6. Benutzerdaten in localStorage gespeichert
+7. Nach 1,5 Sekunden → **Weiterleitung zu `/dashboard.html`**
+
+---
+
+## Login-Prozess
+
+### E-Mail-basierte Anmeldung
+
+```javascript
+async function handleLogin() {
+    const email = elements.emailInput.value.trim();
+    
+    // Prüfe mehrere Endpoint-Kandidaten
+    const candidates = [
+        `/api/users/by-email?email=${encodeURIComponent(email)}`,
+        `/api/users?email=${encodeURIComponent(email)}`
+    ];
+
+    let userData = null;
+    for (const url of candidates) {
+        const res = await fetch(url);
+        if (res.ok) {
+            userData = await res.json();
+            break;
+        }
+    }
+
+    if (!userData || !userData.id) {
+        showError("Login fehlgeschlagen: Nutzer nicht gefunden");
+        return;
+    }
+
+    // Speichere Login-Status
+    localStorage.setItem("isLoggedIn", "true");
+    localStorage.setItem("userEmail", userData.email);
+    localStorage.setItem("userName", userData.name);
+    localStorage.setItem("userRole", userData.rolle);
+    localStorage.setItem("userId", userData.id);
+
+    showSuccess(`Willkommen zurück, ${userData.name}!`);
+    window.location.href = "./dashboard.html";
+}
+```
+
+---
+
+## Dashboard-Module
+
+### Dashboard-Initialisierung
+
+Das Dashboard passt sich der Benutzerrolle an:
+
+```javascript
+// Aus dashboardInit.js
+function applyRoleLayout() {
+    const role = localStorage.getItem("userRole");
+
+    if (role === "ANBIETER") {
+        // Zeige Angebotserstellung
+        // Zeige "Meine Angebote"
+        // Navigation: "Angebote erstellen"
+    } else if (role === "ABHOLER") {
+        // Zeige "Angebote finden"
+        // Zeige "Meine Reservierungen"
+        // Navigation: "Angebote suchen"
+    }
+}
+```
+
+### Angebotsverwaltung
+
+**Für Anbieter** (`handleCreateAngebot.js`):
+- Formular zur Angebotserstellung
+- Felder: Titel, Beschreibung, Menge, Abholzeitfenster
+- POST zu `/api/angebote`
+
+**Für Abholer** (`loadAngebot.js`):
+- Anzeige verfügbarer Angebote
+- GET von `/api/angebote/verfuegbar`
+- Reservierungs-Button für jedes Angebot
+
+---
+
+## Backend-Integrationspunkte
+
+### Backend-Dateien
+
+| Datei                             | Zweck                                              |
+| --------------------------------- | -------------------------------------------------- |
+| `UserController.java`             | REST-Endpoint `/api/users` - verarbeitet POST-Requests |
+| `RegistriereUserRequest.java`     | DTO für eingehende JSON-Daten                      |
+| `EmailAdresse.java`               | Value Object mit E-Mail-Formatvalidierung          |
+| `Name.java`                       | Value Object mit Namensvalidierung                 |
+| `User.java`                       | Domain-Entity                                      |
+| `GlobalExceptionHandler.java`     | Fängt Exceptions ab und formatiert Fehlerantworten |
+
+### Validierungsebenen
+
+Die Validierung erfolgt in mehreren Schichten:
+
+1. **Controller-Schicht** (`UserController.java`):
+    - Null/Leer-Prüfungen
+    - Feldpräsenz-Validierung
+    - E-Mail-Formatvalidierung (via `EmailAdresse`-Konstruktor)
 
 2. **Value Objects** (`EmailAdresse.java`, `Name.java`):
-
-   - Format validation
-   - Business rules enforcement
-   - Throws `IllegalArgumentException` on invalid data
+    - Formatvalidierung
+    - Durchsetzung von Geschäftsregeln
+    - Wirft `IllegalArgumentException` bei ungültigen Daten
 
 3. **Exception Handler** (`GlobalExceptionHandler.java`):
-   - Catches `IllegalArgumentException` → returns 400 with message
-   - Catches `HttpMessageNotReadableException` → returns 400 with generic message
-   - Catches other exceptions → returns appropriate error response
+    - Fängt `IllegalArgumentException` → gibt 400 mit Nachricht zurück
+    - Fängt `HttpMessageNotReadableException` → gibt 400 mit generischer Nachricht zurück
+    - Fängt andere Exceptions → gibt entsprechende Fehlerantwort zurück
 
-### Error Message Mapping
+### Fehlermeldungs-Mapping
 
-| Backend Validation   | Error Message (German)                                       |
-| -------------------- | ------------------------------------------------------------ |
-| Empty name           | "Bitte geben Sie einen Namen ein"                            |
-| Empty email          | "Bitte geben Sie eine E-Mail-Adresse ein"                    |
-| Invalid email format | "Email hat ein ungültiges Format: [input]"                   |
-| Missing role         | "Bitte wählen Sie eine Rolle aus"                            |
-| JSON parse error     | "Ungültige Eingabedaten. Bitte überprüfen Sie Ihre Angaben." |
-
----
-
-## Key Architectural Decisions
-
-### 1. Backend-Driven Validation
-
-**Why**: Ensures consistent validation logic, prevents client-side bypass, single source of truth.
-
-### 2. Specific Error Messages
-
-**Why**: Better UX - users know exactly what to fix instead of generic "Invalid input" messages.
-
-### 3. Validation Order Matters
-
-**Why**: Users see the first error they need to fix, preventing confusion from multiple errors at once.
-
-### 4. Modular JavaScript Architecture
-
-**Why**: Maintainability, testability, clear separation of concerns.
-
-### 5. Toast Notifications
-
-**Why**: Non-blocking feedback, doesn't require page reload, modern UX pattern.
+| Backend-Validierung   | Fehlermeldung (Deutsch)                                       |
+| --------------------- | ------------------------------------------------------------- |
+| Leerer Name           | "Bitte geben Sie einen Namen ein"                             |
+| Leere E-Mail          | "Bitte geben Sie eine E-Mail-Adresse ein"                     |
+| Ungültiges E-Mail-Format | "Email hat ein ungültiges Format: [Eingabe]"               |
+| Fehlende Rolle        | "Bitte wählen Sie eine Rolle aus"                             |
+| JSON-Parse-Fehler     | "Ungültige Eingabedaten. Bitte überprüfen Sie Ihre Angaben." |
 
 ---
 
-## Summary
+## Wichtige Architekturentscheidungen
 
-The FoodRescue frontend follows a clean **capture → transmit → validate → display** pattern:
+### 1. Backend-gesteuerte Validierung
 
-1. **Capture**: Form inputs are collected via `authActions.js`
-2. **Transmit**: JSON data sent to `/api/users` endpoint
-3. **Validate**: Backend validates in order (name → email → role)
-4. **Display**: Frontend shows specific error messages via toast notifications
+**Warum**: Gewährleistet konsistente Validierungslogik, verhindert clientseitiges Umgehen, Single Source of Truth.
 
-This architecture ensures:
+### 2. Spezifische Fehlermeldungen
 
-- Data integrity (backend validation)
-- Clear user feedback (specific error messages)
-- Good UX (toast notifications, no page reloads)
-- Maintainable code (modular structure)
+**Warum**: Bessere UX - Benutzer wissen genau, was sie korrigieren müssen, statt generischer "Ungültige Eingabe"-Nachrichten.
+
+### 3. Validierungsreihenfolge ist wichtig
+
+**Warum**: Benutzer sehen den ersten Fehler, den sie beheben müssen, verhindert Verwirrung durch mehrere Fehler gleichzeitig.
+
+### 4. Modulare JavaScript-Architektur
+
+**Warum**: Wartbarkeit, Testbarkeit, klare Trennung der Verantwortlichkeiten.
+
+### 5. Toast-Benachrichtigungen
+
+**Warum**: Nicht-blockierendes Feedback, erfordert kein Neuladen der Seite, modernes UX-Pattern.
+
+### 6. Rollenbasierte UI
+
+**Warum**: Benutzer sehen nur relevante Funktionen, reduziert Komplexität, verbessert Usability.
 
 ---
 
-**Last Updated**: November 22, 2025
+## Zusätzliche Frontend-Features
+
+### Angebotserstellung (nur Anbieter)
+
+```javascript
+// Aus handleCreateAngebot.js
+async function handleCreateAngebot(event) {
+    event.preventDefault();
+    
+    const angebotData = {
+        anbieterId: localStorage.getItem("userId"),
+        titel: document.getElementById("titel").value,
+        beschreibung: document.getElementById("beschreibung").value,
+        menge: parseInt(document.getElementById("menge").value),
+        mengenEinheit: document.getElementById("einheit").value,
+        abholfensterStart: document.getElementById("start").value,
+        abholfensterEnde: document.getElementById("ende").value
+    };
+
+    const response = await fetch("/api/angebote", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(angebotData)
+    });
+
+    if (response.ok) {
+        showSuccess("Angebot erfolgreich erstellt!");
+        // Formular zurücksetzen und Liste neu laden
+    }
+}
+```
+
+### Angebote laden (für Abholer)
+
+```javascript
+// Aus loadAngebot.js
+async function loadVerfuegbareAngebote() {
+    const response = await fetch("/api/angebote/verfuegbar");
+    const angebote = await response.json();
+    
+    const container = document.getElementById("angebote-container");
+    container.innerHTML = angebote.map(angebot => `
+        <div class="angebot-card">
+            <h3>${angebot.titel}</h3>
+            <p>${angebot.beschreibung}</p>
+            <p>Menge: ${angebot.menge} ${angebot.mengenEinheit}</p>
+            <button onclick="reservieren('${angebot.id}')">
+                Reservieren
+            </button>
+        </div>
+    `).join('');
+}
+```
+
+---
+
+## Session-Management
+
+### LocalStorage-basiert
+
+```javascript
+// Login
+localStorage.setItem("isLoggedIn", "true");
+localStorage.setItem("userName", userData.name);
+localStorage.setItem("userEmail", userData.email);
+localStorage.setItem("userRole", userData.rolle);
+localStorage.setItem("userId", userData.id);
+
+// Auth-Check (in dashboardInit.js)
+function checkAuth() {
+    const isLoggedIn = localStorage.getItem("isLoggedIn");
+    if (!isLoggedIn || isLoggedIn !== "true") {
+        window.location.href = "./index.html";
+        return false;
+    }
+    return true;
+}
+
+// Logout
+function handleLogout() {
+    localStorage.clear();
+    window.location.href = "/index.html";
+}
+```
+
+---
+
+## Performance-Optimierungen
+
+### DOM-Element-Caching
+
+```javascript
+// domElements.js
+export const elements = {
+    form: document.getElementById("auth-form"),
+    nameInput: document.getElementById("name"),
+    emailInput: document.getElementById("email"),
+    roleSelect: document.getElementById("role"),
+    submitBtn: document.getElementById("submit-btn"),
+    // ... weitere Elemente
+};
+```
+
+Verhindert wiederholte DOM-Queries und verbessert Performance.
+
+---
+
+## Testing-Ansatz
+
+### Manuelles Testing
+
+- Browser-DevTools für Netzwerk-Requests
+- Console-Logging für Debugging
+- Toast-Benachrichtigungen für User-Feedback
+
+### Automatisiertes Testing (erweiterbar)
+
+- Jest für Unit-Tests
+- Cypress für E2E-Tests
+- Testing Library für DOM-Testing
+
+---
+
+## Zusammenfassung
+
+Das FoodRescue-Frontend folgt einem sauberen **Erfassen → Übertragen → Validieren → Anzeigen** Muster:
+
+1. **Erfassen**: Formulareingaben werden via `authActions.js` gesammelt
+2. **Übertragen**: JSON-Daten werden an `/api/users` Endpoint gesendet
+3. **Validieren**: Backend validiert in Reihenfolge (Name → E-Mail → Rolle)
+4. **Anzeigen**: Frontend zeigt spezifische Fehlermeldungen via Toast-Benachrichtigungen
+
+Diese Architektur gewährleistet:
+
+- Datenintegrität (Backend-Validierung)
+- Klares Benutzer-Feedback (spezifische Fehlermeldungen)
+- Gute UX (Toast-Benachrichtigungen, keine Seitenneuladungen)
+- Wartbarer Code (modulare Struktur)
+- Rollenbasierte Funktionalität (ANBIETER vs. ABHOLER)
+
+---
+
+**Letzte Aktualisierung**: 10. Januar 2026
